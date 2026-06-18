@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Catálogo de Motos | rentamotoscyv</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Hanken+Grotesk:wght@600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-container": "#a9c1ff",
+                        "inverse-surface": "#2d3133",
+                        "on-secondary-fixed": "#0b1c30",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#3f465c",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "surface-bright": "#f7f9fb",
+                        "on-tertiary-fixed": "#131b2e",
+                        "secondary": "#505f76",
+                        "on-tertiary-container": "#bac1db",
+                        "on-secondary": "#ffffff",
+                        "on-surface": "#191c1e",
+                        "surface-container-highest": "#e0e3e5",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "tertiary": "#31384d",
+                        "secondary-container": "#d0e1fb",
+                        "secondary-fixed": "#d3e4fe",
+                        "inverse-primary": "#b0c6ff",
+                        "surface": "#f7f9fb",
+                        "surface-container-low": "#f2f4f6",
+                        "tertiary-fixed-dim": "#bec6e0",
+                        "outline": "#737784",
+                        "primary-fixed-dim": "#b0c6ff",
+                        "border-subtle": "#E2E8F0",
+                        "action-orange": "#E94C1F",
+                        "on-secondary-container": "#54647a",
+                        "on-background": "#191c1e",
+                        "inverse-on-surface": "#eff1f3",
+                        "surface-container-high": "#e6e8ea",
+                        "on-primary-fixed": "#001945",
+                        "surface-dim": "#d8dadc",
+                        "on-primary-fixed-variant": "#00429b",
+                        "tertiary-fixed": "#dae2fd",
+                        "surface-container": "#eceef0",
+                        "outline-variant": "#c3c6d5",
+                        "primary-fixed": "#d9e2ff",
+                        "primary-container": "#004aad",
+                        "background": "#f7f9fb",
+                        "surface-white": "#FFFFFF",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "on-surface-variant": "#434653",
+                        "surface-variant": "#e0e3e5",
+                        "on-error-container": "#93000a",
+                        "surface-tint": "#215abd",
+                        "tertiary-container": "#474f65",
+                        "on-error": "#ffffff",
+                        "error": "#ba1a1a",
+                        "primary": "#00357f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "container-max": "1280px",
+                        "stack-lg": "32px",
+                        "stack-md": "16px",
+                        "stack-sm": "8px",
+                        "gutter": "24px",
+                        "unit": "8px",
+                        "margin-desktop": "48px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "button-text": ["Inter"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "label-caps": ["JetBrains Mono"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                        "button-text": ["16px", {"lineHeight": "20px", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        
+        .vehicle-card-shadow {
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .scroll-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scroll-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md selection:bg-primary-container selection:text-on-primary">
+<!-- TopNavBar -->
+<header class="bg-surface dark:bg-inverse-surface border-b border-border-subtle dark:border-outline-variant shadow-sm sticky top-0 z-50">
+<div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
+<div class="flex items-center gap-4">
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-inverse-primary">rentamotoscyv</span>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="font-label-caps text-label-caps text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-inverse-primary transition-colors" href="#">Inicio</a>
+<a class="font-label-caps text-label-caps text-primary dark:text-inverse-primary font-bold border-b-2 border-primary pb-1" href="#">Catálogo</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-inverse-primary transition-colors" href="#">Acerca de nosotros</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="hidden md:flex bg-action-orange text-white px-6 py-2 rounded-lg font-button-text text-button-text hover:opacity-90 active:scale-95 transition-all">
+                    Reservar Ahora
+                </button>
+<button class="md:hidden text-primary">
+<span class="material-symbols-outlined" style="font-size: 32px;">menu</span>
+</button>
+</div>
+</div>
+</header>
+<main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-stack-lg">
+<!-- Search & Filter Section -->
+<section class="mb-stack-lg">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-stack-md">
+<div class="flex-1 max-w-2xl">
+<h1 class="font-headline-lg text-headline-lg mb-stack-sm">Catálogo de Motocicletas</h1>
+<p class="text-on-surface-variant font-body-md">Encuentra la compañera perfecta para tu próxima aventura en la ciudad o carretera.</p>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-caps text-label-caps text-on-surface-variant">Buscar moto</label>
+<div class="relative">
+<input class="w-full md:w-80 px-4 py-3 bg-surface-white border border-border-subtle rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all" placeholder="Escribe marca o modelo..." type="text"/>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-outline">search</span>
+</div>
+</div>
+</div>
+<!-- Brand Filter Chips -->
+<div class="mt-8">
+<label class="font-label-caps text-label-caps text-on-surface-variant mb-3 block">Filtrar por marca</label>
+<div class="flex flex-wrap gap-2">
+<button class="px-5 py-2 rounded-full border border-primary bg-primary-fixed text-primary font-button-text text-label-caps transition-all">Todas</button>
+<button class="px-5 py-2 rounded-full border border-border-subtle bg-surface-white text-on-surface-variant font-button-text text-label-caps hover:border-primary hover:text-primary transition-all">Bajaj</button>
+<button class="px-5 py-2 rounded-full border border-border-subtle bg-surface-white text-on-surface-variant font-button-text text-label-caps hover:border-primary hover:text-primary transition-all">Yamaha</button>
+<button class="px-5 py-2 rounded-full border border-border-subtle bg-surface-white text-on-surface-variant font-button-text text-label-caps hover:border-primary hover:text-primary transition-all">AKT</button>
+<button class="px-5 py-2 rounded-full border border-border-subtle bg-surface-white text-on-surface-variant font-button-text text-label-caps hover:border-primary hover:text-primary transition-all">Honda</button>
+<button class="px-5 py-2 rounded-full border border-border-subtle bg-surface-white text-on-surface-variant font-button-text text-label-caps hover:border-primary hover:text-primary transition-all">TVS</button>
+</div>
+</div>
+</section>
+<!-- Bento Grid Catalog -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Card 1: NMAX (Scooter) -->
+<div class="bg-surface-white rounded-xl border border-border-subtle vehicle-card-shadow overflow-hidden group hover:-translate-y-1 transition-all duration-300">
+<div class="relative h-64 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A studio photograph of a sleek white Yamaha NMAX scooter parked in a modern showroom with glossy white tiles. The lighting is crisp and cinematic, highlighting the aerodynamic curves and vibrant red wheels. The overall aesthetic is clean-tech and corporate, focusing on the high-performance urban commuter feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8RUcAdZCKEj6DB37ofHYaa3RmwelmtFnTmlX_KgV8xwzyLQ_SOzcYswpeNraiu5MkVSPXjJD-Oz1SaFiuno4x7QC2DdYq0loh47UCt1UYJJaqLCn1rPZufFevyPRsUSbbC2Mm8VxG7aUMQpgoPn1wuTmn7DyAppKMR0PQWgGFAOwmWYT6nwx3CTHQdgingliL9C2BIdXCtepycYvbp8cZR-CS1yxWa8SS9pVg9H2yEehAJ_5eEMyCO8H7J-prvqpZdC21W90Bjb4k"/>
+<div class="absolute top-4 left-4 bg-primary text-white font-label-caps text-label-caps px-3 py-1 rounded-full uppercase tracking-wider">Automática</div>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-caps text-label-caps text-on-secondary-container uppercase">Yamaha</span>
+<div class="flex items-center gap-1 text-action-orange">
+<span class="material-symbols-outlined" style="font-size: 16px; font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-label-caps font-bold">4.9</span>
+</div>
+</div>
+<h3 class="font-headline-md text-headline-md mb-4 text-primary">NMAX 155 Connected</h3>
+<div class="grid grid-cols-2 gap-4 mb-6">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined" style="font-size: 20px;">ev_station</span>
+<span class="text-label-caps">155cc</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined" style="font-size: 20px;">speed</span>
+<span class="text-label-caps">12.5 hp</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-6 border-t border-border-subtle">
+<div>
+<span class="block text-on-surface-variant text-label-caps">Desde</span>
+<span class="text-headline-md font-bold text-on-surface">$120.000<span class="text-body-md font-normal text-on-surface-variant">/día</span></span>
+</div>
+<button class="bg-action-orange text-white px-5 py-2.5 rounded-lg font-button-text text-button-text hover:shadow-lg transition-all active:scale-95">Reservar</button>
+</div>
+</div>
+</div>
+<!-- Card 2: XTZ (Enduro) -->
+<div class="bg-surface-white rounded-xl border border-border-subtle vehicle-card-shadow overflow-hidden group hover:-translate-y-1 transition-all duration-300">
+<div class="relative h-64 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A professional action shot of a white Honda XRE 190 enduro motorcycle, standing on a clean tiled floor against a textured dark industrial wall. Bright lighting emphasizes the rugged suspension and off-road tires. The atmosphere is energetic and professional, capturing the freedom of adventure tourism." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAL2Exsfy_EfDKmg8A2kJgu9e0XmWW3SAcH2EjS67ah8DXeqB5mRWUAR0Q_R0Vn7Wju1_e4skbh3gDOrU5ngUK4SpiH5XEx5uRIRR_ywTj4KZg7GJXzmBhsSQudOxEpn8NGTsjIccu8wLJ-pEqNT7nPzHASt-0FvPp4CZoxJB-9DVNG-a5iKfg_sJZCCk1Eweuf9xX5fSKxWNHS8HkuL9evfK8MDISF2E6LUs-sjeI4aNRE8gtRjD_9uOktISJeCLF7g48QxZi2BexF"/>
+<div class="absolute top-4 left-4 bg-tertiary text-white font-label-caps text-label-caps px-3 py-1 rounded-full uppercase tracking-wider">Enduro</div>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-caps text-label-caps text-on-secondary-container uppercase">Honda</span>
+<div class="flex items-center gap-1 text-action-orange">
+<span class="material-symbols-outlined" style="font-size: 16px; font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-label-caps font-bold">4.8</span>
+</div>
+</div>
+<h3 class="font-headline-md text-headline-md mb-4 text-primary">XR 190L</h3>
+<div class="grid grid-cols-2 gap-4 mb-6">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined" style="font-size: 20px;">mountain_flag</span>
+<span class="text-label-caps">Dual Purpose</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined" style="font-size: 20px;">settings</span>
+<span class="text-label-caps">ABS Front</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-6 border-t border-border-subtle">
+<div>
+<span class="block text-on-surface-variant text-label-caps">Desde</span>
+<span class="text-headline-md font-bold text-on-surface">$135.000<span class="text-body-md font-normal text-on-surface-variant">/día</span></span>
+</div>
+<button class="bg-action-orange text-white px-5 py-2.5 rounded-lg font-button-text text-button-text hover:shadow-lg transition-all active:scale-95">Reservar</button>
+</div>
+</div>
+</div>
+<!-- Card 3: FZ25 (Naked) -->
+<div class="bg-surface-white rounded-xl border border-border-subtle vehicle-card-shadow overflow-hidden group hover:-translate-y-1 transition-all duration-300">
+<div class="relative h-64 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A powerful Yamaha FZ25 naked sport motorcycle in matte black finish with vibrant blue accents. The bike is shot from a low angle in a minimalist studio environment with sharp spotlights creating dramatic highlights on its engine and fuel tank. The aesthetic is high-performance, urban, and sophisticated." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfMTkj4AuYVN0SmYSyZrL3fVEifieDesY1lymkCoWgEcibGm2FKNcBtUEzbzC8HglmTrVyw3ycsXWRWHnUkvrxKU-zyfTtkXguL0mlJyXTX7E6KEnJp76hBEV1fuZvKb1IaQWyutLCyf1faHRhQ_YEACCxKphW3qUJxvLvR-3Orpgx0Y8O6oBk3Ihnwpq92WJerT6sUFnPRgXPfz92xx-AL3pxJEsnhniBZ0pGfwpGfM9-lIIXo5FuvZUDkOJlLsECzr560UdRmL2u"/>
+<div class="absolute top-4 left-4 bg-primary-container text-white font-label-caps text-label-caps px-3 py-1 rounded-full uppercase tracking-wider">Naked Sport</div>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-caps text-label-caps text-on-secondary-container uppercase">Yamaha</span>
+<div class="flex items-center gap-1 text-action-orange">
+<span class="material-symbols-outlined" style="font-size: 16px; font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-label-caps font-bold">5.0</span>
+</div>
+</div>
+<h3 class="font-headline-md text-headline-md mb-4 text-primary">FZ25 ABS</h3>
+<div class="grid grid-cols-2 gap-4 mb-6">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined" style="font-size: 20px;">bolt</span>
+<span class="text-label-caps">249cc</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined" style="font-size: 20px;">security</span>
+<span class="text-label-caps">Dual ABS</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-6 border-t border-border-subtle">
+<div>
+<span class="block text-on-surface-variant text-label-caps">Desde</span>
+<span class="text-headline-md font-bold text-on-surface">$150.000<span class="text-body-md font-normal text-on-surface-variant">/día</span></span>
+</div>
+<button class="bg-action-orange text-white px-5 py-2.5 rounded-lg font-button-text text-button-text hover:shadow-lg transition-all active:scale-95">Reservar</button>
+</div>
+</div>
+</div>
+<!-- Card 4: XTZ 250 (Adventure) -->
+<div class="bg-surface-white rounded-xl border border-border-subtle vehicle-card-shadow overflow-hidden group hover:-translate-y-1 transition-all duration-300">
+<div class="relative h-64 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A brand new Yamaha XTZ 250 Lander adventure motorcycle in matte black with yellow decals. The bike is meticulously lit to show off its rugged trail-ready design. Background is a clean, dark industrial setting that emphasizes durability and reliability. High-contrast, premium commercial photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGwYZfNsdnIQzbsSW_KjtvzJn8_ZzlvnvyyrWQPeC62CJyjYjjubaHB1VRNCFEg8_G3aiQPpljVw5160p_SS-x6VQKyP36AorOs-OTt-1S5Mt4-JziE4D555f0pnj0PjbpNHECt2V_XwzP8nQW3sNnQYkwGMP1p0CYtbQmdGEO4SJ8RjbKIMAe2PernLTOTMURXqrUqiTA5o9PUwJZ068QrdWUumpbLPuaLfaN3Vz120Yg3NvU_-fkd4qeBBeE8F9yT_1OqtepdRQ0"/>
+<div class="absolute top-4 left-4 bg-on-secondary-fixed-variant text-white font-label-caps text-label-caps px-3 py-1 rounded-full uppercase tracking-wider">Adventure</div>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-caps text-label-caps text-on-secondary-container uppercase">Yamaha</span>
+<div class="flex items-center gap-1 text-action-orange">
+<span class="material-symbols-outlined" style="font-size: 16px; font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-label-caps font-bold">4.7</span>
+</div>
+</div>
+<h3 class="font-headline-md text-headline-md mb-4 text-primary">XTZ 250 Lander</h3>
+<div class="grid grid-cols-2 gap-4 mb-6">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined" style="font-size: 20px;">terrain</span>
+<span class="text-label-caps">Todo Terreno</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined" style="font-size: 20px;">visibility</span>
+<span class="text-label-caps">LED Lighting</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-6 border-t border-border-subtle">
+<div>
+<span class="block text-on-surface-variant text-label-caps">Desde</span>
+<span class="text-headline-md font-bold text-on-surface">$165.000<span class="text-body-md font-normal text-on-surface-variant">/día</span></span>
+</div>
+<button class="bg-action-orange text-white px-5 py-2.5 rounded-lg font-button-text text-button-text hover:shadow-lg transition-all active:scale-95">Reservar</button>
+</div>
+</div>
+</div>
+<!-- More results loading indicator / Empty slots -->
+<div class="bg-surface-container-low border-2 border-dashed border-outline-variant rounded-xl flex flex-col items-center justify-center p-12 text-center">
+<span class="material-symbols-outlined text-outline text-6xl mb-4">add_circle</span>
+<h4 class="font-headline-md text-headline-md text-on-surface-variant mb-2">¿Buscas algo más?</h4>
+<p class="text-on-surface-variant mb-6">Próximamente añadiremos nuevos modelos de Bajaj y TVS a nuestra flota.</p>
+<button class="text-primary font-button-text hover:underline">Ver todas las categorías</button>
+</div>
+</section>
+<!-- Trust Features / Benefits -->
+<section class="mt-20 grid grid-cols-1 md:grid-cols-3 gap-stack-lg border-t border-border-subtle pt-16">
+<div class="text-center md:text-left">
+<div class="w-16 h-16 bg-primary-fixed rounded-2xl flex items-center justify-center mb-4 mx-auto md:mx-0">
+<span class="material-symbols-outlined text-primary text-4xl">verified_user</span>
+</div>
+<h4 class="font-headline-md text-headline-md mb-2">Mantenimiento PRO</h4>
+<p class="text-on-surface-variant">Flota inspeccionada cada 1,000 km por técnicos certificados para tu total seguridad.</p>
+</div>
+<div class="text-center md:text-left">
+<div class="w-16 h-16 bg-secondary-fixed rounded-2xl flex items-center justify-center mb-4 mx-auto md:mx-0">
+<span class="material-symbols-outlined text-secondary text-4xl">schedule</span>
+</div>
+<h4 class="font-headline-md text-headline-md mb-2">Alquiler Flexible</h4>
+<p class="text-on-surface-variant">Planes por días, semanas o meses con tarifas preferenciales para alquileres largos.</p>
+</div>
+<div class="text-center md:text-left">
+<div class="w-16 h-16 bg-tertiary-fixed rounded-2xl flex items-center justify-center mb-4 mx-auto md:mx-0">
+<span class="material-symbols-outlined text-tertiary text-4xl">support_agent</span>
+</div>
+<h4 class="font-headline-md text-headline-md mb-2">Soporte 24/7</h4>
+<p class="text-on-surface-variant">Asistencia en carretera y atención personalizada en cualquier momento de tu viaje.</p>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-highest dark:bg-surface-dim mt-20">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-stack-lg px-margin-mobile md:px-margin-desktop py-12 max-w-container-max mx-auto">
+<div>
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-inverse-primary block mb-4">rentamotoscyv</span>
+<p class="text-on-secondary-container dark:text-on-secondary-fixed-variant font-body-md mb-6">Tu libertad sobre dos ruedas. Líderes en el alquiler de motocicletas de alta calidad en Itagüí y el Valle de Aburrá.</p>
+<div class="flex gap-4">
+<a class="text-on-secondary-container hover:text-action-orange transition-colors" href="#"><span class="material-symbols-outlined">public</span></a>
+<a class="text-on-secondary-container hover:text-action-orange transition-colors" href="#"><span class="material-symbols-outlined">alternate_email</span></a>
+</div>
+</div>
+<div>
+<h5 class="font-label-caps text-label-caps text-primary mb-4 font-bold">Enlaces Rápidos</h5>
+<ul class="space-y-3">
+<li><a class="text-on-secondary-container dark:text-on-secondary-fixed-variant font-body-md hover:text-action-orange transition-colors" href="#">WhatsApp</a></li>
+<li><a class="text-on-secondary-container dark:text-on-secondary-fixed-variant font-body-md hover:text-action-orange transition-colors" href="#">Teléfono</a></li>
+<li><a class="text-on-secondary-container dark:text-on-secondary-fixed-variant font-body-md hover:text-action-orange transition-colors" href="#">Facebook</a></li>
+<li><a class="text-on-secondary-container dark:text-on-secondary-fixed-variant font-body-md hover:text-action-orange transition-colors" href="#">Instagram</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-label-caps text-label-caps text-primary mb-4 font-bold">Ubicación</h5>
+<p class="text-on-secondary-container dark:text-on-secondary-fixed-variant font-body-md mb-2">Itagüí, Antioquia</p>
+<p class="text-on-secondary-container dark:text-on-secondary-fixed-variant font-body-md mb-6">Calle Principal #45-67</p>
+<div class="rounded-xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-500 h-32 w-full bg-surface-container">
+<div class="w-full h-full bg-cover bg-center" data-alt="A clean, minimalist 2D map illustration showing the city of Itagüí, Colombia, in a professional blue and grey color scheme. The map is simplified with primary roads highlighted and a distinct marker for the rental store location. High-end corporate UI design style." data-location="Itagüí, Colombia" style="background-image: url('https://www.gstatic.com/labs-code/stitch/stitch-placeholder-300x300.svg')"></div>
+</div>
+</div>
+</div>
+<div class="border-t border-outline-variant/30 py-6 text-center">
+<p class="text-on-secondary-container dark:text-on-secondary-fixed-variant font-label-caps text-label-caps">© 2024 rentamotoscyv. Todos los derechos reservados.</p>
+</div>
+</footer>
+<!-- Interactive script for brand filter -->
+<script>
+        const chips = document.querySelectorAll('.flex.wrap button');
+        chips.forEach(chip => {
+            chip.addEventListener('click', () => {
+                chips.forEach(c => {
+                    c.classList.remove('bg-primary-fixed', 'text-primary', 'border-primary');
+                    c.classList.add('bg-surface-white', 'text-on-surface-variant', 'border-border-subtle');
+                });
+                chip.classList.remove('bg-surface-white', 'text-on-surface-variant', 'border-border-subtle');
+                chip.classList.add('bg-primary-fixed', 'text-primary', 'border-primary');
+            });
+        });
+    </script>
+</body></html>
