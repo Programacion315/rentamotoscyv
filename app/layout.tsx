@@ -23,7 +23,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="min-h-full flex flex-col bg-background text-on-surface transition-colors duration-300">
+      <body className="min-h-full flex flex-col text-on-surface transition-colors duration-300">
         <Navbar />
         <main className="grow">{children}</main>
         <Footer />

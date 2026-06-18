@@ -57,7 +57,7 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="sticky top-0 z-50 bg-blue-100 backdrop-blur-md border-b border-border-subtle shadow-sm transition-all duration-300">
+      <nav className="sticky top-0 z-50 backdrop-blur-md border-b border-border-subtle shadow-sm transition-all duration-300 bg-navbar">
         <div className="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-3 max-w-container-max mx-auto">
           {/* Logo Section */}
           <Link href="/" className="flex items-center">
@@ -88,7 +88,7 @@ export default function Navbar() {
               className="p-2 rounded-lg text-primary hover:bg-surface-container-low transition-colors"
               aria-label="Toggle dark mode"
             >
-              <span className="material-symbols-outlined text-2xl">
+              <span className="material-symbols-outlined text-2xl text-primary">
                 {darkMode ? "light_mode" : "dark_mode"}
               </span>
             </button>

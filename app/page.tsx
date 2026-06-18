@@ -43,7 +43,7 @@ export default function Home() {
               </Link>
               <Link
                 href="/contact"
-                className="bg-surface-white border border-border-subtle text-primary px-8 py-4 rounded-lg font-button-text text-button-text hover:bg-surface-container-low transition-all flex items-center justify-center gap-2"
+                className="bg-surface-contact text-white border border-border-subtle px-8 py-4 rounded-lg font-button-text text-button-text hover:bg-surface-container-low transition-all flex items-center justify-center gap-2"
               >
                 Contáctanos
               </Link>
@@ -83,14 +83,14 @@ export default function Home() {
         <div className="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-gutter">
             {/* Large Content Card */}
-            <div className="md:col-span-7 bg-primary rounded-3xl p-10 text-white relative overflow-hidden flex flex-col justify-end min-h-[400px]">
+            <div className="md:col-span-7 bg-surface-blue-container rounded-3xl p-10 relative overflow-hidden flex flex-col justify-end min-h-[400px]">
               <div className="absolute top-0 right-0 p-8 opacity-20">
                 <span className="material-symbols-outlined text-[120px] select-none">local_shipping</span>
               </div>
               <div className="relative z-10">
-                <h3 className="font-headline-lg text-headline-lg mb-4 text-white">Entrega a domicilio y Aeropuerto</h3>
-                <p className="font-body-lg text-body-lg text-on-primary-container max-w-md">
-                  Llevamos tu aventura directamente hasta ti. Entregamos en la puerta de tu hotel, residencia o incluso directamente en la entrada del aeropuerto José María Córdova.
+                <h3 className="font-headline-lg text-headline-lg text-primary mb-4 ">Entrega a domicilio y Aeropuerto</h3>
+                <p className="font-body-lg text-body-lg text-on-surface max-w-md">
+                  Llevamos tu aventura directamente hasta ti. Entregamos en la puerta de tu hotel, residencia o incluso directamente en la entrada del aeropuerto.
                 </p>
               </div>
             </div>
@@ -118,7 +118,7 @@ export default function Home() {
       </section>
 
       {/* 4. Featured Motorcycles */}
-      <section className="py-24 bg-surface-container-low border-t border-border-subtle">
+      <section className="py-24 border-t border-border-subtle">
         <div className="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-4">
             <div>
@@ -138,7 +138,7 @@ export default function Home() {
             {featuredMotos.map((moto) => (
               <div
                 key={moto.id}
-                className="bg-white rounded-2xl overflow-hidden border border-border-subtle shadow-sm hover:shadow-lg transition-all group flex flex-col h-full"
+                className="rounded-2xl bg-surface-blue-hard overflow-hidden border border-border-subtle shadow-sm hover:shadow-lg transition-all group flex flex-col h-full"
               >
                 <div className="h-64 overflow-hidden relative">
                   <img
@@ -147,7 +147,7 @@ export default function Home() {
                     src={moto.image}
                   />
                   <div className="absolute top-4 left-4">
-                    <span className="bg-primary text-white text-[10px] px-3 py-1 rounded-full font-label-caps uppercase">
+                    <span className="bg-primary-catalog text-white text-[10px] px-3 py-1 rounded-full font-label-caps uppercase">
                       {moto.type}
                     </span>
                   </div>

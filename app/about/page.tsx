@@ -2,13 +2,13 @@ import Link from "next/link";
 
 export default function About() {
   return (
-    <div className="text-on-surface dark:bg-inverse-surface">
+    <div className="text-on-surface">
 
       {/* Hero Header Section */}
       <section className="relative h-[450px] md:h-[550px] flex items-center overflow-hidden">
         {/* Background & Overlay */}
         <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-linear-to-r from-primary/95 via-primary/80 to-transparent z-10" />
+          <div className="absolute inset-0 bg-linear-to-r from-background via-background/85 to-transparent" />
           <img
             className="w-full h-full object-cover"
             alt="Mantenimiento preventivo de motocicletas"
@@ -18,11 +18,11 @@ export default function About() {
 
         {/* Content */}
         <div className="relative z-20 max-w-container-max mx-auto w-full px-margin-mobile md:px-margin-desktop">
-          <div className="max-w-2xl space-y-4 text-white">
-            <span className="font-label-caps text-label-caps text-on-primary-container bg-primary/30 px-3 py-1 rounded-full backdrop-blur-sm inline-block">
+          <div className="max-w-2xl space-y-4">
+            <span className="font-label-caps text-label-caps px-3 py-1 rounded-full uppercase tracking-wider bg-primary/30 px-3 py-1 rounded-full backdrop-blur-sm inline-block">
               NUESTRA HISTORIA
             </span>
-            <h1 className="font-display-lg text-4xl md:text-5xl font-bold leading-tight">
+            <h1 className="font-display-lg text-4xl md:text-5xl font-bold leading-tight text-primary">
               Libertad sobre dos ruedas en el corazón de Bogotá.
             </h1>
             <p className="font-body-lg text-surface-container-lowest max-w-xl">
@@ -65,10 +65,10 @@ export default function About() {
           </div>
 
           {/* Experience Card (5 columns) */}
-          <div className="md:col-span-5 bg-primary text-white p-8 rounded-3xl flex flex-col justify-center relative overflow-hidden min-h-[350px]">
+          <div className="md:col-span-5 bg-surface-container-highest p-8 rounded-3xl flex flex-col justify-center border border-border-subtle shadow-sm">
             <div className="relative z-10 space-y-4">
-              <h3 className="font-headline-md text-headline-md text-white">Experiencia de Alquiler</h3>
-              <p className="font-body-md text-sm opacity-90 leading-relaxed">
+              <h3 className="font-headline-md text-headline-md text-primary">Experiencia de Alquiler</h3>
+              <p className="font-body-md opacity-90 leading-relaxed">
                 Nuestros procesos de reserva son 100% digitales y rápidos para que pases más tiempo conduciendo por las carreteras y menos tiempo haciendo trámites aburridos.
               </p>
               <ul className="space-y-3 pt-2">
@@ -97,7 +97,7 @@ export default function About() {
               <span className="material-symbols-outlined text-5xl">verified</span>
             </div>
             <h3 className="font-headline-md text-headline-md text-primary mb-2">Pasión por Bogotá</h3>
-            <p className="font-body-md text-on-secondary-container leading-relaxed">
+            <p className="font-body-md leading-relaxed">
               Conoce cada ruta, cada mirador y cada atajo de la ciudad. disfruta de viajes personalizados para que tu estadía y conducción sean seguras e inolvidables.
             </p>
           </div>

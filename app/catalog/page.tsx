@@ -73,9 +73,9 @@ export default function Catalog() {
                 <button
                   key={brand}
                   onClick={() => setActiveBrand(brand)}
-                  className={`px-5 py-2 rounded-full border text-label-caps font-button-text transition-all ${activeBrand === brand
-                    ? "border-primary bg-primary-fixed text-primary font-bold shadow-sm"
-                    : "border-border-subtle bg-surface-white text-on-surface-variant hover:border-primary hover:text-primary"
+                  className={`px-5 py-2 rounded-full border text-label-caps font-button-text transition-all text-blue-700 bg-primary-catalog ${activeBrand === brand
+                    ? "border-primary bg-primary-fixed text-sky font-bold shadow-sm"
+                    : "border-border-subtle bg-surface-white text-on-surface-variant hover:border-primary hover:text-sky"
                     }`}
                 >
                   {brand}
@@ -90,7 +90,7 @@ export default function Catalog() {
           {filteredMotorcycles.map((moto) => (
             <div
               key={moto.id}
-              className="bg-surface-white rounded-xl border border-border-subtle vehicle-card-shadow overflow-hidden group hover:-translate-y-1 transition-all duration-300 flex flex-col h-full"
+              className="bg-surface-blue-hard rounded-xl border border-border-subtle vehicle-card-shadow overflow-hidden group hover:-translate-y-1 transition-all duration-300 flex flex-col h-full"
             >
               {/* Card Image */}
               <div className="relative h-64 overflow-hidden">
@@ -99,7 +99,7 @@ export default function Catalog() {
                   alt={moto.name}
                   src={moto.image}
                 />
-                <div className="absolute top-4 left-4 bg-primary text-white font-label-caps text-label-caps px-3 py-1 rounded-full uppercase tracking-wider">
+                <div className="absolute top-4 left-4 bg-primary-catalog font-label-caps text-label-caps px-3 py-1 rounded-full uppercase tracking-wider">
                   {moto.type}
                 </div>
               </div>
@@ -110,12 +110,6 @@ export default function Catalog() {
                   <span className="font-label-caps text-label-caps text-on-secondary-container uppercase">
                     {moto.brand}
                   </span>
-                  <div className="flex items-center gap-1 text-action-orange">
-                    <span className="material-symbols-outlined" style={{ fontSize: "16px", fontVariationSettings: "'FILL' 1" }}>
-                      star
-                    </span>
-                    <span className="text-label-caps font-bold">{moto.rating}</span>
-                  </div>
                 </div>
 
                 <h3 className="font-headline-md text-headline-md mb-4 text-primary">
