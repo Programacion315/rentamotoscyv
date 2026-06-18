@@ -31,7 +31,7 @@ export default function Home() {
               Domina la Ciudad y la Carretera con Estilo
             </h1>
             <p className="font-body-lg text-body-lg text-on-surface-variant mb-10 max-w-lg">
-              Renta motocicletas de alta gama mantenidas a la perfección. Profesionalismo, velocidad y el mejor servicio de entrega en Medellín.
+              Renta motocicletas de alta gama mantenidas a la perfección. Profesionalismo, velocidad y el mejor servicio de entrega en Bogotá.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
@@ -172,13 +172,7 @@ export default function Home() {
                     </div>
                   </div>
 
-                  <div className="mt-auto flex items-center justify-between">
-                    <div className="flex flex-col">
-                      <span className="font-label-caps text-[10px] text-on-surface-variant uppercase">Desde</span>
-                      <span className="font-headline-md text-primary">
-                        ${moto.pricePerDay.toLocaleString()} <small className="text-[14px]">/ día</small>
-                      </span>
-                    </div>
+                  <div className="mt-auto flex items-center justify-center">
                     <Link
                       href={`/rentals/${moto.id}`}
                       className="bg-action-orange text-white px-5 py-2.5 rounded-lg font-button-text text-button-text hover:opacity-90 transition-all text-center"

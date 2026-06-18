@@ -169,7 +169,7 @@ export default function Catalog() {
               ¿Buscas otro modelo?
             </h4>
             <p className="text-on-surface-variant mb-6 text-sm max-w-xs">
-              Próximamente añadiremos más modelos y marcas a nuestra flota de alquiler en Medellín e Itagüí.
+              Próximamente añadiremos más modelos y marcas a nuestra flota de alquiler en Bogotá.
             </p>
             <Link href="/contact" className="text-primary font-button-text hover:underline">
               Sugerir un modelo

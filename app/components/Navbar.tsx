@@ -3,8 +3,8 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import Image from 'next/image';
-import logo from './public/assets/LOGO.jpg'
+import Image from "next/image";
+import logo from "../../public/assets/LOGO.png";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -58,10 +58,16 @@ export default function Navbar() {
   return (
     <>
       <nav className="sticky top-0 z-50 backdrop-blur-md border-b border-border-subtle shadow-sm transition-all duration-300 bg-navbar">
-        <div className="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-3 max-w-container-max mx-auto">
+        <div className="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-1 max-w-container-max mx-auto">
           {/* Logo Section */}
           <Link href="/" className="flex items-center">
-            {/* <Image src="{logo}" alt="Logo Renta Motos CYV" width={100} height={100} /> */}
+            <Image
+              src={logo} // Comienza directamente desde la carpeta dentro de public
+              alt="Logo de la empresa"
+              width={80} // Define el ancho en píxeles (obligatorio para rutas de string)
+              height={80} // Define el alto en píxeles (obligatorio para rutas de string)
+              priority // Opcional: añade esto si el logo está arriba en la página (Hero/Navbar)
+            />
           </Link>
 
           {/* Desktop Nav Links */}
@@ -70,10 +76,11 @@ export default function Navbar() {
               <Link
                 key={link.path}
                 href={link.path}
-                className={`font-label-caps text-label-caps transition-all py-1 border-b-2 hover:text-primary ${isActive(link.path)
-                  ? "text-primary border-primary font-bold"
-                  : "text-on-surface-variant border-transparent"
-                  }`}
+                className={`font-label-caps text-label-caps transition-all py-1 border-b-2 hover:text-primary ${
+                  isActive(link.path)
+                    ? "text-primary border-primary font-bold"
+                    : "text-on-surface-variant border-transparent"
+                }`}
               >
                 {link.name}
               </Link>
@@ -99,7 +106,11 @@ export default function Navbar() {
             >
               Reservar Ahora
             </Link>
-            <button onClick={toggleMenu} className="md:hidden text-primary focus:outline-none p-1" aria-label="Toggle menu">
+            <button
+              onClick={toggleMenu}
+              className="md:hidden text-primary focus:outline-none p-1"
+              aria-label="Toggle menu"
+            >
               <span className="material-symbols-outlined text-3xl">
                 {isOpen ? "close" : "menu"}
               </span>
@@ -118,15 +129,28 @@ export default function Navbar() {
 
       {/* Mobile Drawer Menu */}
       <div
-        className={`fixed top-0 right-0 z-50 h-full w-4/5 max-w-sm bg-white shadow-2xl transition-transform duration-300 ease-in-out md:hidden flex flex-col p-6 ${isOpen ? "translate-x-0" : "translate-x-full"
-          }`}
+        className={`fixed top-0 right-0 z-50 h-full w-4/5 max-w-sm bg-white shadow-2xl transition-transform duration-300 ease-in-out md:hidden flex flex-col p-6 ${
+          isOpen ? "translate-x-0" : "translate-x-full"
+        }`}
       >
         <div className="flex justify-between items-center mb-8">
-          <svg className="h-10 w-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 80">
+          <svg
+            className="h-10 w-auto"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 300 80"
+          >
             <rect width="300" height="80" fill="transparent" />
-            <path d="M40 20 L60 20 L55 50 L35 50 Z" fill="var(--color-primary, #00357f)" />
+            <path
+              d="M40 20 L60 20 L55 50 L35 50 Z"
+              fill="var(--color-primary, #00357f)"
+            />
             <circle cx="42" cy="55" r="8" fill="#E94C1F" />
-            <circle cx="58" cy="55" r="8" fill="var(--color-on-surface, #191c1e)" />
+            <circle
+              cx="58"
+              cy="55"
+              r="8"
+              fill="var(--color-on-surface, #191c1e)"
+            />
             <text
               x="80"
               y="48"
@@ -159,7 +183,10 @@ export default function Navbar() {
                 {darkMode ? "light_mode" : "dark_mode"}
               </span>
             </button>
-            <button onClick={toggleMenu} className="text-on-surface focus:outline-none p-1">
+            <button
+              onClick={toggleMenu}
+              className="text-on-surface focus:outline-none p-1"
+            >
               <span className="material-symbols-outlined text-3xl">close</span>
             </button>
           </div>
@@ -171,10 +198,11 @@ export default function Navbar() {
               key={link.path}
               href={link.path}
               onClick={toggleMenu}
-              className={`font-headline-md text-xl py-2 border-b border-border-subtle hover:text-primary transition-colors ${isActive(link.path)
-                ? "text-primary font-bold"
-                : "text-on-surface-variant"
-                }`}
+              className={`font-headline-md text-xl py-2 border-b border-border-subtle hover:text-primary transition-colors ${
+                isActive(link.path)
+                  ? "text-primary font-bold"
+                  : "text-on-surface-variant"
+              }`}
             >
               {link.name}
             </Link>
