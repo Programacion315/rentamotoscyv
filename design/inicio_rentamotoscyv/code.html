@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>rentamotoscyv - Renta de Motocicletas Premium</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Hanken+Grotesk:wght@600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<!-- Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-container": "#a9c1ff",
+                        "inverse-surface": "#2d3133",
+                        "on-secondary-fixed": "#0b1c30",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#3f465c",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "surface-bright": "#f7f9fb",
+                        "on-tertiary-fixed": "#131b2e",
+                        "secondary": "#505f76",
+                        "on-tertiary-container": "#bac1db",
+                        "on-secondary": "#ffffff",
+                        "on-surface": "#191c1e",
+                        "surface-container-highest": "#e0e3e5",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "tertiary": "#31384d",
+                        "secondary-container": "#d0e1fb",
+                        "secondary-fixed": "#d3e4fe",
+                        "inverse-primary": "#b0c6ff",
+                        "surface": "#f7f9fb",
+                        "surface-container-low": "#f2f4f6",
+                        "tertiary-fixed-dim": "#bec6e0",
+                        "outline": "#737784",
+                        "primary-fixed-dim": "#b0c6ff",
+                        "border-subtle": "#E2E8F0",
+                        "action-orange": "#E94C1F",
+                        "on-secondary-container": "#54647a",
+                        "on-background": "#191c1e",
+                        "inverse-on-surface": "#eff1f3",
+                        "surface-container-high": "#e6e8ea",
+                        "on-primary-fixed": "#001945",
+                        "surface-dim": "#d8dadc",
+                        "on-primary-fixed-variant": "#00429b",
+                        "tertiary-fixed": "#dae2fd",
+                        "surface-container": "#eceef0",
+                        "outline-variant": "#c3c6d5",
+                        "primary-fixed": "#d9e2ff",
+                        "primary-container": "#004aad",
+                        "background": "#f7f9fb",
+                        "surface-white": "#FFFFFF",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "on-surface-variant": "#434653",
+                        "surface-variant": "#e0e3e5",
+                        "on-error-container": "#93000a",
+                        "surface-tint": "#215abd",
+                        "tertiary-container": "#474f65",
+                        "on-error": "#ffffff",
+                        "error": "#ba1a1a",
+                        "primary": "#00357f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "container-max": "1280px",
+                        "stack-lg": "32px",
+                        "stack-md": "16px",
+                        "stack-sm": "8px",
+                        "gutter": "24px",
+                        "unit": "8px",
+                        "margin-desktop": "48px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "button-text": ["Inter"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "label-caps": ["JetBrains Mono"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                        "button-text": ["16px", {"lineHeight": "20px", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface selection:bg-primary-container selection:text-white">
+<!-- TopNavBar -->
+<nav class="sticky top-0 z-50 bg-surface dark:bg-inverse-surface border-b border-border-subtle dark:border-outline-variant shadow-sm transition-all duration-300">
+<div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
+<div class="font-headline-md text-headline-md font-bold text-primary dark:text-inverse-primary">
+                rentamotoscyv
+            </div>
+<div class="hidden md:flex gap-8 items-center">
+<a class="text-primary dark:text-inverse-primary font-bold border-b-2 border-primary pb-1 font-label-caps text-label-caps" href="#">Inicio</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-inverse-primary transition-colors font-label-caps text-label-caps" href="#">Catálogo</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-inverse-primary transition-colors font-label-caps text-label-caps" href="#">Acerca de nosotros</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="hidden md:block bg-action-orange text-white px-6 py-2 rounded-full font-button-text text-button-text hover:opacity-90 active:scale-95 transition-all">
+                    Reservar Ahora
+                </button>
+<button class="md:hidden text-primary">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</div>
+</nav>
+<!-- 1. Hero Section -->
+<header class="relative min-h-[819px] flex items-center overflow-hidden">
+<div class="absolute inset-0 z-0">
+<div class="w-full h-full bg-cover bg-center opacity-40 md:opacity-100" data-alt="A professional studio photograph of a sleek, modern motorcycle in a high-tech garage environment. Dramatic rim lighting highlights the chrome and metallic red details of the suspension and engine components. The background is a sophisticated mix of deep grays and subtle lens flares, creating a premium and corporate aesthetic for an elite rental service. The overall mood is powerful, clean, and technologically advanced." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBxQTtZn5Od_SVLKAxLg6wR8bHaqC6F3Sjo4FG_AzCnsrZTZxQSMtTQhn6zkl7PGO9RkC89NiqRPClHxwbmot6xbZa5_y5rGAUGdpLmr6UWT-_Um4uJMuKhD6cELsPj700PwL7gxwvdhGA4qcAwolPOV6Xr8x_du56qpw80rjnRA1juD7EU5gfcOjnlYe5zMjp68YZgeeZeIP8fNuCZ92uG_pVoHsInMXrqTXTeZU3FUzWADv9n4CMqpyY100_D_sdYFaqOBbC9jbcS')"></div>
+<div class="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-transparent"></div>
+</div>
+<div class="relative z-10 w-full px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto py-stack-lg">
+<div class="max-w-2xl">
+<span class="inline-block px-4 py-1 rounded-full bg-secondary-container text-primary font-label-caps text-label-caps mb-4">
+                    LIBERTAD SOBRE DOS RUEDAS
+                </span>
+<h1 class="font-display-lg text-display-lg text-primary mb-6 leading-tight">
+                    Domina la Ciudad y la Carretera con Estilo
+                </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-10 max-w-lg">
+                    Renta motocicletas de alta gama mantenidas a la perfección. Profesionalismo, velocidad y el mejor servicio de entrega en Medellín.
+                </p>
+<div class="flex flex-col sm:flex-row gap-4">
+<button class="bg-action-orange text-white px-8 py-4 rounded-lg font-button-text text-button-text shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2">
+                        Rent Now
+                        <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+<button class="bg-surface-white border border-border-subtle text-primary px-8 py-4 rounded-lg font-button-text text-button-text hover:bg-surface-container-low transition-all flex items-center justify-center gap-2">
+                        Ver Catálogo
+                    </button>
+</div>
+</div>
+</div>
+</header>
+<!-- 2. Requisitos para la renta -->
+<section class="bg-surface-container-low py-12 border-y border-border-subtle">
+<div class="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<div class="flex flex-col md:flex-row justify-between items-center gap-8">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-action-orange scale-150">verified_user</span>
+<h2 class="font-headline-md text-headline-md text-primary">Requisitos para la renta</h2>
+</div>
+<div class="flex flex-wrap gap-stack-lg">
+<div class="flex items-center gap-3 bg-white px-6 py-4 rounded-xl shadow-sm border border-border-subtle">
+<span class="material-symbols-outlined text-secondary">person_check</span>
+<span class="font-body-md text-body-md">Ser mayor de 18 años</span>
+</div>
+<div class="flex items-center gap-3 bg-white px-6 py-4 rounded-xl shadow-sm border border-border-subtle">
+<span class="material-symbols-outlined text-secondary">badge</span>
+<span class="font-body-md text-body-md">Documento de identidad o pasaporte</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 3. Entrega a domicilio y Aeropuerto (Bento Pattern) -->
+<section class="py-24 bg-background">
+<div class="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Large Content Card -->
+<div class="md:col-span-7 bg-primary rounded-3xl p-10 text-white relative overflow-hidden flex flex-col justify-end min-h-[400px]">
+<div class="absolute top-0 right-0 p-8 opacity-20">
+<span class="material-symbols-outlined text-[120px]" style="font-variation-settings: 'FILL' 1;">local_shipping</span>
+</div>
+<div class="relative z-10">
+<h3 class="font-headline-lg text-headline-lg mb-4">Entrega a domicilio y Aeropuerto</h3>
+<p class="font-body-lg text-body-lg text-on-primary-container max-w-md">
+                            Llevamos tu aventura directamente hasta ti. Entregamos en la puerta de tu hotel, residencia o incluso directamente en la entrada del aeropuerto.
+                        </p>
+</div>
+</div>
+<!-- Map / Location Card -->
+<div class="md:col-span-5 bg-surface-container-high rounded-3xl overflow-hidden relative min-h-[400px] border border-border-subtle">
+<div class="absolute inset-0">
+<img class="w-full h-full object-cover grayscale opacity-50" data-alt="A stylized digital map showing the city of Medellín, Colombia with elegant blue markers indicating motorcycle delivery zones. The map uses a minimalist corporate style with clean lines, soft shadows, and a sophisticated color palette of whites and primary blues. High-quality UI elements overlay the map to show real-time delivery tracking and service availability at the José María Córdova International Airport." data-location="Medellín" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6dfYEYjJqeXNJ8tLepTWjWlKfvOWwVMbZ9t1u8F134vfX6uiuMY3XU8gF-e_dZUmOp1HLBa-U5TlZ_opVvp8K83QcfOq2vQ5izDC1QS_yan_gkCWD9pDDMVVLRFdFaU9cO0PWeQ7XXLd0mPSuvsNbJNhpA5wRGNjpBNUcL3VykcQBbFsMPeZ41UXT3EZHuc2Ul1DU5ApamqtJpAOXb12tfaSdzNgHca2vDVpzZNEtp3bt0AR2WF1K2xR6nz9GZkvdj2eUwuXufsXZ"/>
+</div>
+<div class="absolute bottom-6 left-6 right-6 glass-effect p-6 rounded-2xl">
+<div class="flex items-center gap-4 mb-2">
+<span class="material-symbols-outlined text-primary">flight_land</span>
+<span class="font-label-caps text-label-caps text-primary">SERVICIO AEROPUERTO</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface">Esperamos por ti a tu llegada para que inicies tu viaje sin demoras.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 4. Featured Motorcycles (Catalog Structure) -->
+<section class="py-24 bg-surface-container-low">
+<div class="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<div class="flex justify-between items-end mb-12">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-primary mb-2">Catálogo Destacado</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Modelos recientes y perfectamente mantenidos.</p>
+</div>
+<div class="hidden md:flex gap-2">
+<button class="w-12 h-12 rounded-full border border-border-subtle flex items-center justify-center hover:bg-white transition-all"><span class="material-symbols-outlined">chevron_left</span></button>
+<button class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center hover:opacity-90 transition-all"><span class="material-symbols-outlined">chevron_right</span></button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-stack-lg">
+<!-- Vehicle Card 1 -->
+<div class="bg-white rounded-2xl overflow-hidden border border-border-subtle shadow-sm hover:shadow-lg transition-all group">
+<div class="h-64 overflow-hidden relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A clean, studio-lit side profile of a white Yamaha NMAX scooter. The image features crisp details of the red accents on the wheels and the sophisticated dashboard design. The background is a minimalist dark gray brick texture that emphasizes the motorcycle's modern lines and premium build quality. Corporate and clean aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBW2F6DBwm7RjOKo8hL1DZP0HXT54xW-F8877-D5TA1OrYTtud6nuejQEKRXVTLrARTWSdteMnXuUQg5MWGWD0yu-Ka5QC6QULi9xX6r4-qG-LAzAktZNcARyxqZzvdWMb4aY8YLbEY-HOikg8XXF_bNCYdoygV6oJVSRn8YvMsli5gEfPftBIXUSp9Gb2ZolV09d4Thj6n6qd9lpdax3Rp_K2VCueCqJRlBmwD5Zp9NA-r176BwuH1fJv8lECch3t7IEqalbLCiIqn"/>
+<div class="absolute top-4 left-4">
+<span class="bg-primary text-white text-[10px] px-3 py-1 rounded-full font-label-caps uppercase">Automática</span>
+</div>
+</div>
+<div class="p-6">
+<span class="font-label-caps text-label-caps text-secondary mb-2 block">SCOOTER PREMIUM</span>
+<h3 class="font-headline-md text-headline-md text-primary mb-4">Yamaha NMAX Connected</h3>
+<div class="flex items-center justify-between py-4 border-y border-border-subtle mb-6">
+<div class="flex flex-col">
+<span class="font-label-caps text-[10px] text-on-surface-variant uppercase">Desde</span>
+<span class="font-headline-md text-primary">$150,000 <small class="text-[14px]">/ día</small></span>
+</div>
+<div class="flex gap-2">
+<span class="material-symbols-outlined text-secondary" title="ABS">safety_check</span>
+<span class="material-symbols-outlined text-secondary" title="USB Charge">usb</span>
+</div>
+</div>
+<button class="w-full bg-action-orange text-white py-3 rounded-lg font-button-text text-button-text hover:opacity-90 transition-all">Rent Now</button>
+</div>
+</div>
+<!-- Vehicle Card 2 -->
+<div class="bg-white rounded-2xl overflow-hidden border border-border-subtle shadow-sm hover:shadow-lg transition-all group">
+<div class="h-64 overflow-hidden relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A powerful Suzuki DR650 dual-sport motorcycle shown in a rugged urban environment with dramatic lighting. The dark grey bodywork and metallic engine components are highlighted by narrow vertical light strips in the background. The bike's aggressive tires and versatile design are clearly showcased, emphasizing its dual-purpose capabilities for both road and dirt. High-contrast, modern photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgsM9BHt94Z404cvDv0TgeUYF-UhWnBuObqRDPxKGLUHLL1O-TJLJ25OgyVjwHBoBIwaUTAaQqfmzSaIEeknUk47uuw3i-Df1_pRJVlNZ6Wz6wN5jY-e4KP3Kh-BmSwo6V_hPSFjMT_UobQcA-OCA8VCnd172p8rJ-EYQuyoWLWpKDjDQijqr3bKaUievB2c8dtuoCHBB_3utlghQYaKRVFUXdeiqZ5wtPL70CPEW7UYUJ3nQCA7MXu1fMJ52x4aa2Kg79Rc4olDUN"/>
+<div class="absolute top-4 left-4">
+<span class="bg-primary text-white text-[10px] px-3 py-1 rounded-full font-label-caps uppercase">Dual Sport</span>
+</div>
+</div>
+<div class="p-6">
+<span class="font-label-caps text-label-caps text-secondary mb-2 block">TODO TERRENO</span>
+<h3 class="font-headline-md text-headline-md text-primary mb-4">Suzuki DR650</h3>
+<div class="flex items-center justify-between py-4 border-y border-border-subtle mb-6">
+<div class="flex flex-col">
+<span class="font-label-caps text-[10px] text-on-surface-variant uppercase">Desde</span>
+<span class="font-headline-md text-primary">$220,000 <small class="text-[14px]">/ día</small></span>
+</div>
+<div class="flex gap-2">
+<span class="material-symbols-outlined text-secondary" title="Off-road ready">terrain</span>
+<span class="material-symbols-outlined text-secondary" title="Manual">settings_input_component</span>
+</div>
+</div>
+<button class="w-full bg-action-orange text-white py-3 rounded-lg font-button-text text-button-text hover:opacity-90 transition-all">Rent Now</button>
+</div>
+</div>
+<!-- Vehicle Card 3 -->
+<div class="bg-white rounded-2xl overflow-hidden border border-border-subtle shadow-sm hover:shadow-lg transition-all group">
+<div class="h-64 overflow-hidden relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Close-up artistic shot of a motorcycle's rear suspension coil painted in a vibrant, high-gloss red. The mechanical parts are immaculately clean, reflecting the company's commitment to professional maintenance and vehicle quality. The lighting is focused and dramatic, highlighting the texture of the spring and the precision of the surrounding bolts and frame components. Modern industrial aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKGwIhSGoAVUfjVeqdLlsIn8pY9OcBmYaQ4dMc5jaevh9VmvToGw7_62Wf_dY0Scls0GqOx11YM8hlMUIRdGWkwnnv-B7yb9bzdw9mlSSZjotAoicbQxUT7YuHfIH_t56hpoik9-fv77VnNGfUVo0Eof1grpGI-e28TrCCXTrWtSojpDK3wvM2sjKShOljCjmJ2oNrwAgMUXFG_KZSS_Fa-ZZtl-cnnqd_ZXhIMZusC7Y4gs4RLf72nw30_mDkyjeaxYFImFHKrzOW"/>
+<div class="absolute top-4 left-4">
+<span class="bg-primary text-white text-[10px] px-3 py-1 rounded-full font-label-caps uppercase">Mantenimiento Pro</span>
+</div>
+</div>
+<div class="p-6">
+<span class="font-label-caps text-label-caps text-secondary mb-2 block">CALIDAD GARANTIZADA</span>
+<h3 class="font-headline-md text-headline-md text-primary mb-4">Vehículos Impecables</h3>
+<div class="flex items-center justify-between py-4 border-y border-border-subtle mb-6">
+<div class="flex flex-col">
+<span class="font-label-caps text-[10px] text-on-surface-variant uppercase">Estado</span>
+<span class="font-headline-md text-primary">Certificado <small class="text-[14px]">S+ </small></span>
+</div>
+<div class="flex gap-2">
+<span class="material-symbols-outlined text-secondary">build_circle</span>
+<span class="material-symbols-outlined text-secondary">verified</span>
+</div>
+</div>
+<button class="w-full border border-primary text-primary py-3 rounded-lg font-button-text text-button-text hover:bg-primary hover:text-white transition-all">Ver Protocolo</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 5. PQR Section -->
+<section class="py-24 bg-background border-t border-border-subtle">
+<div class="px-margin-mobile md:px-margin-desktop max-w-4xl mx-auto">
+<div class="text-center mb-16">
+<span class="font-label-caps text-label-caps text-secondary uppercase tracking-widest">Soporte y Atención</span>
+<h2 class="font-headline-lg text-headline-lg text-primary mt-2">Preguntas y Reclamaciones (PQR)</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-4">¿Tienes alguna duda o inconveniente? Nuestro equipo está listo para ayudarte.</p>
+</div>
+<div class="space-y-4">
+<details class="group bg-white border border-border-subtle rounded-xl p-6" open="">
+<summary class="flex justify-between items-center cursor-pointer list-none font-headline-md text-primary">
+<span>¿Cómo puedo realizar una reclamación?</span>
+<span class="material-symbols-outlined group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="mt-4 font-body-md text-on-surface-variant leading-relaxed">
+                        Puedes enviarnos tu solicitud directamente a través de nuestro WhatsApp oficial o correo electrónico indicando tu número de contrato y el motivo de tu consulta. Respondemos en menos de 24 horas hábiles.
+                    </div>
+</details>
+<details class="group bg-white border border-border-subtle rounded-xl p-6">
+<summary class="flex justify-between items-center cursor-pointer list-none font-headline-md text-primary">
+<span>¿Qué incluye el precio de la renta?</span>
+<span class="material-symbols-outlined group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="mt-4 font-body-md text-on-surface-variant leading-relaxed">
+                        El precio incluye el alquiler por 24 horas, SOAT vigente, revisión técnico-mecánica al día, y dos cascos reglamentarios. El seguro por daños es adicional y opcional.
+                    </div>
+</details>
+<details class="group bg-white border border-border-subtle rounded-xl p-6">
+<summary class="flex justify-between items-center cursor-pointer list-none font-headline-md text-primary">
+<span>¿Hay recargos por entrega en el aeropuerto?</span>
+<span class="material-symbols-outlined group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="mt-4 font-body-md text-on-surface-variant leading-relaxed">
+                        Sí, existe un cargo por gestión logística dependiendo del horario de llegada. Por favor consulta con nuestro asesor al momento de realizar la reserva.
+                    </div>
+</details>
+</div>
+<div class="mt-12 text-center">
+<a class="inline-flex items-center gap-2 text-primary font-button-text text-button-text hover:underline" href="#">
+                    Contactar directamente con soporte
+                    <span class="material-symbols-outlined">support_agent</span>
+</a>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-surface-container-highest dark:bg-surface-dim pt-20 pb-10">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-stack-lg px-margin-mobile md:px-margin-desktop py-12 max-w-container-max mx-auto border-b border-outline-variant/20 mb-10">
+<div>
+<div class="font-headline-md text-headline-md font-bold text-primary dark:text-inverse-primary mb-6">
+                    rentamotoscyv
+                </div>
+<p class="font-body-md text-body-md text-on-secondary-container dark:text-on-secondary-fixed-variant max-w-xs">
+                    Tu aliado confiable para recorrer Medellín y sus alrededores con total libertad y seguridad.
+                </p>
+</div>
+<div class="space-y-4">
+<h4 class="font-label-caps text-label-caps text-primary font-bold uppercase tracking-wider">Enlaces Rápidos</h4>
+<div class="flex flex-col gap-2">
+<a class="font-body-md text-body-md text-on-secondary-container hover:text-action-orange transition-colors" href="#">Inicio</a>
+<a class="font-body-md text-body-md text-on-secondary-container hover:text-action-orange transition-colors" href="#">Catálogo</a>
+<a class="font-body-md text-body-md text-on-secondary-container hover:text-action-orange transition-colors" href="#">Preguntas Frecuentes</a>
+</div>
+</div>
+<div class="space-y-4">
+<h4 class="font-label-caps text-label-caps text-primary font-bold uppercase tracking-wider">Contacto</h4>
+<div class="flex flex-wrap gap-4">
+<a class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-primary hover:bg-action-orange hover:text-white transition-all shadow-sm" href="#">
+<span class="material-symbols-outlined">chat</span>
+</a>
+<a class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-primary hover:bg-action-orange hover:text-white transition-all shadow-sm" href="#">
+<span class="material-symbols-outlined">call</span>
+</a>
+<a class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-primary hover:bg-action-orange hover:text-white transition-all shadow-sm" href="#">
+<span class="material-symbols-outlined">face_nod</span>
+</a>
+<a class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-primary hover:bg-action-orange hover:text-white transition-all shadow-sm" href="#">
+<span class="material-symbols-outlined">photo_camera</span>
+</a>
+</div>
+<div class="mt-6 flex flex-col gap-1">
+<span class="font-label-caps text-label-caps text-secondary">WHATSAPP</span>
+<span class="font-body-md text-body-md font-bold">321 844 9988</span>
+</div>
+</div>
+</div>
+<div class="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
+<p class="font-body-md text-body-md text-on-secondary-container dark:text-on-secondary-fixed-variant opacity-60">
+                © 2024 rentamotoscyv. Todos los derechos reservados.
+            </p>
+<div class="flex gap-6 opacity-60">
+<a class="text-label-caps font-label-caps hover:underline" href="#">Términos y Condiciones</a>
+<a class="text-label-caps font-label-caps hover:underline" href="#">Privacidad</a>
+</div>
+</div>
+</footer>
+<!-- FAB for quick contact -->
+<div class="fixed bottom-8 right-8 z-50">
+<a class="w-16 h-16 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all" href="https://wa.me/3218449988" target="_blank">
+<svg class="w-8 h-8 fill-current" viewbox="0 0 24 24">
+<path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.587-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.548-.68.116-.173.231-.144.39-.087s1.011.477 1.184.564c.173.087.289.129.332.202.043.073.043.423-.101.827z"></path>
+</svg>
+</a>
+</div>
+<script>
+        // Smooth scroll implementation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Header transparency effect
+        const nav = document.querySelector('nav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                nav.classList.add('py-2');
+                nav.classList.remove('py-4');
+            } else {
+                nav.classList.add('py-4');
+                nav.classList.remove('py-2');
+            }
+        });
+    </script>
+</body></html>
