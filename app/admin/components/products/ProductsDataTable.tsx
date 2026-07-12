@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useState, useTransition } from "react"
+import { useCallback, useMemo, useState, useTransition } from "react"
 import { useRouter } from "next/navigation"
 import {
   flexRender,
@@ -44,6 +44,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { cn } from "@/lib/utils"
+import { useDebouncedUrlSearch } from "@/lib/use-debounced-url-search"
 
 const COLUMN_LABELS: Record<string, string> = {
   name: "Moto",
@@ -101,34 +102,26 @@ export function ProductsDataTable({
   filters: AdminProductsFilters
 }) {
   const router = useRouter()
-  const [pending, startTransition] = useTransition()
-  const [searchInput, setSearchInput] = useState(filters?.q ?? "")
+  const [, startTransition] = useTransition()
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
 
-  useEffect(() => {
-    setSearchInput(filters?.q ?? "")
-  }, [filters?.q])
+  const buildSearchHref = useCallback(
+    (query: string) =>
+      buildAdminHref({
+        q: query,
+        location: filters.location,
+        status: filters.status,
+        page: 1,
+        sort: filters.sort,
+        dir: filters.dir,
+      }),
+    [filters.location, filters.status, filters.sort, filters.dir]
+  )
 
-  useEffect(() => {
-    if (!filters) return
-    const handle = window.setTimeout(() => {
-      const next = (searchInput ?? "").trim()
-      if (next === filters.q) return
-      startTransition(() => {
-        router.push(
-          buildAdminHref({
-            q: next,
-            location: filters.location,
-            status: filters.status,
-            page: 1,
-            sort: filters.sort,
-            dir: filters.dir,
-          })
-        )
-      })
-    }, 300)
-    return () => window.clearTimeout(handle)
-  }, [searchInput, filters, router])
+  const { searchInput, setSearchInput, pending, commitNow } = useDebouncedUrlSearch({
+    committedQ: filters.q,
+    buildHref: buildSearchHref,
+  })
 
   function navigate(patch: Partial<{
     q: string
@@ -141,7 +134,7 @@ export function ProductsDataTable({
     startTransition(() => {
       router.push(
         buildAdminHref({
-          q: patch.q ?? searchInput,
+          q: patch.q ?? searchInput.trim(),
           location: patch.location ?? filters.location,
           status: patch.status ?? filters.status,
           page: patch.page ?? filters.page,
@@ -209,6 +202,7 @@ export function ProductsDataTable({
           placeholder="Buscar por nombre, marca, ciudad…"
           value={searchInput ?? ""}
           onChange={(e) => setSearchInput(e.target.value)}
+          onBlur={commitNow}
           className="h-10 max-w-md rounded-[4px] bg-eggshell"
         />
 

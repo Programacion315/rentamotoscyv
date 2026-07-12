@@ -78,7 +78,7 @@ export function ForgotPasswordForm({
       )}
       <div className="flex flex-col gap-1.5">
         <Label htmlFor="email">Correo</Label>
-        <Input id="email" name="email" type="email" required className={fieldClass} />
+        <Input id="email" name="email" type="email" required autoComplete="email" className={fieldClass} />
       </div>
       <Button type="submit" disabled={pending} className="w-full">
         {pending ? "Enviando…" : "Enviar enlace"}
@@ -108,11 +108,27 @@ export function ResetPasswordForm({
       )}
       <div className="flex flex-col gap-1.5">
         <Label htmlFor="password">Nueva contraseña</Label>
-        <Input id="password" name="password" type="password" required minLength={8} className={fieldClass} />
+        <Input
+          id="password"
+          name="password"
+          type="password"
+          required
+          minLength={8}
+          autoComplete="new-password"
+          className={fieldClass}
+        />
       </div>
       <div className="flex flex-col gap-1.5">
         <Label htmlFor="confirm">Confirmar contraseña</Label>
-        <Input id="confirm" name="confirm" type="password" required minLength={8} className={fieldClass} />
+        <Input
+          id="confirm"
+          name="confirm"
+          type="password"
+          required
+          minLength={8}
+          autoComplete="new-password"
+          className={fieldClass}
+        />
       </div>
       <Button type="submit" disabled={pending} className="w-full">
         {pending ? "Guardando…" : "Actualizar contraseña"}
@@ -122,6 +138,56 @@ export function ResetPasswordForm({
           Volver al login
         </Link>
       </p>
+    </form>
+  )
+}
+
+export function ChangePasswordForm({
+  action,
+}: {
+  action: (prev: AuthResult, formData: FormData) => Promise<AuthResult>
+}) {
+  const [state, formAction, pending] = useActionState(action, initial)
+
+  return (
+    <form action={formAction} className="flex flex-col gap-4">
+      {state.error && (
+        <p className="rounded-[10px] bg-destructive/10 px-3 py-2 font-body-sm text-destructive">
+          {state.error}
+        </p>
+      )}
+      {state.success && (
+        <p className="rounded-[10px] bg-warm-taupe px-3 py-2 font-body-sm text-graphite">
+          {state.success}
+        </p>
+      )}
+      <div className="flex flex-col gap-1.5">
+        <Label htmlFor="password">Nueva contraseña</Label>
+        <Input
+          id="password"
+          name="password"
+          type="password"
+          required
+          minLength={8}
+          autoComplete="new-password"
+          className={fieldClass}
+        />
+      </div>
+      <div className="flex flex-col gap-1.5">
+        <Label htmlFor="confirm">Confirmar contraseña</Label>
+        <Input
+          id="confirm"
+          name="confirm"
+          type="password"
+          required
+          minLength={8}
+          autoComplete="new-password"
+          className={fieldClass}
+        />
+      </div>
+      <Button type="submit" disabled={pending} className="w-full sm:w-auto">
+        {pending ? "Guardando…" : "Cambiar contraseña"}
+      </Button>
     </form>
   )
 }

@@ -14,7 +14,7 @@ export default function RentalDetailsClient({
   whatsapp: string
 }) {
   const locationName = product.locations?.name ?? "Colombia"
-  const message = `Hola, me interesa la ${product.brand} ${product.name} en ${locationName}.`
+  const message = `Hola! Me gustaría reservar la moto ${product.brand} ${product.name} en ${locationName}, Me podrías brindar más información?`
   const wa = whatsappHref(whatsapp, message)
   const imageUrl = getProductImageUrl(product.image_path)
 

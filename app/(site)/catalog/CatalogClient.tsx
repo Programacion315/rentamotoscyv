@@ -1,11 +1,12 @@
 "use client"
 
-import { useEffect, useState, useTransition } from "react"
+import { useCallback, useTransition } from "react"
 import { useRouter } from "next/navigation"
 import { ProductCard } from "@/components/site/ProductCard"
 import { Pagination } from "@/components/site/Pagination"
 import { PageShell } from "@/components/site/Section"
 import { Input } from "@/components/ui/input"
+import { useDebouncedUrlSearch } from "@/lib/use-debounced-url-search"
 import { cn } from "@/lib/utils"
 import type { Location, Product } from "@/lib/types"
 
@@ -41,29 +42,22 @@ export default function CatalogClient({
   citySlug: string | null
 }) {
   const router = useRouter()
-  const [pending, startTransition] = useTransition()
-  const [searchInput, setSearchInput] = useState(q ?? "")
-
-  useEffect(() => {
-    setSearchInput(q ?? "")
-  }, [q])
-
-  useEffect(() => {
-    const handle = window.setTimeout(() => {
-      const next = (searchInput ?? "").trim()
-      if (next === (q ?? "")) return
-      startTransition(() => {
-        router.push(buildCatalogHref({ q: next, city: citySlug ?? undefined, page: 1 }))
-      })
-    }, 300)
-    return () => window.clearTimeout(handle)
-  }, [searchInput, q, citySlug, router])
+  const [, startTransition] = useTransition()
+  const buildSearchHref = useCallback(
+    (query: string) =>
+      buildCatalogHref({ q: query, city: citySlug ?? undefined, page: 1 }),
+    [citySlug]
+  )
+  const { searchInput, setSearchInput, pending, commitNow } = useDebouncedUrlSearch({
+    committedQ: q,
+    buildHref: buildSearchHref,
+  })
 
   function setCity(nextSlug: string | null) {
     startTransition(() => {
       router.push(
         buildCatalogHref({
-          q: searchInput,
+          q: searchInput.trim(),
           city: nextSlug ?? undefined,
           page: 1,
         })
@@ -97,64 +91,68 @@ export default function CatalogClient({
 
       <div
         className={cn(
-          "mb-8 max-w-md animate-fade-rise animate-delay-1",
+          "mb-10 flex flex-col gap-4 animate-fade-rise animate-delay-1 sm:flex-row sm:items-center sm:justify-between sm:gap-6",
           pending && "opacity-70"
         )}
       >
-        <label htmlFor="catalog-search" className="sr-only">
-          Buscar motos
-        </label>
-        <Input
-          id="catalog-search"
-          type="search"
-          value={searchInput ?? ""}
-          onChange={(e) => setSearchInput(e.target.value)}
-          placeholder="Buscar por modelo o marca…"
-          className="h-11 rounded-full border-[#e5e5e5] bg-eggshell px-4 text-base md:text-sm"
-        />
-      </div>
-
-      {locations.length > 0 ? (
-        <div
-          className={cn(
-            "mb-10 flex flex-wrap gap-2 animate-fade-rise animate-delay-1",
-            pending && "opacity-70"
-          )}
-        >
-          <button
-            type="button"
-            onClick={() => setCity(null)}
-            className={cn(
-              "rounded-full border px-4 py-2 font-button transition-colors",
-              !citySlug
-                ? "border-ink bg-ink text-eggshell"
-                : "border-[#e5e5e5] bg-eggshell text-ink hover:bg-warm-taupe"
-            )}
-          >
-            Todas
-          </button>
-          {locations.map((loc) => (
+        {locations.length > 0 ? (
+          <div className="flex min-w-0 flex-wrap gap-2">
             <button
-              key={loc.id}
               type="button"
-              onClick={() => setCity(loc.slug)}
+              onClick={() => setCity(null)}
               className={cn(
                 "rounded-full border px-4 py-2 font-button transition-colors",
-                citySlug === loc.slug
+                !citySlug
                   ? "border-ink bg-ink text-eggshell"
                   : "border-[#e5e5e5] bg-eggshell text-ink hover:bg-warm-taupe"
               )}
             >
-              {loc.name}
+              Todas
             </button>
-          ))}
+            {locations.map((loc) => (
+              <button
+                key={loc.id}
+                type="button"
+                onClick={() => setCity(loc.slug)}
+                className={cn(
+                  "rounded-full border px-4 py-2 font-button transition-colors",
+                  citySlug === loc.slug
+                    ? "border-ink bg-ink text-eggshell"
+                    : "border-[#e5e5e5] bg-eggshell text-ink hover:bg-warm-taupe"
+                )}
+              >
+                {loc.name}
+              </button>
+            ))}
+          </div>
+        ) : (
+          <div />
+        )}
+
+        <div className="w-full shrink-0 sm:max-w-xs md:max-w-sm">
+          <label htmlFor="catalog-search" className="sr-only">
+            Buscar motos
+          </label>
+          <Input
+            id="catalog-search"
+            type="search"
+            value={searchInput ?? ""}
+            onChange={(e) => setSearchInput(e.target.value)}
+            onBlur={commitNow}
+            placeholder="Buscar por modelo o marca…"
+            className="h-11 rounded-full border-[#e5e5e5] bg-eggshell px-4 text-base md:text-sm"
+          />
         </div>
-      ) : null}
+      </div>
 
       {total > 0 ? (
         <p className="mb-4 font-meta text-[12px] text-ash">
           {total} moto{total === 1 ? "" : "s"}
-          {hasFilters ? " encontradas" : " disponibles"}
+          {hasFilters
+            ? total === 1
+              ? " encontrada"
+              : " encontradas"
+            : " disponibles"}
         </p>
       ) : null}
 
@@ -185,7 +183,7 @@ export default function CatalogClient({
         totalPages={totalPages}
         hrefForPage={(p) =>
           buildCatalogHref({
-            q: searchInput,
+            q,
             city: citySlug ?? undefined,
             page: p,
           })

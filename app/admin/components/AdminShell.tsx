@@ -94,6 +94,19 @@ export function AdminShell({
           >
             Ver sitio
           </Link>
+          <Link
+            href="/admin/account"
+            onClick={() => setOpen(false)}
+            className={cn(
+              "mb-1 flex items-center gap-2.5 rounded-[10px] px-3 py-2.5 font-body-sm transition-colors",
+              isActive("/admin/account")
+                ? "bg-warm-taupe text-ink"
+                : "text-smoke hover:bg-warm-taupe/60 hover:text-ink"
+            )}
+          >
+            <span className="material-symbols-outlined text-[20px]">lock</span>
+            Cambiar contraseña
+          </Link>
           <form action={logoutAction}>
             <Button type="submit" variant="ghost" size="sm" className="w-full">
               Cerrar sesión

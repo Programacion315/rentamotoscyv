@@ -48,11 +48,21 @@ export async function requestPasswordReset(
   const supabase = await createClient()
   const origin = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${origin}/admin/reset-password`,
+    redirectTo: `${origin}/auth/callback?next=/admin/reset-password`,
   })
 
   if (error) return { error: error.message }
   return { success: "Si el correo existe, recibirás un enlace para restablecer la contraseña." }
+}
+
+function validateNewPassword(password: string, confirm: string): AuthResult | null {
+  if (password.length < 8) {
+    return { error: "La contraseña debe tener al menos 8 caracteres." }
+  }
+  if (password !== confirm) {
+    return { error: "Las contraseñas no coinciden." }
+  }
+  return null
 }
 
 export async function updatePassword(
@@ -61,17 +71,42 @@ export async function updatePassword(
 ): Promise<AuthResult> {
   const password = String(formData.get("password") ?? "")
   const confirm = String(formData.get("confirm") ?? "")
-
-  if (password.length < 8) {
-    return { error: "La contraseña debe tener al menos 8 caracteres." }
-  }
-  if (password !== confirm) {
-    return { error: "Las contraseñas no coinciden." }
-  }
+  const invalid = validateNewPassword(password, confirm)
+  if (invalid) return invalid
 
   const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) {
+    return { error: "El enlace es inválido o expiró. Solicita uno nuevo." }
+  }
+
   const { error } = await supabase.auth.updateUser({ password })
   if (error) return { error: error.message }
 
   redirect("/admin")
+}
+
+export async function changePassword(
+  _prev: AuthResult,
+  formData: FormData
+): Promise<AuthResult> {
+  const password = String(formData.get("password") ?? "")
+  const confirm = String(formData.get("confirm") ?? "")
+  const invalid = validateNewPassword(password, confirm)
+  if (invalid) return invalid
+
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user || user.app_metadata?.role !== "admin") {
+    return { error: "No tienes permisos de administrador." }
+  }
+
+  const { error } = await supabase.auth.updateUser({ password })
+  if (error) return { error: error.message }
+
+  return { success: "Contraseña actualizada correctamente." }
 }
