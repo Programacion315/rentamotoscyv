@@ -106,6 +106,62 @@ export async function getAllSocialLinksAdmin(): Promise<SocialLink[]> {
 const productSelect =
   "*, locations(id, name, slug), product_specs(*), product_features(*)"
 
+const catalogListSelect =
+  "id, slug, name, brand, image_path, category, location_id, is_featured, is_active, locations(id, name, slug)"
+
+const adminTableSelect =
+  "id, name, brand, slug, category, image_path, is_active, is_featured, location_id, updated_at, locations(name)"
+
+export const CATALOG_PAGE_SIZE = 12
+export const ADMIN_PRODUCTS_PAGE_SIZE = 10
+
+export type PageResult<T> = {
+  items: T[]
+  total: number
+  page: number
+  pageSize: number
+  totalPages: number
+}
+
+/** Strip PostgREST OR wildcards from user search input */
+function sanitizeSearch(q: string | undefined | null): string {
+  return String(q ?? "")
+    .trim()
+    .replace(/[%_,.()]/g, " ")
+    .replace(/\s+/g, " ")
+    .slice(0, 80)
+}
+
+function mapAdminTableRow(row: unknown): ProductTableRow {
+  const r = row as {
+    id: string
+    name: string
+    brand: string
+    slug: string
+    category: string | null
+    image_path: string | null
+    is_active: boolean
+    is_featured: boolean
+    location_id: string
+    updated_at: string | null
+    locations: { name: string } | { name: string }[] | null
+  }
+  const loc = Array.isArray(r.locations) ? r.locations[0] : r.locations
+  return {
+    id: r.id,
+    name: r.name,
+    brand: r.brand,
+    slug: r.slug,
+    category: r.category,
+    image_path: r.image_path,
+    is_active: r.is_active,
+    is_featured: r.is_featured,
+    location_id: r.location_id,
+    location_name: loc?.name ?? "Sin ciudad",
+    updated_at: r.updated_at,
+  }
+}
+
 export async function getActiveProducts(): Promise<Product[]> {
   const supabase = await createClient()
   const { data, error } = await supabase
@@ -116,6 +172,100 @@ export async function getActiveProducts(): Promise<Product[]> {
 
   if (error) throw error
   return sortNested((data as Product[]) ?? [])
+}
+
+export async function getCatalogProductsPage({
+  page = 1,
+  pageSize = CATALOG_PAGE_SIZE,
+  citySlug,
+  q,
+}: {
+  page?: number
+  pageSize?: number
+  citySlug?: string | null
+  q?: string | null
+} = {}): Promise<PageResult<Product>> {
+  const supabase = await createClient()
+  const safeSize = Math.max(1, Math.min(pageSize, 48))
+  const safePage = Math.max(1, page)
+  const from = (safePage - 1) * safeSize
+  const to = from + safeSize - 1
+  const search = sanitizeSearch(q)
+  const slug = citySlug?.trim().toLowerCase() || null
+
+  let locationId: string | null = null
+  if (slug) {
+    const { data: loc, error: locError } = await supabase
+      .from("locations")
+      .select("id")
+      .eq("slug", slug)
+      .eq("is_active", true)
+      .maybeSingle()
+    if (locError) throw locError
+    if (!loc) {
+      return { items: [], total: 0, page: safePage, pageSize: safeSize, totalPages: 1 }
+    }
+    locationId = loc.id
+  }
+
+  let countQuery = supabase
+    .from("products")
+    .select("id", { count: "exact", head: true })
+    .eq("is_active", true)
+
+  let dataQuery = supabase
+    .from("products")
+    .select(catalogListSelect)
+    .eq("is_active", true)
+    .order("name")
+    .range(from, to)
+
+  if (locationId) {
+    countQuery = countQuery.eq("location_id", locationId)
+    dataQuery = dataQuery.eq("location_id", locationId)
+  }
+
+  if (search) {
+    const pattern = `"%${search}%"`
+    const orFilter = `name.ilike.${pattern},brand.ilike.${pattern},category.ilike.${pattern}`
+    countQuery = countQuery.or(orFilter)
+    dataQuery = dataQuery.or(orFilter)
+  }
+
+  const [countRes, dataRes] = await Promise.all([countQuery, dataQuery])
+  if (countRes.error) throw countRes.error
+  if (dataRes.error) throw dataRes.error
+
+  const total = countRes.count ?? 0
+  const totalPages = Math.max(1, Math.ceil(total / safeSize))
+  const rows = (dataRes.data ?? []) as unknown as Array<{
+    id: string
+    slug: string
+    name: string
+    brand: string
+    image_path: string | null
+    category: string | null
+    location_id: string
+    is_featured: boolean
+    is_active: boolean
+    locations: Product["locations"] | Product["locations"][] | null
+  }>
+
+  const items: Product[] = rows.map((p) => ({
+    id: p.id,
+    slug: p.slug,
+    name: p.name,
+    brand: p.brand,
+    description: "",
+    image_path: p.image_path,
+    category: p.category,
+    location_id: p.location_id,
+    is_featured: p.is_featured,
+    is_active: p.is_active,
+    locations: Array.isArray(p.locations) ? (p.locations[0] ?? null) : p.locations,
+  }))
+
+  return { items, total, page: safePage, pageSize: safeSize, totalPages }
 }
 
 export async function getFeaturedProducts(): Promise<Product[]> {
@@ -161,72 +311,74 @@ export async function getProductsAdminTable(): Promise<ProductTableRow[]> {
   const supabase = await createClient()
   const { data, error } = await supabase
     .from("products")
-    .select(
-      "id, name, brand, slug, category, image_path, is_active, is_featured, location_id, updated_at, locations(name)"
-    )
+    .select(adminTableSelect)
     .order("updated_at", { ascending: false })
 
   if (error) throw error
-
-  return (data ?? []).map((row) => {
-    const r = row as {
-      id: string
-      name: string
-      brand: string
-      slug: string
-      category: string | null
-      image_path: string | null
-      is_active: boolean
-      is_featured: boolean
-      location_id: string
-      updated_at: string | null
-      locations: { name: string } | { name: string }[] | null
-    }
-    const loc = Array.isArray(r.locations) ? r.locations[0] : r.locations
-    return {
-      id: r.id,
-      name: r.name,
-      brand: r.brand,
-      slug: r.slug,
-      category: r.category,
-      image_path: r.image_path,
-      is_active: r.is_active,
-      is_featured: r.is_featured,
-      location_id: r.location_id,
-      location_name: loc?.name ?? "Sin ciudad",
-      updated_at: r.updated_at,
-    }
-  })
+  return (data ?? []).map(mapAdminTableRow)
 }
 
-export const ADMIN_PRODUCTS_PAGE_SIZE = 10
+export type AdminProductStatusFilter = "all" | "active" | "hidden" | "featured"
+export type AdminProductSortBy = "name" | "brand" | "updated_at"
 
-export async function getProductsAdminPage(
+export async function getProductsAdminTablePage({
   page = 1,
-  pageSize = ADMIN_PRODUCTS_PAGE_SIZE
-): Promise<{
-  products: Product[]
-  total: number
-  page: number
-  pageSize: number
-  totalPages: number
-}> {
+  pageSize = ADMIN_PRODUCTS_PAGE_SIZE,
+  q,
+  locationId,
+  status = "all",
+  sortBy = "updated_at",
+  sortDir = "desc",
+}: {
+  page?: number
+  pageSize?: number
+  q?: string | null
+  locationId?: string | null
+  status?: AdminProductStatusFilter
+  sortBy?: AdminProductSortBy
+  sortDir?: "asc" | "desc"
+} = {}): Promise<PageResult<ProductTableRow>> {
   const supabase = await createClient()
   const safeSize = Math.max(1, Math.min(pageSize, 50))
   const safePage = Math.max(1, page)
   const from = (safePage - 1) * safeSize
   const to = from + safeSize - 1
+  const search = sanitizeSearch(q)
+  const allowedSort: AdminProductSortBy[] = ["name", "brand", "updated_at"]
+  const column = allowedSort.includes(sortBy) ? sortBy : "updated_at"
+  const ascending = sortDir === "asc"
 
-  // Count separately — nested selects + count can be unreliable in PostgREST
-  const [countRes, dataRes] = await Promise.all([
-    supabase.from("products").select("id", { count: "exact", head: true }),
-    supabase
-      .from("products")
-      .select(productSelect)
-      .order("updated_at", { ascending: false })
-      .range(from, to),
-  ])
+  let countQuery = supabase.from("products").select("id", { count: "exact", head: true })
+  let dataQuery = supabase
+    .from("products")
+    .select(adminTableSelect)
+    .order(column, { ascending })
+    .range(from, to)
 
+  if (locationId) {
+    countQuery = countQuery.eq("location_id", locationId)
+    dataQuery = dataQuery.eq("location_id", locationId)
+  }
+
+  if (status === "active") {
+    countQuery = countQuery.eq("is_active", true)
+    dataQuery = dataQuery.eq("is_active", true)
+  } else if (status === "hidden") {
+    countQuery = countQuery.eq("is_active", false)
+    dataQuery = dataQuery.eq("is_active", false)
+  } else if (status === "featured") {
+    countQuery = countQuery.eq("is_featured", true)
+    dataQuery = dataQuery.eq("is_featured", true)
+  }
+
+  if (search) {
+    const pattern = `"%${search}%"`
+    const orFilter = `name.ilike.${pattern},brand.ilike.${pattern},slug.ilike.${pattern},category.ilike.${pattern}`
+    countQuery = countQuery.or(orFilter)
+    dataQuery = dataQuery.or(orFilter)
+  }
+
+  const [countRes, dataRes] = await Promise.all([countQuery, dataQuery])
   if (countRes.error) throw countRes.error
   if (dataRes.error) throw dataRes.error
 
@@ -234,7 +386,7 @@ export async function getProductsAdminPage(
   const totalPages = Math.max(1, Math.ceil(total / safeSize))
 
   return {
-    products: sortNested((dataRes.data as Product[]) ?? []),
+    items: (dataRes.data ?? []).map(mapAdminTableRow),
     total,
     page: safePage,
     pageSize: safeSize,

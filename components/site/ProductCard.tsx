@@ -43,6 +43,7 @@ export function ProductCard({
             alt={product.name}
             fill
             priority={priority}
+            loading={priority ? "eager" : "lazy"}
             className="img-zoom object-cover"
             sizes="(max-width: 768px) 100vw, 33vw"
           />

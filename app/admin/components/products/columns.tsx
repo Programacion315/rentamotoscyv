@@ -11,22 +11,31 @@ import { Button } from "@/components/ui/button"
 
 type DeleteAction = (formData: FormData) => Promise<void>
 
-export function createProductColumns(deleteAction: DeleteAction): ColumnDef<ProductTableRow>[] {
+export function createProductColumns(
+  deleteAction: DeleteAction,
+  options?: { onSort?: (columnId: string) => void }
+): ColumnDef<ProductTableRow>[] {
+  const onSort = options?.onSort
+
+  function SortHeader({ label, columnId }: { label: string; columnId: string }) {
+    return (
+      <Button
+        type="button"
+        variant="ghost"
+        size="sm"
+        className="-ml-2 h-8"
+        onClick={() => onSort?.(columnId)}
+      >
+        {label}
+        <ArrowUpDown data-icon="inline-end" />
+      </Button>
+    )
+  }
+
   return [
     {
       accessorKey: "name",
-      header: ({ column }) => (
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          className="-ml-2 h-8"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Moto
-          <ArrowUpDown data-icon="inline-end" />
-        </Button>
-      ),
+      header: () => <SortHeader label="Moto" columnId="name" />,
       cell: ({ row }) => {
         const p = row.original
         const img = getProductImageUrl(p.image_path)
@@ -51,33 +60,20 @@ export function createProductColumns(deleteAction: DeleteAction): ColumnDef<Prod
           </div>
         )
       },
-      filterFn: "includesString",
+      enableSorting: false,
     },
     {
       accessorKey: "brand",
-      header: ({ column }) => (
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          className="-ml-2 h-8"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Marca
-          <ArrowUpDown data-icon="inline-end" />
-        </Button>
-      ),
+      header: () => <SortHeader label="Marca" columnId="brand" />,
       cell: ({ row }) => <span className="text-graphite">{row.original.brand}</span>,
+      enableSorting: false,
     },
     {
       accessorKey: "location_name",
       id: "location",
       header: "Ciudad",
       cell: ({ row }) => <span className="text-graphite">{row.original.location_name}</span>,
-      filterFn: (row, _id, value: string) => {
-        if (!value || value === "all") return true
-        return row.original.location_id === value
-      },
+      enableSorting: false,
     },
     {
       accessorKey: "category",
@@ -85,6 +81,7 @@ export function createProductColumns(deleteAction: DeleteAction): ColumnDef<Prod
       cell: ({ row }) => (
         <span className="text-smoke">{row.original.category ?? "—"}</span>
       ),
+      enableSorting: false,
     },
     {
       id: "status",
@@ -105,28 +102,11 @@ export function createProductColumns(deleteAction: DeleteAction): ColumnDef<Prod
           </div>
         )
       },
-      filterFn: (row, _id, value: string) => {
-        if (!value || value === "all") return true
-        if (value === "active") return row.original.is_active
-        if (value === "hidden") return !row.original.is_active
-        if (value === "featured") return row.original.is_featured
-        return true
-      },
+      enableSorting: false,
     },
     {
       accessorKey: "updated_at",
-      header: ({ column }) => (
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          className="-ml-2 h-8"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Actualizado
-          <ArrowUpDown data-icon="inline-end" />
-        </Button>
-      ),
+      header: () => <SortHeader label="Actualizado" columnId="updated_at" />,
       cell: ({ row }) => {
         const raw = row.original.updated_at
         if (!raw) return <span className="text-ash">—</span>
@@ -141,10 +121,12 @@ export function createProductColumns(deleteAction: DeleteAction): ColumnDef<Prod
           </span>
         )
       },
+      enableSorting: false,
     },
     {
       id: "actions",
       enableHiding: false,
+      enableSorting: false,
       header: () => <span className="sr-only">Acciones</span>,
       cell: ({ row }) => {
         const p = row.original

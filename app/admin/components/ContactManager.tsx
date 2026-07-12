@@ -1,6 +1,6 @@
 "use client"
 
-import { useActionState, useEffect, useState } from "react"
+import { useActionState, useEffect, useRef, useState } from "react"
 import type { ActionResult } from "@/app/admin/(dashboard)/actions"
 import type { SiteContact, SocialLink } from "@/lib/types"
 import { Button } from "@/components/ui/button"
@@ -36,6 +36,7 @@ export function ContactManager({
   deleteSocialAction: DeleteAction
 }) {
   const [adding, setAdding] = useState(false)
+  const [addFormKey, setAddFormKey] = useState(0)
   const [editingId, setEditingId] = useState<string | null>(null)
 
   const sorted = socials.toSorted(
@@ -43,6 +44,12 @@ export function ContactManager({
   )
   const nextOrder =
     sorted.length > 0 ? Math.max(...sorted.map((s) => s.sort_order)) + 1 : 1
+
+  function openAdd() {
+    setEditingId(null)
+    setAddFormKey((k) => k + 1)
+    setAdding(true)
+  }
 
   return (
     <div className="flex w-full flex-col gap-12 lg:gap-14">
@@ -69,10 +76,7 @@ export function ContactManager({
             type="button"
             size="lg"
             className="w-full shrink-0 sm:w-auto"
-            onClick={() => {
-              setEditingId(null)
-              setAdding(true)
-            }}
+            onClick={openAdd}
           >
             <span className="material-symbols-outlined text-[20px]">add</span>
             Agregar red
@@ -97,7 +101,7 @@ export function ContactManager({
                 </button>
               </div>
               <SocialEditor
-                key="new"
+                key={`new-${addFormKey}`}
                 action={upsertSocialAction}
                 defaultOrder={nextOrder}
                 onSuccess={() => setAdding(false)}
@@ -300,9 +304,13 @@ function SocialEditor({
   submitLabel: string
 }) {
   const [state, formAction, pending] = useActionState(action, initial)
+  const handledSuccess = useRef(false)
 
   useEffect(() => {
-    if (state.success) onSuccess?.()
+    if (state.success && !handledSuccess.current) {
+      handledSuccess.current = true
+      onSuccess?.()
+    }
   }, [state.success, onSuccess])
 
   return (
@@ -319,7 +327,7 @@ function SocialEditor({
           <Label>Nombre de la red</Label>
           <Input
             name="label"
-            defaultValue={link?.label}
+            defaultValue={link?.label ?? ""}
             placeholder="Ej. Instagram"
             required
             className="rounded-[4px] bg-eggshell text-base md:text-sm"
@@ -329,7 +337,7 @@ function SocialEditor({
           <Label>Enlace (URL)</Label>
           <Input
             name="url"
-            defaultValue={link?.url}
+            defaultValue={link?.url ?? ""}
             placeholder="https://instagram.com/tuusuario"
             required
             className="rounded-[4px] bg-eggshell text-base md:text-sm"
@@ -341,6 +349,7 @@ function SocialEditor({
         <div className="flex flex-col gap-1.5">
           <Label>Orden</Label>
           <Input
+            key={`sort-${link?.id ?? "new"}-${link?.sort_order ?? defaultOrder}`}
             name="sort_order"
             type="number"
             min={0}

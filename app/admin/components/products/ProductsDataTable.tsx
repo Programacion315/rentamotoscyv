@@ -1,20 +1,21 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState, useTransition } from "react"
+import { useRouter } from "next/navigation"
 import {
   flexRender,
   getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
   useReactTable,
-  type ColumnFiltersState,
   type SortingState,
   type VisibilityState,
 } from "@tanstack/react-table"
 import { ChevronDown } from "lucide-react"
 import type { Location } from "@/lib/types"
 import type { ProductTableRow } from "@/lib/types"
+import type {
+  AdminProductSortBy,
+  AdminProductStatusFilter,
+} from "@/lib/data/queries"
 import { createProductColumns } from "@/app/admin/components/products/columns"
 import { Button } from "@/components/ui/button"
 import {
@@ -44,8 +45,6 @@ import {
 } from "@/components/ui/table"
 import { cn } from "@/lib/utils"
 
-const PAGE_SIZE = 10
-
 const COLUMN_LABELS: Record<string, string> = {
   name: "Moto",
   brand: "Marca",
@@ -57,87 +56,167 @@ const COLUMN_LABELS: Record<string, string> = {
 
 type DeleteAction = (formData: FormData) => Promise<void>
 
+export type AdminProductsFilters = {
+  q: string
+  location: string
+  status: AdminProductStatusFilter
+  page: number
+  sort: AdminProductSortBy
+  dir: "asc" | "desc"
+  pageSize: number
+  total: number
+  totalPages: number
+  hasAnyProducts: boolean
+}
+
+function buildAdminHref(filters: {
+  q?: string
+  location?: string
+  status?: string
+  page?: number
+  sort?: string
+  dir?: string
+}) {
+  const sp = new URLSearchParams()
+  const q = filters.q?.trim()
+  if (q) sp.set("q", q)
+  if (filters.location && filters.location !== "all") sp.set("location", filters.location)
+  if (filters.status && filters.status !== "all") sp.set("status", filters.status)
+  if (filters.page && filters.page > 1) sp.set("page", String(filters.page))
+  if (filters.sort && filters.sort !== "updated_at") sp.set("sort", filters.sort)
+  if (filters.dir && filters.dir !== "desc") sp.set("dir", filters.dir)
+  const qs = sp.toString()
+  return qs ? `/admin/products?${qs}` : "/admin/products"
+}
+
 export function ProductsDataTable({
   data,
   locations,
   deleteAction,
+  filters,
 }: {
   data: ProductTableRow[]
   locations: Location[]
   deleteAction: DeleteAction
+  filters: AdminProductsFilters
 }) {
-  const columns = useMemo(() => createProductColumns(deleteAction), [deleteAction])
-
-  const [sorting, setSorting] = useState<SortingState>([
-    { id: "updated_at", desc: true },
-  ])
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const router = useRouter()
+  const [pending, startTransition] = useTransition()
+  const [searchInput, setSearchInput] = useState(filters?.q ?? "")
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
-  const [globalFilter, setGlobalFilter] = useState("")
+
+  useEffect(() => {
+    setSearchInput(filters?.q ?? "")
+  }, [filters?.q])
+
+  useEffect(() => {
+    if (!filters) return
+    const handle = window.setTimeout(() => {
+      const next = (searchInput ?? "").trim()
+      if (next === filters.q) return
+      startTransition(() => {
+        router.push(
+          buildAdminHref({
+            q: next,
+            location: filters.location,
+            status: filters.status,
+            page: 1,
+            sort: filters.sort,
+            dir: filters.dir,
+          })
+        )
+      })
+    }, 300)
+    return () => window.clearTimeout(handle)
+  }, [searchInput, filters, router])
+
+  function navigate(patch: Partial<{
+    q: string
+    location: string
+    status: AdminProductStatusFilter
+    page: number
+    sort: AdminProductSortBy
+    dir: "asc" | "desc"
+  }>) {
+    startTransition(() => {
+      router.push(
+        buildAdminHref({
+          q: patch.q ?? searchInput,
+          location: patch.location ?? filters.location,
+          status: patch.status ?? filters.status,
+          page: patch.page ?? filters.page,
+          sort: patch.sort ?? filters.sort,
+          dir: patch.dir ?? filters.dir,
+        })
+      )
+    })
+  }
+
+  const sorting: SortingState = [
+    { id: filters.sort, desc: filters.dir === "desc" },
+  ]
+
+  const columns = useMemo(
+    () =>
+      createProductColumns(deleteAction, {
+        onSort: (columnId) => {
+          const sort = (["name", "brand", "updated_at"].includes(columnId)
+            ? columnId
+            : "updated_at") as AdminProductSortBy
+          const dir: "asc" | "desc" =
+            filters.sort === sort
+              ? filters.dir === "asc"
+                ? "desc"
+                : "asc"
+              : "asc"
+          navigate({ sort, dir, page: 1 })
+        },
+      }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- navigate closes over latest filters/search
+    [deleteAction, filters.sort, filters.dir]
+  )
 
   const table = useReactTable({
     data,
     columns,
+    pageCount: filters.totalPages,
+    manualPagination: true,
+    manualFiltering: true,
+    manualSorting: true,
     state: {
       sorting,
-      columnFilters,
       columnVisibility,
-      globalFilter,
+      pagination: {
+        pageIndex: filters.page - 1,
+        pageSize: filters.pageSize,
+      },
     },
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
-    onGlobalFilterChange: setGlobalFilter,
     getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    globalFilterFn: (row, _columnId, filterValue) => {
-      const q = String(filterValue ?? "")
-        .trim()
-        .toLowerCase()
-      if (!q) return true
-      const p = row.original
-      return [p.name, p.brand, p.slug, p.category ?? "", p.location_name]
-        .join(" ")
-        .toLowerCase()
-        .includes(q)
-    },
-    initialState: {
-      pagination: { pageSize: PAGE_SIZE },
-    },
   })
 
-  const locationFilter = (table.getColumn("location")?.getFilterValue() as string) ?? "all"
-  const statusFilter = (table.getColumn("status")?.getFilterValue() as string) ?? "all"
-
-  const filteredCount = table.getFilteredRowModel().rows.length
-  const pageIndex = table.getState().pagination.pageIndex
-  const pageCount = table.getPageCount()
-  const from = filteredCount === 0 ? 0 : pageIndex * PAGE_SIZE + 1
-  const to = Math.min((pageIndex + 1) * PAGE_SIZE, filteredCount)
+  const from = filters.total === 0 ? 0 : (filters.page - 1) * filters.pageSize + 1
+  const to = Math.min(filters.page * filters.pageSize, filters.total)
+  const hasActiveFilters =
+    Boolean(filters.q) ||
+    (filters.location !== "all" && Boolean(filters.location)) ||
+    filters.status !== "all"
 
   return (
-    <div className="flex w-full flex-col gap-4">
+    <div className={cn("flex w-full flex-col gap-4", pending && "opacity-70")}>
       <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
         <Input
           placeholder="Buscar por nombre, marca, ciudad…"
-          value={globalFilter}
-          onChange={(e) => {
-            setGlobalFilter(e.target.value)
-            table.setPageIndex(0)
-          }}
+          value={searchInput ?? ""}
+          onChange={(e) => setSearchInput(e.target.value)}
           className="h-10 max-w-md rounded-[4px] bg-eggshell"
         />
 
         <div className="flex flex-wrap items-center gap-2">
           <FilterSelect
             label="Ciudad"
-            value={locationFilter}
-            onChange={(v) => {
-              table.getColumn("location")?.setFilterValue(v === "all" ? undefined : v)
-              table.setPageIndex(0)
-            }}
+            value={filters.location || "all"}
+            onChange={(v) => navigate({ location: v, page: 1 })}
             options={[
               { value: "all", label: "Todas las ciudades" },
               ...locations.map((l) => ({ value: l.id, label: l.name })),
@@ -146,11 +225,10 @@ export function ProductsDataTable({
 
           <FilterSelect
             label="Estado"
-            value={statusFilter}
-            onChange={(v) => {
-              table.getColumn("status")?.setFilterValue(v === "all" ? undefined : v)
-              table.setPageIndex(0)
-            }}
+            value={filters.status}
+            onChange={(v) =>
+              navigate({ status: (v as AdminProductStatusFilter) || "all", page: 1 })
+            }
             options={[
               { value: "all", label: "Todos los estados" },
               { value: "active", label: "Visibles" },
@@ -220,7 +298,11 @@ export function ProductsDataTable({
                   colSpan={columns.length}
                   className="h-32 text-center font-body-sm text-smoke"
                 >
-                  No hay motos que coincidan con los filtros.
+                  {hasActiveFilters
+                    ? "No hay motos que coincidan con los filtros."
+                    : filters.hasAnyProducts
+                      ? "No hay motos que coincidan con los filtros."
+                      : "Aún no hay motos en el catálogo."}
                 </TableCell>
               </TableRow>
             )}
@@ -230,7 +312,7 @@ export function ProductsDataTable({
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p className="font-meta text-[12px] text-ash">
-          {filteredCount === 0 ? (
+          {filters.total === 0 ? (
             "Sin resultados"
           ) : (
             <>
@@ -238,13 +320,7 @@ export function ProductsDataTable({
               <span className="text-graphite">
                 {from}–{to}
               </span>{" "}
-              de <span className="text-graphite">{filteredCount}</span>
-              {filteredCount !== data.length ? (
-                <>
-                  {" "}
-                  (filtrado de {data.length})
-                </>
-              ) : null}
+              de <span className="text-graphite">{filters.total}</span>
             </>
           )}
         </p>
@@ -254,20 +330,22 @@ export function ProductsDataTable({
             type="button"
             variant="outline"
             size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
+            onClick={() => navigate({ page: Math.max(1, filters.page - 1) })}
+            disabled={filters.page <= 1 || pending}
           >
             Anterior
           </Button>
           <span className="min-w-[4.5rem] text-center font-meta text-[12px] text-ash">
-            {pageCount === 0 ? 0 : pageIndex + 1} / {Math.max(pageCount, 1)}
+            {filters.total === 0 ? 0 : filters.page} / {Math.max(filters.totalPages, 1)}
           </span>
           <Button
             type="button"
             variant="outline"
             size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
+            onClick={() =>
+              navigate({ page: Math.min(filters.totalPages, filters.page + 1) })
+            }
+            disabled={filters.page >= filters.totalPages || pending}
           >
             Siguiente
           </Button>

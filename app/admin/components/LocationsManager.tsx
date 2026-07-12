@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { useActionState, useEffect, useState } from "react"
+import { useActionState, useEffect, useRef, useState } from "react"
 import type { ActionResult } from "@/app/admin/(dashboard)/actions"
 import type { Location, LocationWithUsage } from "@/lib/types"
 import { Button } from "@/components/ui/button"
@@ -33,6 +33,7 @@ export function LocationsManager({
   deleteAction: DeleteAction
 }) {
   const [adding, setAdding] = useState(locations.length === 0)
+  const [addFormKey, setAddFormKey] = useState(0)
   const [editingId, setEditingId] = useState<string | null>(null)
 
   const sorted = locations.toSorted(
@@ -43,6 +44,7 @@ export function LocationsManager({
 
   function openAdd() {
     setEditingId(null)
+    setAddFormKey((k) => k + 1)
     setAdding(true)
   }
 
@@ -95,7 +97,7 @@ export function LocationsManager({
               ) : null}
             </div>
             <LocationEditor
-              key="new"
+              key={`new-${addFormKey}`}
               action={upsertAction}
               defaultOrder={nextOrder}
               onSuccess={() => setAdding(false)}
@@ -295,9 +297,13 @@ function LocationEditor({
   wide?: boolean
 }) {
   const [state, formAction, pending] = useActionState(action, initial)
+  const handledSuccess = useRef(false)
 
   useEffect(() => {
-    if (state.success) onSuccess?.()
+    if (state.success && !handledSuccess.current) {
+      handledSuccess.current = true
+      onSuccess?.()
+    }
   }, [state.success, onSuccess])
 
   return (
@@ -320,7 +326,7 @@ function LocationEditor({
           <Input
             id={location ? `name-${location.id}` : "name-new"}
             name="name"
-            defaultValue={location?.name}
+            defaultValue={location?.name ?? ""}
             placeholder="Ej. Bogotá"
             required
             autoFocus={!location}
@@ -332,6 +338,7 @@ function LocationEditor({
         <div className="flex flex-col gap-1.5">
           <Label htmlFor={location ? `order-${location.id}` : "order-new"}>Orden en la lista</Label>
           <Input
+            key={`order-${location?.id ?? "new"}-${location?.sort_order ?? defaultOrder}`}
             id={location ? `order-${location.id}` : "order-new"}
             name="sort_order"
             type="number"

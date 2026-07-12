@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { useActionState, useEffect, useState } from "react"
+import { useActionState, useEffect, useRef, useState } from "react"
 import type { ActionResult } from "@/app/admin/(dashboard)/actions"
 import type { Location, Sede } from "@/lib/types"
 import { FormSelect } from "@/components/admin/FormSelect"
@@ -36,6 +36,7 @@ export function SedesManager({
   deleteAction: DeleteAction
 }) {
   const [adding, setAdding] = useState(sedes.length === 0)
+  const [addFormKey, setAddFormKey] = useState(0)
   const [editingId, setEditingId] = useState<string | null>(null)
 
   const sorted = sedes.toSorted(
@@ -46,6 +47,7 @@ export function SedesManager({
 
   function openAdd() {
     setEditingId(null)
+    setAddFormKey((k) => k + 1)
     setAdding(true)
   }
 
@@ -107,7 +109,7 @@ export function SedesManager({
                   ) : null}
                 </div>
                 <SedeEditor
-                  key="new"
+                  key={`new-${addFormKey}`}
                   action={upsertAction}
                   locations={locations}
                   defaultOrder={nextOrder}
@@ -264,9 +266,13 @@ function SedeEditor({
   submitLabel: string
 }) {
   const [state, formAction, pending] = useActionState(action, initial)
+  const handledSuccess = useRef(false)
 
   useEffect(() => {
-    if (state.success) onSuccess?.()
+    if (state.success && !handledSuccess.current) {
+      handledSuccess.current = true
+      onSuccess?.()
+    }
   }, [state.success, onSuccess])
 
   return (
@@ -295,7 +301,7 @@ function SedeEditor({
           <Input
             id={sede ? `name-${sede.id}` : "name-new"}
             name="name"
-            defaultValue={sede?.name}
+            defaultValue={sede?.name ?? ""}
             placeholder="Ej. Renta Motos CyV Bogotá"
             required
             className="rounded-[4px] bg-eggshell text-base md:text-sm"
@@ -335,6 +341,7 @@ function SedeEditor({
         <div className="flex flex-col gap-1.5">
           <Label htmlFor={sede ? `ord-${sede.id}` : "ord-new"}>Orden en la lista</Label>
           <Input
+            key={`ord-${sede?.id ?? "new"}-${sede?.sort_order ?? defaultOrder}`}
             id={sede ? `ord-${sede.id}` : "ord-new"}
             name="sort_order"
             type="number"

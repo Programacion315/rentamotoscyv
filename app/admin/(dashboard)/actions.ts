@@ -221,6 +221,7 @@ async function uploadProductImage(
   const webp = await sharp(buffer).rotate().webp({ quality: 80 }).toBuffer()
   const path = `${productId}/${slug}.webp`
 
+  // upsert needs SELECT + INSERT + UPDATE storage policies
   const { error } = await supabase.storage.from("motorcycle-images").upload(path, webp, {
     contentType: "image/webp",
     upsert: true,
@@ -254,8 +255,9 @@ export async function upsertProduct(
   if (!slug) return { error: "Slug inválido." }
 
   let productId = id
+  const isCreate = !productId
 
-  if (!productId) {
+  if (isCreate) {
     const { data, error } = await supabase
       .from("products")
       .insert({
@@ -291,18 +293,18 @@ export async function upsertProduct(
     if (error) return { error: error.message }
   }
 
-  if (image instanceof File && image.size > 0) {
-    try {
-      const image_path = await uploadProductImage(supabase, productId, slug, image)
-      const { error } = await supabase.from("products").update({ image_path }).eq("id", productId)
-      if (error) return { error: error.message }
-    } catch (e) {
-      return { error: e instanceof Error ? e.message : "Error al subir la imagen." }
-    }
-  }
+  // Specs/features before image so data isn't lost if upload fails
+  const { error: specsDeleteError } = await supabase
+    .from("product_specs")
+    .delete()
+    .eq("product_id", productId)
+  if (specsDeleteError) return { error: specsDeleteError.message }
 
-  await supabase.from("product_specs").delete().eq("product_id", productId)
-  await supabase.from("product_features").delete().eq("product_id", productId)
+  const { error: featuresDeleteError } = await supabase
+    .from("product_features")
+    .delete()
+    .eq("product_id", productId)
+  if (featuresDeleteError) return { error: featuresDeleteError.message }
 
   const specs = parsePairs(formData, "spec")
   if (specs.length) {
@@ -329,6 +331,24 @@ export async function upsertProduct(
     if (error) return { error: error.message }
   }
 
+  if (image instanceof File && image.size > 0) {
+    try {
+      const image_path = await uploadProductImage(supabase, productId, slug, image)
+      const { error } = await supabase.from("products").update({ image_path }).eq("id", productId)
+      if (error) return { error: error.message }
+    } catch (e) {
+      const message = e instanceof Error ? e.message : "Error al subir la imagen."
+      // Product row already saved — send them to edit to retry the photo
+      if (isCreate) {
+        revalidatePublic()
+        return {
+          error: `${message} La moto se guardó sin foto; edítala e intenta subir la imagen de nuevo.`,
+        }
+      }
+      return { error: message }
+    }
+  }
+
   revalidatePublic()
   revalidatePath(`/rentals/${slug}`)
   redirect("/admin/products")
@@ -337,10 +357,22 @@ export async function upsertProduct(
 export async function deleteProduct(formData: FormData) {
   const { supabase } = await requireAdmin()
   const id = String(formData.get("id") ?? "")
+  if (!id) throw new Error("Producto no válido.")
 
-  const { data: product } = await supabase.from("products").select("image_path").eq("id", id).maybeSingle()
+  const { data: product } = await supabase
+    .from("products")
+    .select("image_path")
+    .eq("id", id)
+    .maybeSingle()
+
   if (product?.image_path && !product.image_path.startsWith("http")) {
-    await supabase.storage.from("motorcycle-images").remove([product.image_path])
+    const { error: storageError } = await supabase.storage
+      .from("motorcycle-images")
+      .remove([product.image_path])
+    // Don't block product delete if the file is already gone
+    if (storageError) {
+      console.error("storage delete failed:", storageError.message)
+    }
   }
 
   const { error } = await supabase.from("products").delete().eq("id", id)
