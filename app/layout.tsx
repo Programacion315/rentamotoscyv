@@ -1,34 +1,52 @@
-import type { Metadata } from "next";
-import "./globals.css";
-import Navbar from "@/app/components/Navbar";
-import Footer from "@/app/components/Footer";
+import type { Metadata } from "next"
+import { Outfit, Inter, Geist_Mono } from "next/font/google"
+import AuthHashHandler from "@/app/(site)/components/AuthHashHandler"
+import "./globals.css"
+import { cn } from "@/lib/utils"
+
+const outfit = Outfit({
+  subsets: ["latin"],
+  weight: ["300"],
+  variable: "--font-outfit",
+  display: "swap",
+})
+
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-inter",
+  display: "swap",
+})
+
+const geistMono = Geist_Mono({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-geist-mono",
+  display: "swap",
+})
 
 export const metadata: Metadata = {
-  title: "rentamotoscyv - Renta de Motocicletas Premium en Medellín",
-  description: "Alquiler de motocicletas de alta gama en Medellín e Itagüí. Mantenimiento certificado, entregas a domicilio y en el aeropuerto. ¡Reserva hoy!",
-  keywords: "renta de motos medellin, alquiler de motos medellin, rentamotoscyv, nmax connected, dr650, el poblado",
-};
+  title: "Renta Motos CyV — Renta de Motocicletas",
+  description:
+    "Alquiler de motocicletas en Bogotá y Neiva. Mantenimiento certificado y atención personalizada.",
+}
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="es" className="h-full antialiased">
+    <html
+      lang="es"
+      className={cn("h-full antialiased", outfit.variable, inter.variable, geistMono.variable)}
+    >
       <head>
-        {/* Google Material Symbols */}
         <link
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
           rel="stylesheet"
         />
       </head>
-      <body className="min-h-full flex flex-col text-on-surface transition-colors duration-300">
-        <Navbar />
-        <main className="grow">{children}</main>
-        <Footer />
+      <body className="min-h-full flex flex-col bg-eggshell text-ink font-sans">
+        <AuthHashHandler />
+        {children}
       </body>
     </html>
-  );
+  )
 }
-

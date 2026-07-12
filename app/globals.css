@@ -1,251 +1,467 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-@custom-variant dark (&:where(.dark, .dark *));
+/* Custom scrollbar — editorial eggshell / stone / ash */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #a59f97 transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #ebe8e4;
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: #a59f97;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+*::-webkit-scrollbar-corner {
+  background: transparent;
+}
 
 @theme {
-  --color-surface: #f7f9fb;
-  --color-surface-dim: #d8dadc;
-  --color-surface-bright: #f7f9fb;
-  --color-surface-container-lowest: #1a1c1e;
-  --color-surface-container-low: #afd7ff;
-  --color-surface-container: #eceef0;
-  --color-surface-container-high: #e6e8ea;
-  --color-surface-container-highest: #acb0c22b;
-  --color-on-surface: #191c1e;
-  --color-on-surface-variant: #434653;
-  --color-inverse-surface: #2d3133;
-  --color-inverse-on-surface: #eff1f3;
-  --color-outline: #737784;
-  --color-outline-variant: #c3c6d5;
-  --color-surface-tint: #215abd;
-  --color-primary: #00357f;
-  --color-primary-catalog: #ffffff;
-  --color-on-primary: #ffffff;
-  --color-primary-container: #004aad;
-  --color-on-primary-container: #0bb15b;
-  --color-inverse-primary: #b0c6ff;
-  --color-secondary: #505f76;
-  --color-on-secondary: #ffffff;
-  --color-secondary-container: #d0e1fb;
-  --color-on-secondary-container: #54647a;
-  --color-tertiary: #31384d;
-  --color-on-tertiary: #ffffff;
-  --color-tertiary-container: #474f65;
-  --color-on-tertiary-container: #bac1db;
+  /* Colors — ElevenLabs editorial */
+  --color-eggshell: #fdfcfc;
+  --color-warm-taupe: #f5f3f1;
+  --color-stone: #ebe8e4;
+  --color-ink: #000000;
+  --color-graphite: #44403b;
+  --color-smoke: #777169;
+  --color-ash: #a59f97;
+  --color-violet-spark: #0447ff;
+  --color-ember-orange: #ff4704;
+
+  /* Semantic aliases for gradual migration */
+  --color-background: #fdfcfc;
+  --color-foreground: #000000;
+  --color-surface: #fdfcfc;
+  --color-surface-white: #fdfcfc;
+  --color-surface-container: #f5f3f1;
+  --color-surface-container-low: #f5f3f1;
+  --color-surface-container-high: #ebe8e4;
+  --color-on-surface: #000000;
+  --color-on-surface-variant: #777169;
+  --color-border-subtle: #ebe8e4;
+  --color-outline: #ebe8e4;
+  --color-primary: #000000;
+  --color-on-primary: #fdfcfc;
+  --color-secondary: #777169;
   --color-error: #ba1a1a;
   --color-on-error: #ffffff;
-  --color-error-container: #ffdad6;
-  --color-on-error-container: #93000a;
-  --color-primary-fixed: #d9e2ff;
-  --color-primary-fixed-dim: #b0c6ff;
-  --color-on-primary-fixed: #001945;
-  --color-on-primary-fixed-variant: #00429b;
-  --color-secondary-fixed: #d3e4fe;
-  --color-secondary-fixed-dim: #b7c8e1;
-  --color-on-secondary-fixed: #0b1c30;
-  --color-on-secondary-fixed-variant: #38485d;
-  --color-tertiary-fixed: #dae2fd;
-  --color-tertiary-fixed-dim: #bec6e0;
-  --color-on-tertiary-fixed: #131b2e;
-  --color-on-tertiary-fixed-variant: #3f465c;
-  --color-background: #f7f9fb;
-  --color-on-background: #191c1e;
-  --color-surface-variant: #e0e3e5;
-  --color-action-orange: #E94C1F;
-  --color-surface-white: #FFFFFF;
-  --color-surface-contact: #060606;
-  --color-border-subtle: #E2E8F0;
-  --color-surface-blue-hard: #acb0c22b;
-  --color-surface-blue-container: #c5deff;
-  --color-navbar: c5deff;
+  --color-destructive: #ba1a1a;
+  --color-whatsapp: #25d366;
 
-  /* Font Families */
-  --font-body-md: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
-  --font-headline-md: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
-  --font-headline-lg-mobile: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
-  --font-button-text: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
-  --font-display-lg: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
-  --font-label-caps: "Smoothie", "Segoe UI Semibold", "Segoe UI", sans-serif;
-  --font-headline-lg: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
-  --font-body-lg: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+  /* Fonts (wired from next/font CSS variables) */
+  --font-display: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  --font-inter: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-geist-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  /* Border Radius */
-  --radius-sm: 0.25rem;
-  --radius-DEFAULT: 0.5rem;
-  --radius-md: 0.75rem;
-  --radius-lg: 1rem;
-  --radius-xl: 1.5rem;
-  --radius-full: 9999px;
+  /* Type scale */
+  --text-caption: 10px;
+  --text-body-sm: 14px;
+  --text-body: 16px;
+  --text-subheading: 18px;
+  --text-body-lg: 20px;
+  --text-heading-sm: 32px;
+  --text-heading: 36px;
+  --text-display: 48px;
 
-  /* Spacing */
+  /* Spacing — only semantic names (do NOT override Tailwind's numeric scale) */
   --spacing-margin-mobile: 16px;
+  --spacing-margin-desktop: 64px;
   --spacing-container-max: 1280px;
-  --spacing-stack-lg: 32px;
-  --spacing-stack-md: 16px;
-  --spacing-stack-sm: 8px;
   --spacing-gutter: 24px;
-  --spacing-unit: 8px;
-  --spacing-margin-desktop: 48px;
+  --spacing-section: 96px;
 
+  /* Radii */
+  --radius-md: 4px;
+  --radius-lg: 10px;
+  --radius-2xl: 16px;
+  --radius-cards: 20px;
+  --radius-large-cards: 24px;
+  --radius-full: 9999px;
+  --radius-inputs: 4px;
+  --radius-buttons: 9999px;
+
+  /* Shadows */
+  --shadow-subtle: rgba(0, 0, 0, 0.4) 0px 0px 1px 0px, rgba(0, 0, 0, 0.04) 0px 1px 1px 0px,
+    rgba(0, 0, 0, 0.04) 0px 2px 4px 0px;
+  --shadow-subtle-2: rgba(0, 0, 0, 0.075) 0px 0px 0px 0.5px inset;
+  --shadow-subtle-5: rgba(0, 0, 0, 0.4) 0px 0px 1px 0px, rgba(0, 0, 0, 0.04) 0px 2px 4px 0px;
 }
 
-@font-display-lg {
-  font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
-  font-size: 48px;
-  font-weight: 700;
-  line-height: 56px;
+@theme inline {
+  --font-heading: var(--font-display);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  --background: #fdfcfc;
+  --foreground: #000000;
+  --card: #fdfcfc;
+  --card-foreground: #000000;
+  --popover: #fdfcfc;
+  --popover-foreground: #000000;
+  --primary: #000000;
+  --primary-foreground: #fdfcfc;
+  --secondary: #f5f3f1;
+  --secondary-foreground: #000000;
+  --muted: #f5f3f1;
+  --muted-foreground: #777169;
+  --accent: #f5f3f1;
+  --accent-foreground: #000000;
+  --destructive: #ba1a1a;
+  --border: #ebe8e4;
+  --input: #ebe8e4;
+  --ring: #44403b;
+  --chart-1: #000000;
+  --chart-2: #777169;
+  --chart-3: #a59f97;
+  --chart-4: #ebe8e4;
+  --chart-5: #f5f3f1;
+  --radius: 0.625rem;
+  --sidebar: #fdfcfc;
+  --sidebar-foreground: #000000;
+  --sidebar-primary: #000000;
+  --sidebar-primary-foreground: #fdfcfc;
+  --sidebar-accent: #f5f3f1;
+  --sidebar-accent-foreground: #000000;
+  --sidebar-border: #ebe8e4;
+  --sidebar-ring: #44403b;
+}
+
+/* Typography utilities */
+@utility font-display {
+  font-family: var(--font-display);
+  font-weight: 300;
   letter-spacing: -0.02em;
+  line-height: 1.08;
 }
 
-@utility font-headline-lg {
-  font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+@utility font-display-lg {
+  font-family: var(--font-display);
+  font-size: 48px;
+  font-weight: 300;
+  line-height: 1.08;
+  letter-spacing: -0.96px;
+}
+
+@utility font-heading {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 300;
+  line-height: 1.17;
+  letter-spacing: -0.72px;
+}
+
+@utility font-heading-sm {
+  font-family: var(--font-display);
   font-size: 32px;
-  font-weight: 600;
-  line-height: 40px;
+  font-weight: 300;
+  line-height: 1.13;
+  letter-spacing: -0.64px;
 }
 
-@utility font-headline-lg-mobile {
-  font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
-  font-size: 28px;
-  font-weight: 600;
-  line-height: 36px;
+@utility font-body {
+  font-family: var(--font-inter);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.16px;
 }
 
-@utility font-headline-md {
-  font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
-  font-size: 24px;
-  font-weight: 600;
-  line-height: 32px;
+@utility font-body-sm {
+  font-family: var(--font-inter);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.14px;
 }
 
 @utility font-body-lg {
-  font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
-  font-size: 18px;
+  font-family: var(--font-inter);
+  font-size: 20px;
   font-weight: 400;
-  line-height: 28px;
+  line-height: 1.35;
+}
+
+@utility font-meta {
+  font-family: var(--font-geist-mono);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.69;
+}
+
+@utility font-button {
+  font-family: var(--font-inter);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+/* Legacy aliases used in older markup during migration */
+@utility font-headline-lg {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 300;
+  line-height: 1.13;
+  letter-spacing: -0.64px;
+}
+
+@utility font-headline-md {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 300;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
 }
 
 @utility font-body-md {
-  font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+  font-family: var(--font-inter);
   font-size: 16px;
   font-weight: 400;
-  line-height: 24px;
+  line-height: 1.5;
+  letter-spacing: 0.16px;
 }
 
 @utility font-label-caps {
-  font-family: "Smoothie", "Segoe UI Semibold", "Segoe UI", sans-serif;
+  font-family: var(--font-geist-mono);
   font-size: 12px;
-  font-weight: 500;
-  line-height: 16px;
+  font-weight: 400;
+  line-height: 1.4;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
 }
 
 @utility font-button-text {
-  font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 20px;
+  font-family: var(--font-inter);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.2;
 }
 
-/* ============================
-   Dark mode: redefine all semantic tokens
-   ============================ */
-.dark {
-  --color-surface: #1a1c1e;
-  --color-surface-dim: #111315;
-  --color-surface-bright: #3a3c3e;
-  --color-surface-container-lowest: #f4f4f5;
-  --color-surface-container-low: #1e2022;
-  --color-surface-container: #232527;
-  --color-surface-container-high: #2d2f31;
-  --color-surface-container-highest: #000000;
-  --color-on-surface: #e3e2e6;
-  --color-on-surface-variant: #c4c6cf;
-  --color-inverse-surface: #e3e2e6;
-  --color-inverse-on-surface: #1a1c1e;
-  --color-outline: #8d9199;
-  --color-outline-variant: #44474e;
-  --color-surface-tint: #b0c6ff;
-  --color-primary: #b0c6ff;
-  --color-primary-brand: #000000;
-  --color-primary-catalog: #2458dd;
-  --color-on-primary: #002d6d;
-  --color-primary-container: #00429b;
-  --color-on-primary-container: #0bb15b;
-  --color-inverse-primary: #00357f;
-  --color-secondary: #b7c8e1;
-  --color-on-secondary: #233344;
-  --color-secondary-container: #38485d;
-  --color-on-secondary-container: #d0e1fb;
-  --color-tertiary: #bec6e0;
-  --color-on-tertiary: #283045;
-  --color-tertiary-container: #3f465c;
-  --color-on-tertiary-container: #dae2fd;
-  --color-error: #ffb4ab;
-  --color-on-error: #690005;
-  --color-error-container: #93000a;
-  --color-on-error-container: #ffdad6;
-  --color-primary-fixed: #0065ff;
-  --color-primary-fixed-dim: #b0c6ff;
-  --color-on-primary-fixed: #001945;
-  --color-on-primary-fixed-variant: #00429b;
-  --color-secondary-fixed: #0065ff;
-  --color-secondary-fixed-dim: #b7c8e1;
-  --color-on-secondary-fixed: #0b1c30;
-  --color-on-secondary-fixed-variant: #38485d;
-  --color-tertiary-fixed: #0065ff;
-  --color-tertiary-fixed-dim: #bec6e0;
-  --color-on-tertiary-fixed: #131b2e;
-  --color-on-tertiary-fixed-variant: #3f465c;
-  --color-background: #1a1c1e;
-  --color-on-background: #e3e2e6;
-  --color-surface-variant: #44474e;
-  --color-action-orange: #FF7A54;
-  --color-surface-white: #1e2022;
-  --color-border-subtle: #3a3d45;
-  --color-surface-blue-hard: #0a0f1c;
-  --color-surface-blue-container: #060e18;
-}
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
 
+  html {
+    @apply font-sans antialiased;
+  }
 
-body {
-  background-color: var(--color-background);
-  color: var(--color-on-surface);
-  font-family: var(--font-body-md);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  body {
+    @apply bg-eggshell text-ink;
+    font-family: var(--font-inter);
+  }
 }
 
 .material-symbols-outlined {
-  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
   vertical-align: middle;
 }
 
-.bento-grid {
+/* Soft product visual orb — decorative only */
+.spark-orb {
+  background: radial-gradient(
+    circle at 35% 35%,
+    color-mix(in srgb, var(--color-violet-spark) 55%, transparent) 0%,
+    color-mix(in srgb, var(--color-ember-orange) 40%, transparent) 45%,
+    color-mix(in srgb, #ff8ab8 25%, transparent) 70%,
+    transparent 100%
+  );
+  filter: blur(2px);
+  pointer-events: none;
+}
+
+.shadow-whisper {
+  box-shadow: var(--shadow-subtle);
+}
+
+.hairline {
+  border-color: var(--color-stone);
+}
+
+/* GPU-friendly motion */
+@keyframes fade-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-rise {
+  animation: fade-rise 0.4s ease-out both;
+}
+
+.animate-delay-1 {
+  animation-delay: 80ms;
+}
+.animate-delay-2 {
+  animation-delay: 160ms;
+}
+.animate-delay-3 {
+  animation-delay: 240ms;
+}
+.animate-delay-4 {
+  animation-delay: 320ms;
+}
+
+.img-zoom {
+  transition: transform 0.45s ease;
+  will-change: transform;
+}
+
+.group:hover .img-zoom,
+.img-zoom:hover {
+  transform: scale(1.03);
+}
+
+/* WhatsApp FAB — slow subtle pulse (transform + opacity only) */
+@keyframes wa-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.45;
+  }
+  70% {
+    transform: scale(1.55);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.55);
+    opacity: 0;
+  }
+}
+
+.wa-pulse {
+  animation: wa-pulse 2.8s ease-out infinite;
+}
+
+.wa-pulse-delayed {
+  animation: wa-pulse 2.8s ease-out 1.4s infinite;
+}
+
+/* Admin panel expand/collapse (GPU-friendly: grid + opacity) */
+@keyframes admin-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.admin-expand {
   display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 24px;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.32s ease;
 }
 
-.glass-effect {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-}
-.dark .glass-effect {
-  background: rgba(30, 32, 34, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+.admin-expand[data-open="true"] {
+  grid-template-rows: 1fr;
 }
 
-.vehicle-card-shadow {
-  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);
-}
-.dark .vehicle-card-shadow {
-  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.3);
+.admin-expand > .admin-expand-inner {
+  overflow: hidden;
+  min-height: 0;
 }
 
-/* Override Tailwind's built-in bg-white in dark mode context */
-.dark .bg-white {
-  background-color: var(--color-surface-white);
+.admin-expand[data-open="true"] > .admin-expand-inner > * {
+  animation: admin-panel-in 0.28s ease-out both;
+}
+
+.admin-card-enter {
+  animation: fade-rise 0.35s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-rise,
+  .animate-delay-1,
+  .animate-delay-2,
+  .animate-delay-3,
+  .animate-delay-4,
+  .admin-card-enter {
+    animation: none !important;
+  }
+
+  .admin-expand {
+    transition: none !important;
+  }
+
+  .admin-expand[data-open="true"] > .admin-expand-inner > * {
+    animation: none !important;
+  }
+
+  .img-zoom,
+  .group:hover .img-zoom,
+  .img-zoom:hover {
+    transition: none !important;
+    transform: none !important;
+  }
+
+  .wa-pulse,
+  .wa-pulse-delayed {
+    animation: none !important;
+  }
 }
