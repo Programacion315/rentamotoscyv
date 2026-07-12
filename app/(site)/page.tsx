@@ -44,7 +44,7 @@ export default async function Home() {
             <div className="animate-fade-rise animate-delay-4 mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
                 href="/catalog"
-                className="inline-flex h-11 items-center justify-center gap-1.5 rounded-full bg-black px-6 text-sm font-medium text-white shadow-[0_2px_8px_rgba(0,0,0,0.18)] transition-opacity hover:opacity-90"
+                className="inline-flex h-11 items-center justify-center gap-1.5 rounded-full bg-primary px-6 text-sm font-medium text-primary-foreground shadow-[0_2px_8px_rgba(82,80,130,0.25)] transition-opacity hover:opacity-90"
               >
                 Ver catálogo
                 <span className="material-symbols-outlined text-[18px]">arrow_forward</span>

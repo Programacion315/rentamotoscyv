@@ -103,7 +103,7 @@ export default function CatalogClient({
               className={cn(
                 "rounded-full border px-4 py-2 font-button transition-colors",
                 !citySlug
-                  ? "border-ink bg-ink text-eggshell"
+                  ? "border-primary bg-primary text-primary-foreground"
                   : "border-[#e5e5e5] bg-eggshell text-ink hover:bg-warm-taupe"
               )}
             >
@@ -117,7 +117,7 @@ export default function CatalogClient({
                 className={cn(
                   "rounded-full border px-4 py-2 font-button transition-colors",
                   citySlug === loc.slug
-                    ? "border-ink bg-ink text-eggshell"
+                    ? "border-primary bg-primary text-primary-foreground"
                     : "border-[#e5e5e5] bg-eggshell text-ink hover:bg-warm-taupe"
                 )}
               >

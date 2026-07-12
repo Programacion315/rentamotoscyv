@@ -4,14 +4,27 @@ import {
   FooterIconLink,
   footerIconFromLabel,
 } from "@/components/site/FooterContactIcons"
-import { getActiveSedes, getActiveSocialLinks, getSiteContact } from "@/lib/data/queries"
+import {
+  getActiveLocations,
+  getActiveSedes,
+  getActiveSocialLinks,
+  getSiteContact,
+} from "@/lib/data/queries"
 import { whatsappHref } from "@/lib/types"
 
+function joinSpanish(names: string[]): string {
+  if (names.length === 0) return ""
+  if (names.length === 1) return names[0]
+  if (names.length === 2) return `${names[0]} y ${names[1]}`
+  return `${names.slice(0, -1).join(", ")} y ${names.at(-1)}`
+}
+
 export default async function Footer() {
-  const [contact, socials, sedes] = await Promise.all([
+  const [contact, socials, sedes, locations] = await Promise.all([
     getSiteContact(),
     getActiveSocialLinks(),
     getActiveSedes(),
+    getActiveLocations(),
   ])
 
   const phone = contact?.phone?.trim() || null
@@ -19,6 +32,8 @@ export default async function Footer() {
   const whatsapp = contact?.whatsapp?.replace(/\D/g, "") || null
   const wa = whatsapp ? whatsappHref(whatsapp) : null
   const primarySede = sedes[0] ?? null
+  const locationNames = locations.map((l) => l.name).filter(Boolean)
+  const citiesLabel = joinSpanish(locationNames)
 
   return (
     <footer className="mt-auto bg-eggshell">
@@ -30,15 +45,16 @@ export default async function Footer() {
               <span className="text-[15px] font-medium text-ink">{SITE_NAME}</span>
             </Link>
             <p className="max-w-sm text-[15px] leading-relaxed text-smoke">
-              Alquiler de motocicletas en Bogotá y Neiva. Mantenimiento certificado y atención
-              personalizada.
+              {citiesLabel
+                ? `Alquiler de motocicletas en ${citiesLabel}. Mantenimiento certificado y atención personalizada.`
+                : "Alquiler de motocicletas. Mantenimiento certificado y atención personalizada."}
             </p>
             {wa ? (
               <a
                 href={wa}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex w-fit items-center gap-2 rounded-full bg-black px-4 py-2.5 text-[13px] font-medium text-white transition-opacity hover:opacity-90"
+                className="inline-flex w-fit items-center gap-2 rounded-full bg-primary px-4 py-2.5 text-[13px] font-medium text-primary-foreground transition-opacity hover:opacity-90"
               >
                 Reservar por WhatsApp
               </a>
@@ -113,7 +129,13 @@ export default async function Footer() {
           <p className="text-[13px] text-ash">
             © {new Date().getFullYear()} {SITE_NAME}. Todos los derechos reservados.
           </p>
-          <p className="font-meta text-[12px] text-ash">Bogotá · Neiva</p>
+          {locationNames.length > 0 ? (
+            <p className="font-meta text-[12px] text-ash">{locationNames.join(" · ")}</p>
+          ) : sedes.length > 0 ? (
+            <p className="font-meta text-[12px] text-ash">
+              {[...new Set(sedes.map((s) => s.locations?.name).filter(Boolean))].join(" · ")}
+            </p>
+          ) : null}
         </div>
       </div>
     </footer>

@@ -86,7 +86,7 @@ export function AdminPagination({
                 className={cn(
                   "flex size-9 items-center justify-center rounded-full font-body-sm transition-colors",
                   item === currentPage
-                    ? "bg-black text-white"
+                    ? "bg-primary text-primary-foreground"
                     : "text-graphite hover:bg-warm-taupe"
                 )}
               >

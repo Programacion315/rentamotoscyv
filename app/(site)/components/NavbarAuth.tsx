@@ -116,7 +116,7 @@ export default function NavbarAuth({
         <span
           className={cn(
             "flex size-6 items-center justify-center rounded-full text-xs font-medium",
-            light ? "bg-white text-black" : "bg-black text-white"
+            light ? "bg-white text-black" : "bg-primary text-primary-foreground"
           )}
         >
           {displayLabel(user).charAt(0)}

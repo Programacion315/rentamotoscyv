@@ -83,7 +83,7 @@ export default function About() {
           <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
               href="/catalog"
-              className="inline-flex h-11 items-center justify-center gap-1.5 rounded-full bg-black px-6 text-sm font-medium text-white transition-opacity hover:opacity-90"
+              className="inline-flex h-11 items-center justify-center gap-1.5 rounded-full bg-primary px-6 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
             >
               Ver catálogo
             </Link>

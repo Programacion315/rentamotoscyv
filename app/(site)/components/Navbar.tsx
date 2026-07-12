@@ -108,9 +108,9 @@ export default function Navbar() {
                 "text-[13px] font-medium tracking-wide",
                 "transition-[transform,opacity,box-shadow,background-color,color] duration-200",
                 "active:scale-[0.98] md:inline-flex",
-                overHero
+                  overHero
                   ? "bg-white text-black shadow-[0_2px_12px_rgba(0,0,0,0.25)] hover:opacity-95"
-                  : "bg-black text-white shadow-[0_2px_8px_rgba(0,0,0,0.18)] hover:opacity-90 hover:shadow-[0_4px_14px_rgba(0,0,0,0.22)]"
+                  : "bg-primary text-primary-foreground shadow-[0_2px_8px_rgba(82,80,130,0.25)] hover:opacity-90 hover:shadow-[0_4px_14px_rgba(82,80,130,0.35)]"
               )}
             >
               Reservar
@@ -180,7 +180,7 @@ export default function Navbar() {
           <Link
             href="/catalog"
             onClick={() => setIsOpen(false)}
-            className="flex w-full items-center justify-center gap-2 rounded-full bg-black py-3.5 text-sm font-medium text-white shadow-[0_2px_8px_rgba(0,0,0,0.18)]"
+            className="flex w-full items-center justify-center gap-2 rounded-full bg-primary py-3.5 text-sm font-medium text-primary-foreground shadow-[0_2px_8px_rgba(82,80,130,0.25)]"
           >
             Reservar
             <span className="material-symbols-outlined text-[18px]">arrow_forward</span>

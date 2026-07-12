@@ -40,8 +40,8 @@ export function WhatsAppFab({ href }: { href: string }) {
         role="tooltip"
         className={cn(
           "pointer-events-none absolute right-full top-1/2 mr-3 -translate-y-1/2",
-          "hidden whitespace-nowrap rounded-full bg-black px-4 py-2.5",
-          "text-[13px] font-medium leading-none text-white",
+          "hidden whitespace-nowrap rounded-full bg-primary px-4 py-2.5",
+          "text-[13px] font-medium leading-none text-primary-foreground",
           "opacity-0 transition-[opacity,transform] duration-200 ease-out",
           "translate-x-1.5 group-hover/wa:translate-x-0 group-hover/wa:opacity-100",
           "md:inline-flex md:items-center"

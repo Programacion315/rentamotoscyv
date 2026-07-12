@@ -35,7 +35,7 @@
 }
 
 @theme {
-  /* Colors — ElevenLabs editorial */
+  /* Colors — editorial neutrals + logo brand */
   --color-eggshell: #fdfcfc;
   --color-warm-taupe: #f5f3f1;
   --color-stone: #ebe8e4;
@@ -43,8 +43,9 @@
   --color-graphite: #44403b;
   --color-smoke: #777169;
   --color-ash: #a59f97;
-  --color-violet-spark: #0447ff;
-  --color-ember-orange: #ff4704;
+  --color-brand: #525082;
+  --color-brand-soft: color-mix(in srgb, #525082 12%, #fdfcfc);
+  --color-brand-muted: color-mix(in srgb, #525082 55%, #777169);
 
   /* Semantic aliases for gradual migration */
   --color-background: #fdfcfc;
@@ -58,7 +59,7 @@
   --color-on-surface-variant: #777169;
   --color-border-subtle: #ebe8e4;
   --color-outline: #ebe8e4;
-  --color-primary: #000000;
+  --color-primary: #525082;
   --color-on-primary: #fdfcfc;
   --color-secondary: #777169;
   --color-error: #ba1a1a;
@@ -158,7 +159,7 @@
   --card-foreground: #000000;
   --popover: #fdfcfc;
   --popover-foreground: #000000;
-  --primary: #000000;
+  --primary: #525082;
   --primary-foreground: #fdfcfc;
   --secondary: #f5f3f1;
   --secondary-foreground: #000000;
@@ -169,8 +170,8 @@
   --destructive: #ba1a1a;
   --border: #ebe8e4;
   --input: #ebe8e4;
-  --ring: #44403b;
-  --chart-1: #000000;
+  --ring: #525082;
+  --chart-1: #525082;
   --chart-2: #777169;
   --chart-3: #a59f97;
   --chart-4: #ebe8e4;
@@ -178,12 +179,12 @@
   --radius: 0.625rem;
   --sidebar: #fdfcfc;
   --sidebar-foreground: #000000;
-  --sidebar-primary: #000000;
+  --sidebar-primary: #525082;
   --sidebar-primary-foreground: #fdfcfc;
   --sidebar-accent: #f5f3f1;
   --sidebar-accent-foreground: #000000;
   --sidebar-border: #ebe8e4;
-  --sidebar-ring: #44403b;
+  --sidebar-ring: #525082;
 }
 
 /* Typography utilities */
@@ -316,13 +317,13 @@
   vertical-align: middle;
 }
 
-/* Soft product visual orb — decorative only */
+/* Soft brand orb — decorative only */
 .spark-orb {
   background: radial-gradient(
     circle at 35% 35%,
-    color-mix(in srgb, var(--color-violet-spark) 55%, transparent) 0%,
-    color-mix(in srgb, var(--color-ember-orange) 40%, transparent) 45%,
-    color-mix(in srgb, #ff8ab8 25%, transparent) 70%,
+    color-mix(in srgb, var(--color-brand) 55%, transparent) 0%,
+    color-mix(in srgb, var(--color-brand-muted) 40%, transparent) 45%,
+    color-mix(in srgb, var(--color-brand-soft) 70%, transparent) 70%,
     transparent 100%
   );
   filter: blur(2px);

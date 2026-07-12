@@ -49,7 +49,7 @@ export default function RentalDetailsClient({
               )}
               <div className="absolute top-4 left-4 z-[2] flex flex-wrap gap-2">
                 {product.is_featured ? (
-                  <span className="rounded-full bg-black px-3 py-1 font-label-caps text-white">
+                  <span className="rounded-full bg-primary px-3 py-1 font-label-caps text-primary-foreground">
                     Destacada
                   </span>
                 ) : null}
@@ -118,7 +118,7 @@ export default function RentalDetailsClient({
               href={wa}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-6 inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-black text-sm font-medium text-white transition-opacity hover:opacity-90"
+              className="mt-6 inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-primary text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
             >
               Consultar por WhatsApp
             </a>
