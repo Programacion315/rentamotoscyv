@@ -1,7 +1,7 @@
-import Image from "next/image"
 import Link from "next/link"
 import { SITE_NAME } from "@/app/(site)/components/BrandLogo"
 import { ProductCard } from "@/components/site/ProductCard"
+import { ProductMedia } from "@/components/site/ProductMedia"
 import { FaqAccordion } from "@/components/site/FaqAccordion"
 import { Section, SectionHeading } from "@/components/site/Section"
 import { getFeaturedProducts } from "@/lib/data/queries"
@@ -59,15 +59,12 @@ export default async function Home() {
           </div>
 
           <div className="animate-fade-rise animate-delay-2 relative lg:col-span-7">
-            <div className="spark-orb absolute -top-8 -right-6 size-[200px] opacity-50 md:size-[260px]" />
-            <div className="relative overflow-hidden rounded-[28px] bg-warm-taupe shadow-whisper md:rounded-[32px]">
+            <div className="relative overflow-hidden rounded-[28px] shadow-whisper md:rounded-[32px]">
               <div className="relative aspect-[4/3] md:aspect-[16/11]">
-                <Image
+                <ProductMedia
                   src="/motos/yamaha-fz25.webp"
                   alt="Motocicleta Yamaha lista para renta"
-                  fill
                   priority
-                  className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 60vw"
                 />
               </div>

@@ -3,7 +3,7 @@
 import Link from "next/link"
 import type { Product } from "@/lib/types"
 import { getProductImageUrl, whatsappHref } from "@/lib/types"
-import { SparkOrb } from "@/components/site/ProductCard"
+import { ProductMedia } from "@/components/site/ProductMedia"
 import { PageShell } from "@/components/site/Section"
 
 export default function RentalDetailsClient({
@@ -33,20 +33,13 @@ export default function RentalDetailsClient({
 
         <section className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12 lg:gap-10">
           <div className="flex flex-col gap-8 lg:col-span-7">
-            <div className="relative aspect-[4/3] overflow-hidden rounded-[24px] bg-warm-taupe md:aspect-[16/10]">
-              <SparkOrb className="-right-10 -top-8 size-[240px] opacity-60" />
-              {imageUrl ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={imageUrl}
-                  alt={product.name}
-                  className="relative z-[1] size-full object-cover"
-                />
-              ) : (
-                <div className="relative z-[1] flex size-full items-center justify-center text-ash">
-                  <span className="material-symbols-outlined text-5xl">two_wheeler</span>
-                </div>
-              )}
+            <div className="relative aspect-[4/3] overflow-hidden rounded-[24px] md:aspect-[16/10]">
+              <ProductMedia
+                src={imageUrl}
+                alt={product.name}
+                priority
+                sizes="(max-width: 1024px) 100vw, 60vw"
+              />
               <div className="absolute top-4 left-4 z-[2] flex flex-wrap gap-2">
                 {product.is_featured ? (
                   <span className="rounded-full bg-primary px-3 py-1 font-label-caps text-primary-foreground">

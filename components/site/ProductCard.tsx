@@ -1,19 +1,7 @@
 import Link from "next/link"
-import Image from "next/image"
 import { cn } from "@/lib/utils"
 import { getProductImageUrl, type Product } from "@/lib/types"
-
-export function SparkOrb({ className }: { className?: string }) {
-  return (
-    <div
-      aria-hidden
-      className={cn(
-        "spark-orb absolute rounded-full size-[180px] md:size-[220px] opacity-70",
-        className
-      )}
-    />
-  )
-}
+import { ProductMedia } from "@/components/site/ProductMedia"
 
 export function ProductCard({
   product,
@@ -35,23 +23,14 @@ export function ProductCard({
         className
       )}
     >
-      <div className="relative aspect-[4/3] overflow-hidden bg-stone/40">
-        <SparkOrb className="-right-8 -top-6" />
-        {imageUrl ? (
-          <Image
-            src={imageUrl}
-            alt={product.name}
-            fill
-            priority={priority}
-            loading={priority ? "eager" : "lazy"}
-            className="img-zoom object-cover"
-            sizes="(max-width: 768px) 100vw, 33vw"
-          />
-        ) : (
-          <div className="absolute inset-0 flex items-center justify-center text-ash">
-            <span className="material-symbols-outlined text-4xl">two_wheeler</span>
-          </div>
-        )}
+      <div className="relative aspect-[4/3] overflow-hidden">
+        <ProductMedia
+          src={imageUrl}
+          alt={product.name}
+          priority={priority}
+          sizes="(max-width: 768px) 100vw, 33vw"
+          imageClassName="img-zoom"
+        />
       </div>
       <div className="flex flex-1 flex-col gap-2 p-6">
         {product.brand ? (
