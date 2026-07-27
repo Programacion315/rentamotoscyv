@@ -83,20 +83,7 @@ export default function NavbarAuth({
   }
 
   if (!user) {
-    return (
-      <Link
-        href="/admin/login"
-        onClick={onNavigate}
-        className={cn(
-          "inline-flex h-9 items-center justify-center rounded-full px-4 text-[13px] font-medium transition-colors",
-          light
-            ? "border border-white/35 bg-white/10 text-white backdrop-blur-sm hover:bg-white/20"
-            : "border border-stone bg-eggshell text-ink hover:bg-warm-taupe"
-        )}
-      >
-        Iniciar sesión
-      </Link>
-    )
+    return null
   }
 
   return (

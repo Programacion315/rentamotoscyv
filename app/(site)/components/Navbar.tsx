@@ -5,6 +5,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import NavbarAuth from "@/app/(site)/components/NavbarAuth"
 import { BrandLogo, SITE_NAME } from "@/app/(site)/components/BrandLogo"
+import { whatsappHref } from "@/lib/types"
 import { cn } from "@/lib/utils"
 
 const navLinks = [
@@ -128,7 +129,9 @@ export default function Navbar() {
               <NavbarAuth light={overHero} />
             </div>
             <Link
-              href="/catalog"
+              href={whatsappHref("573218449988", "Hola, me gustaría reservar una moto")}
+              target="_blank"
+              rel="noopener noreferrer"
               className={cn(
                 "hidden items-center justify-center gap-1.5 rounded-full px-5 py-2.5",
                 "text-[13px] font-medium tracking-wide",
@@ -205,7 +208,9 @@ export default function Navbar() {
         <div className="mt-auto flex flex-col gap-3">
           <NavbarAuth onNavigate={() => setIsOpen(false)} />
           <Link
-            href="/catalog"
+            href={whatsappHref("573218449988", "Hola, me gustaría reservar una moto")}
+            target="_blank"
+            rel="noopener noreferrer"
             onClick={() => setIsOpen(false)}
             className="flex w-full items-center justify-center gap-2 rounded-full bg-primary py-3.5 text-sm font-medium text-primary-foreground shadow-[0_2px_8px_rgba(51,63,123,0.25)]"
           >
