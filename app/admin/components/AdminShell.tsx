@@ -77,8 +77,8 @@ export function AdminShell({
           open ? "translate-x-0" : "-translate-x-full"
         )}
       >
-        <Link href="/admin" className="mb-8 hidden items-center gap-2.5 md:flex">
-          <BrandLogo size={32} />
+        <Link href="/admin" className="mb-8 hidden items-center gap-3 md:flex">
+          <BrandLogo size={44} />
           <div>
             <p className="font-label-caps text-ash">Admin</p>
             <p className="font-button text-sm text-ink">{SITE_NAME}</p>

@@ -38,7 +38,7 @@ export function NotFoundContent() {
         <div className="animate-fade-rise animate-delay-3 mt-10">
           <Link
             href="/"
-            className="inline-flex h-11 items-center justify-center gap-1.5 rounded-full bg-primary px-7 text-sm font-medium text-primary-foreground shadow-[0_2px_8px_rgba(82,80,130,0.25)] transition-opacity hover:opacity-90"
+            className="inline-flex h-11 items-center justify-center gap-1.5 rounded-full bg-primary px-7 text-sm font-medium text-primary-foreground shadow-[0_2px_8px_rgba(51,63,123,0.25)] transition-opacity hover:opacity-90"
           >
             Volver al inicio
           </Link>

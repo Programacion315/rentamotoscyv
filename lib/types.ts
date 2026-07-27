@@ -43,7 +43,7 @@ export type Product = {
   name: string
   brand: string
   description: string
-  location_id: string
+  location_id: string | null
   image_path: string | null
   category: string | null
   is_featured: boolean
@@ -65,8 +65,8 @@ export type ProductTableRow = {
   image_path: string | null
   is_featured: boolean
   is_active: boolean
-  location_id: string
-  location_name: string
+  location_id: string | null
+  location_name: string | null
   updated_at: string | null
 }
 
@@ -112,6 +112,16 @@ export function slugify(value: string): string {
     .trim()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "")
+}
+
+/** Formats a raw WhatsApp number (e.g. "573158830794") for display: "+57 315 883 0794" */
+export function formatWhatsappDisplay(whatsapp: string): string {
+  const digits = whatsapp.replace(/\D/g, "")
+  if (digits.startsWith("57") && digits.length === 12) {
+    const n = digits.slice(2)
+    return `+57 ${n.slice(0, 3)} ${n.slice(3, 6)} ${n.slice(6)}`
+  }
+  return `+${digits}`
 }
 
 export function whatsappHref(whatsapp: string, message?: string): string {

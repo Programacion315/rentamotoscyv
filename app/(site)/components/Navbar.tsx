@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import NavbarAuth from "@/app/(site)/components/NavbarAuth"
-import { BrandLogo } from "@/app/(site)/components/BrandLogo"
+import { BrandLogo, SITE_NAME } from "@/app/(site)/components/BrandLogo"
 import { cn } from "@/lib/utils"
 
 const navLinks = [
@@ -18,10 +18,11 @@ export default function Navbar() {
   const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const isAbout = pathname === "/about"
+  // Pages with a full-bleed hero that pulls under the fixed nav
+  const hasHero = pathname === "/" || pathname === "/about"
 
-  // On Acerca de: glass over hero until scroll. Elsewhere: light frosted bar.
-  const overHero = isAbout && !scrolled
+  // Over a hero: glass over the photo until scroll. Elsewhere: light frosted bar.
+  const overHero = hasHero && !scrolled
 
   useEffect(() => {
     let ticking = false
@@ -54,25 +55,44 @@ export default function Navbar() {
     <>
       <nav
         className={cn(
-          "fixed top-0 right-0 left-0 z-50 h-14",
+          "fixed top-0 right-0 left-0 z-50 h-20",
           "transition-[background-color,border-color,backdrop-filter,box-shadow] duration-300 ease-out",
           overHero
-            ? "border-b border-transparent bg-black/30 backdrop-blur-md supports-backdrop-filter:bg-black/25"
+            ? "border-b border-transparent bg-transparent"
             : scrolled
-              ? "border-b border-stone/60 bg-eggshell/85 shadow-[0_1px_0_rgba(0,0,0,0.04)] backdrop-blur-md"
+              ? "border-b border-transparent bg-eggshell/85 backdrop-blur-md"
               : "border-b border-transparent bg-transparent"
         )}
       >
+        {/* Over-hero backdrop: subtle blur + dark gradient that fades into the photo (no hard edge) */}
+        <div
+          aria-hidden
+          className={cn(
+            "pointer-events-none absolute inset-x-0 top-0 -z-10 h-32",
+            "bg-linear-to-b from-black/45 via-black/20 to-transparent",
+            "backdrop-blur-[3px] [mask-image:linear-gradient(to_bottom,black_35%,transparent)]",
+            "transition-opacity duration-300",
+            overHero ? "opacity-100" : "opacity-0"
+          )}
+        />
         <div className="mx-auto flex h-full max-w-container-max items-center justify-between px-margin-mobile md:px-margin-desktop">
-          <Link href="/" className="flex shrink-0 items-center gap-2.5">
-            <BrandLogo size={32} priority className="shrink-0" />
+          <Link href="/" className="flex shrink-0 items-center gap-3">
+            <BrandLogo
+              size={72}
+              priority
+              className={cn(
+                "shrink-0 transition-[filter] duration-300",
+                // White logo while the glass nav sits over the dark hero photo
+                overHero && "brightness-0 invert drop-shadow-[0_1px_6px_rgba(0,0,0,0.35)]"
+              )}
+            />
             <span
               className={cn(
-                "hidden font-button sm:inline transition-colors duration-300",
+                "hidden text-[15px] font-semibold tracking-tight sm:inline transition-colors duration-300",
                 overHero ? "text-white" : "text-ink"
               )}
             >
-              Renta Motos CyV
+              {SITE_NAME}
             </span>
           </Link>
 
@@ -110,7 +130,7 @@ export default function Navbar() {
                 "active:scale-[0.98] md:inline-flex",
                   overHero
                   ? "bg-white text-black shadow-[0_2px_12px_rgba(0,0,0,0.25)] hover:opacity-95"
-                  : "bg-primary text-primary-foreground shadow-[0_2px_8px_rgba(82,80,130,0.25)] hover:opacity-90 hover:shadow-[0_4px_14px_rgba(82,80,130,0.35)]"
+                  : "bg-primary text-primary-foreground shadow-[0_2px_8px_rgba(51,63,123,0.25)] hover:opacity-90 hover:shadow-[0_4px_14px_rgba(51,63,123,0.35)]"
               )}
             >
               Reservar
@@ -133,8 +153,8 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Spacer — about hero pulls under nav with -mt-14 */}
-      {!isAbout ? <div className="h-14" aria-hidden /> : null}
+      {/* Spacer — hero pages pull under nav with -mt-20 */}
+      {!hasHero ? <div className="h-20" aria-hidden /> : null}
 
       {isOpen ? (
         <div
@@ -151,8 +171,9 @@ export default function Navbar() {
         )}
       >
         <div className="mb-10 flex items-center justify-between">
-          <Link href="/" onClick={() => setIsOpen(false)} className="flex items-center gap-2">
-            <BrandLogo size={36} />
+          <Link href="/" onClick={() => setIsOpen(false)} className="flex items-center gap-2.5">
+            <BrandLogo size={64} />
+            <span className="text-[15px] font-semibold tracking-tight text-ink">{SITE_NAME}</span>
           </Link>
           <button type="button" onClick={() => setIsOpen(false)} aria-label="Cerrar menú">
             <span className="material-symbols-outlined text-2xl">close</span>
@@ -180,7 +201,7 @@ export default function Navbar() {
           <Link
             href="/catalog"
             onClick={() => setIsOpen(false)}
-            className="flex w-full items-center justify-center gap-2 rounded-full bg-primary py-3.5 text-sm font-medium text-primary-foreground shadow-[0_2px_8px_rgba(82,80,130,0.25)]"
+            className="flex w-full items-center justify-center gap-2 rounded-full bg-primary py-3.5 text-sm font-medium text-primary-foreground shadow-[0_2px_8px_rgba(51,63,123,0.25)]"
           >
             Reservar
             <span className="material-symbols-outlined text-[18px]">arrow_forward</span>

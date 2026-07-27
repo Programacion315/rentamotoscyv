@@ -72,7 +72,9 @@ export function createProductColumns(
       accessorKey: "location_name",
       id: "location",
       header: "Ciudad",
-      cell: ({ row }) => <span className="text-graphite">{row.original.location_name}</span>,
+      cell: ({ row }) => (
+        <span className="text-graphite">{row.original.location_name ?? "—"}</span>
+      ),
       enableSorting: false,
     },
     {

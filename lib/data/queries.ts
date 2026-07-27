@@ -21,6 +21,21 @@ export async function getActiveLocations(): Promise<Location[]> {
   return data ?? []
 }
 
+/** Active cities for catalog filter — empty when no active moto has a location. */
+export async function getCatalogFilterLocations(): Promise<Location[]> {
+  const supabase = await createClient()
+  const { count, error: countError } = await supabase
+    .from("products")
+    .select("id", { count: "exact", head: true })
+    .eq("is_active", true)
+    .not("location_id", "is", null)
+
+  if (countError) throw countError
+  if (!count) return []
+
+  return getActiveLocations()
+}
+
 export async function getAllLocationsAdmin(): Promise<Location[]> {
   const supabase = await createClient()
   const { data, error } = await supabase
@@ -127,9 +142,66 @@ export type PageResult<T> = {
 function sanitizeSearch(q: string | undefined | null): string {
   return String(q ?? "")
     .trim()
-    .replace(/[%_,.()]/g, " ")
+    .replace(/[%_,.():"'\\]/g, " ")
     .replace(/\s+/g, " ")
     .slice(0, 80)
+}
+
+const SEARCH_MAX_TOKENS = 5
+
+/** Splits a sanitized search into individual words (each must match somewhere). */
+function searchTokens(search: string): string[] {
+  return search.split(" ").filter(Boolean).slice(0, SEARCH_MAX_TOKENS)
+}
+
+type SupabaseServerClient = Awaited<ReturnType<typeof createClient>>
+
+/**
+ * Per-token product ids whose specs (label/value, e.g. "Cilindraje" / "125cc")
+ * or feature labels match. Lets the main query OR them in alongside columns.
+ */
+async function getSpecFeatureTokenMatches(
+  supabase: SupabaseServerClient,
+  tokens: string[]
+): Promise<Map<string, Set<string>>> {
+  const matches = new Map<string, Set<string>>(tokens.map((t) => [t, new Set<string>()]))
+  if (tokens.length === 0) return matches
+
+  const specOr = tokens.map((t) => `label.ilike."%${t}%",value.ilike."%${t}%"`).join(",")
+  const featureOr = tokens.map((t) => `label.ilike."%${t}%"`).join(",")
+  const [specs, features] = await Promise.all([
+    supabase.from("product_specs").select("product_id, label, value").or(specOr).limit(2000),
+    supabase.from("product_features").select("product_id, label").or(featureOr).limit(2000),
+  ])
+  if (specs.error) throw specs.error
+  if (features.error) throw features.error
+
+  for (const token of tokens) {
+    const needle = token.toLowerCase()
+    const ids = matches.get(token)!
+    for (const row of specs.data ?? []) {
+      if (
+        row.label?.toLowerCase().includes(needle) ||
+        row.value?.toLowerCase().includes(needle)
+      ) {
+        ids.add(row.product_id)
+      }
+    }
+    for (const row of features.data ?? []) {
+      if (row.label?.toLowerCase().includes(needle)) ids.add(row.product_id)
+    }
+  }
+  return matches
+}
+
+/** OR filter for one token: any listed column matches, or the id is a spec/feature hit. */
+function tokenOrFilter(token: string, columns: string[], extraIds?: Set<string>): string {
+  const pattern = `"%${token}%"`
+  const parts = columns.map((col) => `${col}.ilike.${pattern}`)
+  if (extraIds && extraIds.size > 0) {
+    parts.push(`id.in.(${[...extraIds].join(",")})`)
+  }
+  return parts.join(",")
 }
 
 function mapAdminTableRow(row: unknown): ProductTableRow {
@@ -142,7 +214,7 @@ function mapAdminTableRow(row: unknown): ProductTableRow {
     image_path: string | null
     is_active: boolean
     is_featured: boolean
-    location_id: string
+    location_id: string | null
     updated_at: string | null
     locations: { name: string } | { name: string }[] | null
   }
@@ -157,7 +229,7 @@ function mapAdminTableRow(row: unknown): ProductTableRow {
     is_active: r.is_active,
     is_featured: r.is_featured,
     location_id: r.location_id,
-    location_name: loc?.name ?? "Sin ciudad",
+    location_name: loc?.name ?? null,
     updated_at: r.updated_at,
   }
 }
@@ -226,10 +298,18 @@ export async function getCatalogProductsPage({
   }
 
   if (search) {
-    const pattern = `"%${search}%"`
-    const orFilter = `name.ilike.${pattern},brand.ilike.${pattern},category.ilike.${pattern}`
-    countQuery = countQuery.or(orFilter)
-    dataQuery = dataQuery.or(orFilter)
+    const tokens = searchTokens(search)
+    const specMatches = await getSpecFeatureTokenMatches(supabase, tokens)
+    // One .or() per word — chained filters AND together, so every word must match
+    for (const token of tokens) {
+      const orFilter = tokenOrFilter(
+        token,
+        ["name", "brand", "category", "slug"],
+        specMatches.get(token)
+      )
+      countQuery = countQuery.or(orFilter)
+      dataQuery = dataQuery.or(orFilter)
+    }
   }
 
   const [countRes, dataRes] = await Promise.all([countQuery, dataQuery])
@@ -245,7 +325,7 @@ export async function getCatalogProductsPage({
     brand: string
     image_path: string | null
     category: string | null
-    location_id: string
+    location_id: string | null
     is_featured: boolean
     is_active: boolean
     locations: Product["locations"] | Product["locations"][] | null
@@ -372,10 +452,18 @@ export async function getProductsAdminTablePage({
   }
 
   if (search) {
-    const pattern = `"%${search}%"`
-    const orFilter = `name.ilike.${pattern},brand.ilike.${pattern},slug.ilike.${pattern},category.ilike.${pattern}`
-    countQuery = countQuery.or(orFilter)
-    dataQuery = dataQuery.or(orFilter)
+    const tokens = searchTokens(search)
+    const specMatches = await getSpecFeatureTokenMatches(supabase, tokens)
+    // One .or() per word — chained filters AND together, so every word must match
+    for (const token of tokens) {
+      const orFilter = tokenOrFilter(
+        token,
+        ["name", "brand", "slug", "category"],
+        specMatches.get(token)
+      )
+      countQuery = countQuery.or(orFilter)
+      dataQuery = dataQuery.or(orFilter)
+    }
   }
 
   const [countRes, dataRes] = await Promise.all([countQuery, dataQuery])

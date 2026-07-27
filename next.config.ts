@@ -14,6 +14,17 @@ const supabaseHost = supabaseHostname();
 
 const nextConfig: NextConfig = {
   images: {
+    // localPatterns: /assets allows the ?v=N cache-bust query (logo), everything else query-less
+    localPatterns: [
+      {
+        pathname: "/assets/**",
+        search: "?v=2",
+      },
+      {
+        pathname: "/**",
+        search: "",
+      },
+    ],
     remotePatterns: [
       ...(supabaseHost
         ? [

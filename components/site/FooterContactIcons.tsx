@@ -152,9 +152,9 @@ export function FooterIconLink({
       {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
       className={cn(
         "group/icon flex size-9 items-center justify-center rounded-full",
-        "border border-stone bg-eggshell text-graphite",
+        "border border-white/15 bg-white/5 text-white/70",
         "transition-[color,background-color,border-color,transform] duration-200",
-        "hover:border-ink hover:bg-warm-taupe hover:text-ink",
+        "hover:border-white/40 hover:bg-white/15 hover:text-white",
         "active:scale-[0.97]"
       )}
     >

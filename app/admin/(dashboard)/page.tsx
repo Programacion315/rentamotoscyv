@@ -5,7 +5,7 @@ export default function AdminHomePage() {
     { href: "/admin/products", title: "Productos", desc: "Motos, specs, features e imágenes" },
     { href: "/admin/locations", title: "Ubicaciones", desc: "Ciudades para filtrar el catálogo" },
     { href: "/admin/sedes", title: "Sedes", desc: "Direcciones y mapas por ubicación" },
-    { href: "/admin/contact", title: "Contacto y redes", desc: "Teléfono, email, WhatsApp y socials" },
+    { href: "/admin/contact", title: "Contacto y redes", desc: "Teléfono, WhatsApp y socials" },
   ]
 
   return (

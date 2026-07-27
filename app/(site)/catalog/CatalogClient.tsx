@@ -4,7 +4,6 @@ import { useCallback, useTransition } from "react"
 import { useRouter } from "next/navigation"
 import { ProductCard } from "@/components/site/ProductCard"
 import { Pagination } from "@/components/site/Pagination"
-import { PageShell } from "@/components/site/Section"
 import { Input } from "@/components/ui/input"
 import { useDebouncedUrlSearch } from "@/lib/use-debounced-url-search"
 import { cn } from "@/lib/utils"
@@ -78,14 +77,19 @@ export default function CatalogClient({
       : "Vuelve pronto o escríbenos por WhatsApp."
 
   return (
-    <PageShell>
+    <div className="mx-auto w-full max-w-container-max px-margin-mobile py-12 md:px-margin-desktop md:py-16">
       <div className="mb-10 max-w-2xl animate-fade-rise">
-        <p className="font-label-caps text-ash mb-3">Catálogo</p>
-        <h1 className="font-display-lg text-[36px] md:text-[48px] text-ink">
+        <p className="mb-3 flex items-center gap-2.5 font-label-caps text-ash">
+          <span aria-hidden className="h-[2px] w-7 rounded-full bg-brand" />
+          Catálogo
+        </p>
+        <h1 className="font-display-lg text-[36px] text-ink md:text-[48px]">
           Elige tu motocicleta
         </h1>
         <p className="mt-4 font-body text-smoke">
-          Flota activa en Bogotá y Neiva. Busca, filtra por ciudad y reserva por WhatsApp.
+          {locations.length > 0
+            ? "Flota activa en Bogotá y Neiva. Busca, filtra por ciudad y reserva por WhatsApp."
+            : "Busca por modelo o marca y reserva por WhatsApp."}
         </p>
       </div>
 
@@ -103,8 +107,8 @@ export default function CatalogClient({
               className={cn(
                 "rounded-full border px-4 py-2 font-button transition-colors",
                 !citySlug
-                  ? "border-primary bg-primary text-primary-foreground"
-                  : "border-[#e5e5e5] bg-eggshell text-ink hover:bg-warm-taupe"
+                  ? "border-brand bg-brand text-white"
+                  : "border-stone bg-eggshell text-ink hover:border-brand/40 hover:bg-warm-taupe"
               )}
             >
               Todas
@@ -117,22 +121,31 @@ export default function CatalogClient({
                 className={cn(
                   "rounded-full border px-4 py-2 font-button transition-colors",
                   citySlug === loc.slug
-                    ? "border-primary bg-primary text-primary-foreground"
-                    : "border-[#e5e5e5] bg-eggshell text-ink hover:bg-warm-taupe"
+                    ? "border-brand bg-brand text-white"
+                    : "border-stone bg-eggshell text-ink hover:border-brand/40 hover:bg-warm-taupe"
                 )}
               >
                 {loc.name}
               </button>
             ))}
           </div>
-        ) : (
-          <div />
-        )}
+        ) : null}
 
-        <div className="w-full shrink-0 sm:max-w-xs md:max-w-sm">
+        <div
+          className={cn(
+            "relative w-full",
+            locations.length > 0 && "shrink-0 sm:max-w-xs md:max-w-sm"
+          )}
+        >
           <label htmlFor="catalog-search" className="sr-only">
             Buscar motos
           </label>
+          <span
+            aria-hidden
+            className="material-symbols-outlined pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-[18px] text-ash"
+          >
+            search
+          </span>
           <Input
             id="catalog-search"
             type="search"
@@ -140,13 +153,14 @@ export default function CatalogClient({
             onChange={(e) => setSearchInput(e.target.value)}
             onBlur={commitNow}
             placeholder="Buscar por modelo o marca…"
-            className="h-11 rounded-full border-[#e5e5e5] bg-eggshell px-4 text-base md:text-sm"
+            className="h-11 rounded-full border-stone bg-eggshell pr-4 pl-11 text-base md:text-sm"
           />
         </div>
       </div>
 
       {total > 0 ? (
-        <p className="mb-4 font-meta text-[12px] text-ash">
+        <p className="mb-4 flex items-center gap-2 font-meta text-[12px] text-ash">
+          <span aria-hidden className="h-[2px] w-4 rounded-full bg-brand/70" />
           {total} moto{total === 1 ? "" : "s"}
           {hasFilters
             ? total === 1
@@ -172,7 +186,13 @@ export default function CatalogClient({
           ))}
         </div>
       ) : (
-        <div className="rounded-[24px] bg-warm-taupe px-8 py-16 text-center">
+        <div className="rounded-[24px] border border-stone bg-warm-taupe px-8 py-16 text-center">
+          <span
+            aria-hidden
+            className="material-symbols-outlined mx-auto mb-4 flex size-14 items-center justify-center rounded-full bg-brand/10 text-[28px] text-brand"
+          >
+            two_wheeler
+          </span>
           <p className="font-heading-sm text-[24px] text-ink">{emptyTitle}</p>
           <p className="mt-3 font-body-sm text-smoke">{emptyBody}</p>
         </div>
@@ -189,6 +209,6 @@ export default function CatalogClient({
           })
         }
       />
-    </PageShell>
+    </div>
   )
 }

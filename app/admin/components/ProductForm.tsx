@@ -99,14 +99,16 @@ export function ProductForm({
                 hint="Aparece como etiqueta pequeña."
               />
               <div className="flex flex-col gap-1.5">
-                <Label htmlFor="location_id">Ciudad</Label>
+                <Label htmlFor="location_id">Ciudad (opcional)</Label>
                 <FormSelect
                   id="location_id"
                   name="location_id"
-                  required
-                  placeholder="¿En qué ciudad está?"
-                  defaultValue={product?.location_id}
-                  options={locations.map((l) => ({ value: l.id, label: l.name }))}
+                  placeholder="Sin ciudad"
+                  defaultValue={product?.location_id ?? "__none__"}
+                  options={[
+                    { value: "__none__", label: "Sin ciudad" },
+                    ...locations.map((l) => ({ value: l.id, label: l.name })),
+                  ]}
                 />
               </div>
               <div className="flex flex-col gap-1.5 sm:col-span-2">

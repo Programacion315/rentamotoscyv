@@ -48,7 +48,7 @@ function PaginationLink({
 }) {
   if (disabled) {
     return (
-      <span className="rounded-full border border-[#e5e5e5] px-4 py-2 font-button text-ash opacity-50">
+      <span className="rounded-full border border-stone px-4 py-2 font-button text-ash opacity-50">
         {children}
       </span>
     )
@@ -58,7 +58,7 @@ function PaginationLink({
     <Link
       href={href}
       rel={rel}
-      className="rounded-full border border-[#e5e5e5] bg-eggshell px-4 py-2 font-button text-ink transition-colors hover:bg-warm-taupe"
+      className="rounded-full border border-stone bg-eggshell px-4 py-2 font-button text-ink transition-colors hover:border-brand/40 hover:bg-warm-taupe"
       scroll={false}
     >
       {children}

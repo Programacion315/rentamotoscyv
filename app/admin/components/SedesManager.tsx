@@ -302,7 +302,7 @@ function SedeEditor({
             id={sede ? `name-${sede.id}` : "name-new"}
             name="name"
             defaultValue={sede?.name ?? ""}
-            placeholder="Ej. Renta Motos CyV Bogotá"
+            placeholder="Ej. Rentamotos CyV Bogotá"
             required
             className="rounded-[4px] bg-eggshell text-base md:text-sm"
           />

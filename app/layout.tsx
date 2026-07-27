@@ -1,49 +1,37 @@
 import type { Metadata } from "next"
-import { Outfit, Inter, Geist_Mono } from "next/font/google"
+import localFont from "next/font/local"
 import AuthHashHandler from "@/app/(site)/components/AuthHashHandler"
 import "./globals.css"
 import { cn } from "@/lib/utils"
 
-const outfit = Outfit({
-  subsets: ["latin"],
-  weight: ["300"],
-  variable: "--font-outfit",
-  display: "swap",
-})
-
-const inter = Inter({
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-inter",
-  display: "swap",
-})
-
-const geistMono = Geist_Mono({
-  subsets: ["latin"],
-  weight: ["400"],
-  variable: "--font-geist-mono",
+// Single global typeface — Suisse Intl Regular (weights are synthesized by the browser)
+const suisse = localFont({
+  src: "../public/fonts/SuisseIntl-Regular.ttf",
+  weight: "400",
+  variable: "--font-suisse",
   display: "swap",
 })
 
 export const metadata: Metadata = {
-  title: "Renta Motos CyV — Renta de Motocicletas",
+  title: "Rentamotos CyV — Renta de Motocicletas",
   description:
     "Alquiler de motocicletas en Bogotá y Neiva. Mantenimiento certificado y atención personalizada.",
 }
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html
-      lang="es"
-      className={cn("h-full antialiased", outfit.variable, inter.variable, geistMono.variable)}
-    >
+    <html lang="es" className={cn("h-full antialiased", suisse.variable)}>
       <head>
         <link
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
           rel="stylesheet"
         />
       </head>
-      <body className="min-h-full flex flex-col bg-eggshell text-ink font-sans">
+      {/* suppressHydrationWarning: browser extensions (e.g. ColorZilla) inject body attributes before React hydrates */}
+      <body
+        suppressHydrationWarning
+        className="min-h-full flex flex-col bg-eggshell text-ink font-sans"
+      >
         <AuthHashHandler />
         {children}
       </body>

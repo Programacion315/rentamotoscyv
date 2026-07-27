@@ -1,4 +1,4 @@
-import { getActiveLocations, getCatalogProductsPage } from "@/lib/data/queries"
+import { getCatalogFilterLocations, getCatalogProductsPage } from "@/lib/data/queries"
 import CatalogClient from "./CatalogClient"
 
 type SearchParams = Promise<{
@@ -22,10 +22,14 @@ export default async function CatalogPage({
   const citySlug = first(params.city).trim().toLowerCase() || null
   const page = Math.max(1, Number.parseInt(first(params.page), 10) || 1)
 
-  const [result, locations] = await Promise.all([
-    getCatalogProductsPage({ page, citySlug, q: q || null }),
-    getActiveLocations(),
-  ])
+  const locations = await getCatalogFilterLocations()
+  const effectiveCity = locations.length > 0 ? citySlug : null
+
+  const result = await getCatalogProductsPage({
+    page,
+    citySlug: effectiveCity,
+    q: q || null,
+  })
 
   return (
     <CatalogClient
@@ -35,7 +39,7 @@ export default async function CatalogPage({
       page={result.page}
       totalPages={result.totalPages}
       q={q}
-      citySlug={citySlug}
+      citySlug={effectiveCity}
     />
   )
 }

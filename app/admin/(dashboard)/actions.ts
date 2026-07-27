@@ -141,12 +141,11 @@ export async function updateSiteContact(
 ): Promise<ActionResult> {
   const { supabase } = await requireAdmin()
   const phone = String(formData.get("phone") ?? "").trim()
-  const email = String(formData.get("email") ?? "").trim()
   const whatsapp = String(formData.get("whatsapp") ?? "").replace(/\D/g, "")
 
   const { error } = await supabase
     .from("site_contact")
-    .upsert({ id: 1, phone, email, whatsapp })
+    .upsert({ id: 1, phone, email: "", whatsapp })
 
   if (error) return { error: error.message }
   revalidatePublic()
@@ -240,15 +239,17 @@ export async function upsertProduct(
   const name = String(formData.get("name") ?? "").trim()
   const brand = String(formData.get("brand") ?? "").trim()
   const description = String(formData.get("description") ?? "").trim()
-  const location_id = String(formData.get("location_id") ?? "")
+  const locationRaw = String(formData.get("location_id") ?? "").trim()
+  const location_id =
+    !locationRaw || locationRaw === "__none__" ? null : locationRaw
   const category = String(formData.get("category") ?? "").trim() || null
   const slugInput = String(formData.get("slug") ?? "").trim()
   const is_featured = formData.get("is_featured") === "on"
   const is_active = formData.get("is_active") === "on"
   const image = formData.get("image")
 
-  if (!name || !brand || !location_id) {
-    return { error: "Nombre, marca y ubicación son obligatorios." }
+  if (!name || !brand) {
+    return { error: "Nombre y marca son obligatorios." }
   }
 
   const slug = slugify(slugInput || name)

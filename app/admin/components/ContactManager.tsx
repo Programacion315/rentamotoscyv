@@ -57,8 +57,7 @@ export function ContactManager({
         <header className="mb-6 max-w-xl">
           <h1 className="font-heading text-[28px] text-ink md:text-[32px]">Contacto del sitio</h1>
           <p className="mt-2 font-body-sm leading-relaxed text-smoke">
-            Teléfono, correo y WhatsApp que ven los clientes. El botón verde de WhatsApp usa estos
-            datos.
+            Teléfono y WhatsApp que ven los clientes. El botón verde de WhatsApp usa estos datos.
           </p>
         </header>
         <ContactEditor action={updateContactAction} contact={contact} />
@@ -199,7 +198,7 @@ function ContactEditor({
         </p>
       ) : null}
 
-      <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+      <div className="grid gap-5 md:grid-cols-2">
         <div className="flex flex-col gap-1.5">
           <Label htmlFor="phone">Teléfono</Label>
           <Input
@@ -212,17 +211,6 @@ function ContactEditor({
           <p className="font-meta text-[12px] text-ash">Se muestra en el pie y Contacto.</p>
         </div>
         <div className="flex flex-col gap-1.5">
-          <Label htmlFor="email">Correo electrónico</Label>
-          <Input
-            id="email"
-            name="email"
-            type="email"
-            defaultValue={contact?.email ?? ""}
-            placeholder="info@tudominio.com"
-            className="rounded-[4px] bg-eggshell text-base md:text-sm"
-          />
-        </div>
-        <div className="flex flex-col gap-1.5 md:col-span-2 xl:col-span-1">
           <Label htmlFor="whatsapp">WhatsApp</Label>
           <Input
             id="whatsapp"

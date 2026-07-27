@@ -91,7 +91,7 @@ export default function NavbarAuth({
           "inline-flex h-9 items-center justify-center rounded-full px-4 text-[13px] font-medium transition-colors",
           light
             ? "border border-white/35 bg-white/10 text-white backdrop-blur-sm hover:bg-white/20"
-            : "border border-[#e5e5e5] bg-eggshell text-ink hover:bg-warm-taupe"
+            : "border border-stone bg-eggshell text-ink hover:bg-warm-taupe"
         )}
       >
         Iniciar sesión
@@ -108,7 +108,7 @@ export default function NavbarAuth({
           "flex h-9 items-center gap-2 rounded-full px-3 text-sm font-medium transition-colors",
           light
             ? "border border-white/35 bg-white/10 text-white hover:bg-white/20"
-            : "border border-[#e5e5e5] bg-eggshell text-ink hover:bg-warm-taupe"
+            : "border border-stone bg-eggshell text-ink hover:bg-warm-taupe"
         )}
         aria-expanded={open}
         aria-haspopup="menu"
