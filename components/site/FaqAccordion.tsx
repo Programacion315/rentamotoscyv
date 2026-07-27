@@ -16,36 +16,47 @@ export function FaqAccordion({ items }: { items: FaqItem[] }) {
           <div
             key={item.q}
             className={cn(
-              "overflow-hidden rounded-[20px] border border-stone bg-eggshell transition-colors duration-200",
-              isOpen && "bg-warm-taupe/40"
+              "overflow-hidden rounded-[16px] border bg-eggshell transition-all duration-300",
+              isOpen
+                ? "border-brand/30 shadow-[0_4px_16px_rgba(51,63,123,0.08)]"
+                : "border-stone hover:border-stone/80"
             )}
           >
             <button
               type="button"
               aria-expanded={isOpen}
               onClick={() => setOpenIndex(isOpen ? null : index)}
-              className="flex w-full cursor-pointer items-center justify-between gap-4 px-5 py-4 text-left md:px-6 md:py-5"
+              className="flex w-full cursor-pointer items-center justify-between gap-4 px-6 py-5 text-left"
             >
-              <span className="font-body font-medium text-ink">{item.q}</span>
+              <span className={cn(
+                "font-body font-medium transition-colors duration-200",
+                isOpen ? "text-brand" : "text-ink"
+              )}>
+                {item.q}
+              </span>
               <span
                 className={cn(
-                  "material-symbols-outlined shrink-0 text-smoke transition-transform duration-300 ease-out motion-reduce:transition-none",
-                  isOpen && "rotate-180"
+                  "flex size-8 shrink-0 items-center justify-center rounded-full transition-all duration-300",
+                  isOpen
+                    ? "bg-brand text-white rotate-180"
+                    : "bg-warm-taupe text-smoke"
                 )}
               >
-                expand_more
+                <span className="material-symbols-outlined text-[18px]">expand_more</span>
               </span>
             </button>
             <div
               className={cn(
-                "grid transition-[grid-template-rows] duration-300 ease-out motion-reduce:transition-none",
+                "grid transition-[grid-template-rows] duration-300 ease-out",
                 isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
               )}
             >
               <div className="overflow-hidden">
-                <p className="max-w-2xl px-5 pb-5 font-body-sm leading-relaxed text-smoke md:px-6 md:pb-6">
-                  {item.a}
-                </p>
+                <div className="border-t border-stone/60 px-6 py-5">
+                  <p className="max-w-2xl font-body-sm leading-relaxed text-smoke">
+                    {item.a}
+                  </p>
+                </div>
               </div>
             </div>
           </div>

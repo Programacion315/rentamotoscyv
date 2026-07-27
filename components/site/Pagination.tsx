@@ -20,15 +20,15 @@ export function Pagination({
   return (
     <nav
       aria-label="Paginación"
-      className={cn("mt-10 flex items-center justify-center gap-2", className)}
+      className={cn("mt-12 flex items-center justify-center gap-3", className)}
     >
-      <PaginationLink href={hrefForPage(prev)} disabled={page <= 1} rel="prev">
+      <PaginationLink href={hrefForPage(prev)} disabled={page <= 1} rel="prev" direction="prev">
         Anterior
       </PaginationLink>
-      <span className="min-w-[5rem] text-center font-meta text-[12px] text-ash">
+      <span className="flex h-10 min-w-[5rem] items-center justify-center rounded-full bg-warm-taupe px-4 font-button text-smoke">
         {page} / {totalPages}
       </span>
-      <PaginationLink href={hrefForPage(next)} disabled={page >= totalPages} rel="next">
+      <PaginationLink href={hrefForPage(next)} disabled={page >= totalPages} rel="next" direction="next">
         Siguiente
       </PaginationLink>
     </nav>
@@ -40,16 +40,24 @@ function PaginationLink({
   disabled,
   children,
   rel,
+  direction,
 }: {
   href: string
   disabled?: boolean
   children: React.ReactNode
   rel?: string
+  direction: "prev" | "next"
 }) {
   if (disabled) {
     return (
-      <span className="rounded-full border border-stone px-4 py-2 font-button text-ash opacity-50">
+      <span className="inline-flex h-10 items-center gap-1.5 rounded-full border border-stone px-5 font-button text-ash opacity-40">
+        {direction === "prev" && (
+          <span className="material-symbols-outlined text-[16px]">chevron_left</span>
+        )}
         {children}
+        {direction === "next" && (
+          <span className="material-symbols-outlined text-[16px]">chevron_right</span>
+        )}
       </span>
     )
   }
@@ -58,10 +66,16 @@ function PaginationLink({
     <Link
       href={href}
       rel={rel}
-      className="rounded-full border border-stone bg-eggshell px-4 py-2 font-button text-ink transition-colors hover:border-brand/40 hover:bg-warm-taupe"
+      className="group inline-flex h-10 items-center gap-1.5 rounded-full border border-stone bg-eggshell px-5 font-button text-ink transition-all duration-300 hover:border-brand hover:bg-brand hover:text-white hover:shadow-[0_4px_12px_rgba(51,63,123,0.2)]"
       scroll={false}
     >
+      {direction === "prev" && (
+        <span className="material-symbols-outlined text-[16px] transition-transform duration-300 group-hover:-translate-x-0.5">chevron_left</span>
+      )}
       {children}
+      {direction === "next" && (
+        <span className="material-symbols-outlined text-[16px] transition-transform duration-300 group-hover:translate-x-0.5">chevron_right</span>
+      )}
     </Link>
   )
 }

@@ -36,20 +36,26 @@ export default async function Footer() {
 
   return (
     <footer className="relative mt-auto overflow-hidden bg-asphalt text-white">
-      {/* brand glow + hairline top accent */}
-      <div aria-hidden className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-brand-bright/60 to-transparent" />
+      {/* Brand glow + hairline top accent */}
+      <div aria-hidden className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-brand-bright/50 to-transparent" />
       <div
         aria-hidden
-        className="pointer-events-none absolute -top-40 left-1/2 h-80 w-[720px] -translate-x-1/2 rounded-full bg-brand/25 blur-[120px]"
+        className="pointer-events-none absolute -top-40 left-1/2 h-80 w-[720px] -translate-x-1/2 rounded-full bg-brand/20 blur-[120px]"
       />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -bottom-32 right-[-10%] size-[400px] rounded-full bg-brand-bright/10 blur-[100px]"
+      />
+
       <div className="relative mx-auto max-w-container-max px-margin-mobile pt-20 pb-10 md:px-margin-desktop md:pt-24 md:pb-12">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-12 md:gap-8">
+          {/* Brand column */}
           <div className="flex flex-col gap-5 md:col-span-5">
             <Link href="/" className="inline-flex items-center gap-3.5">
               <BrandLogo size={84} className="brightness-0 invert" />
               <span className="text-[17px] font-semibold tracking-tight text-white">{SITE_NAME}</span>
             </Link>
-            <p className="max-w-sm text-[15px] leading-relaxed text-white/60">
+            <p className="max-w-sm text-[15px] leading-relaxed text-white/55">
               {citiesLabel
                 ? `Alquiler de motocicletas en ${citiesLabel}. Mantenimiento certificado y atención personalizada.`
                 : "Alquiler de motocicletas. Mantenimiento certificado y atención personalizada."}
@@ -59,19 +65,21 @@ export default async function Footer() {
                 href={wa}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex w-fit items-center gap-2 rounded-full bg-whatsapp px-4 py-2.5 text-[13px] font-medium text-white transition-opacity hover:opacity-90"
+                className="group inline-flex w-fit items-center gap-2 rounded-full bg-whatsapp px-5 py-3 font-button font-medium text-white shadow-[0_4px_16px_rgba(37,211,102,0.3)] transition-all duration-300 hover:shadow-[0_8px_24px_rgba(37,211,102,0.4)] active:scale-[0.98]"
               >
                 Reservar por WhatsApp
+                <span className="material-symbols-outlined text-[16px] transition-transform duration-300 group-hover:translate-x-1">arrow_forward</span>
               </a>
             ) : null}
           </div>
 
+          {/* Links column */}
           <div className="flex flex-col gap-4 md:col-span-3">
-            <p className="flex items-center gap-2 font-label-caps text-white/45">
-              <span aria-hidden className="h-[2px] w-5 rounded-full bg-brand-bright" />
+            <p className="flex items-center gap-2.5 font-label-caps text-white/40">
+              <span aria-hidden className="h-[2px] w-6 rounded-full bg-brand-bright" />
               Enlaces
             </p>
-            <nav className="flex flex-col gap-3">
+            <nav className="flex flex-col gap-3.5">
               {[
                 { href: "/", label: "Inicio" },
                 { href: "/catalog", label: "Catálogo" },
@@ -81,7 +89,7 @@ export default async function Footer() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="text-[15px] text-white/75 transition-colors hover:text-white"
+                  className="link-underline text-[15px] text-white/70 transition-colors hover:text-white"
                 >
                   {item.label}
                 </Link>
@@ -89,24 +97,25 @@ export default async function Footer() {
             </nav>
           </div>
 
+          {/* Contact column */}
           <div className="flex flex-col gap-4 md:col-span-4">
-            <p className="flex items-center gap-2 font-label-caps text-white/45">
-              <span aria-hidden className="h-[2px] w-5 rounded-full bg-brand-bright" />
+            <p className="flex items-center gap-2.5 font-label-caps text-white/40">
+              <span aria-hidden className="h-[2px] w-6 rounded-full bg-brand-bright" />
               Contacto
             </p>
             <div className="flex flex-col gap-3 text-[15px]">
               {phone ? (
                 <a
                   href={`tel:${phone.replace(/\s/g, "")}`}
-                  className="text-white/75 transition-colors hover:text-white"
+                  className="text-white/70 transition-colors hover:text-white"
                 >
                   {phone}
                 </a>
               ) : null}
-              {primarySede ? <p className="text-white/50">{primarySede.address}</p> : null}
+              {primarySede ? <p className="text-white/45">{primarySede.address}</p> : null}
             </div>
             {(wa || phone || socials.length > 0) && (
-              <div className="mt-2 flex flex-wrap gap-2.5">
+              <div className="mt-3 flex flex-wrap gap-2.5">
                 {wa ? (
                   <FooterIconLink href={wa} title="WhatsApp" kind="whatsapp" external />
                 ) : null}
@@ -131,14 +140,14 @@ export default async function Footer() {
           </div>
         </div>
 
-        <div className="mt-14 flex flex-col gap-2 border-t border-white/10 pt-6 md:flex-row md:items-center md:justify-between">
-          <p className="text-[13px] text-white/40">
+        <div className="mt-16 flex flex-col gap-3 border-t border-white/10 pt-6 md:flex-row md:items-center md:justify-between">
+          <p className="text-[13px] text-white/35">
             © {new Date().getFullYear()} {SITE_NAME}. Todos los derechos reservados.
           </p>
           {locationNames.length > 0 ? (
-            <p className="font-meta text-[12px] text-white/40">{locationNames.join(" · ")}</p>
+            <p className="font-meta text-[12px] text-white/35">{locationNames.join(" · ")}</p>
           ) : sedes.length > 0 ? (
-            <p className="font-meta text-[12px] text-white/40">
+            <p className="font-meta text-[12px] text-white/35">
               {[...new Set(sedes.map((s) => s.locations?.name).filter(Boolean))].join(" · ")}
             </p>
           ) : null}

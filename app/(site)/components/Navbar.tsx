@@ -19,7 +19,10 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   // Pages with a full-bleed hero that pulls under the fixed nav
-  const hasHero = pathname === "/" || pathname === "/about"
+  const hasHero =
+    pathname === "/" || pathname === "/about" || pathname.startsWith("/rentals/")
+
+  const isRental = pathname.startsWith("/rentals/")
 
   // Over a hero: glass over the photo until scroll. Elsewhere: light frosted bar.
   const overHero = hasHero && !scrolled
@@ -69,8 +72,11 @@ export default function Navbar() {
           aria-hidden
           className={cn(
             "pointer-events-none absolute inset-x-0 top-0 -z-10 h-32",
-            "bg-linear-to-b from-black/45 via-black/20 to-transparent",
-            "backdrop-blur-[3px] [mask-image:linear-gradient(to_bottom,black_35%,transparent)]",
+            isRental
+              ? "bg-linear-to-b from-black/65 via-black/30 to-transparent"
+              : "bg-linear-to-b from-black/45 via-black/20 to-transparent",
+            !isRental && "backdrop-blur-[3px]",
+            "[mask-image:linear-gradient(to_bottom,black_35%,transparent)]",
             "transition-opacity duration-300",
             overHero ? "opacity-100" : "opacity-0"
           )}
@@ -88,7 +94,7 @@ export default function Navbar() {
             />
             <span
               className={cn(
-                "hidden text-[15px] font-semibold tracking-tight sm:inline transition-colors duration-300",
+                "text-[15px] font-semibold tracking-tight transition-colors duration-300",
                 overHero ? "text-white" : "text-ink"
               )}
             >

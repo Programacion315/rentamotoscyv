@@ -96,6 +96,7 @@
   --spacing-container-max: 1280px;
   --spacing-gutter: 24px;
   --spacing-section: 96px;
+  --spacing-cta: 52px;
 
   /* Radii */
   --radius-md: 4px;
@@ -112,6 +113,10 @@
     rgba(0, 0, 0, 0.04) 0px 2px 4px 0px;
   --shadow-subtle-2: rgba(0, 0, 0, 0.075) 0px 0px 0px 0.5px inset;
   --shadow-subtle-5: rgba(0, 0, 0, 0.4) 0px 0px 1px 0px, rgba(0, 0, 0, 0.04) 0px 2px 4px 0px;
+  --shadow-elevated: 0 1px 2px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.08), 0 12px 40px rgba(0,0,0,0.06);
+  --shadow-dramatic: 0 2px 4px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.1), 0 24px 60px rgba(0,0,0,0.08);
+  --shadow-brand: 0 4px 20px rgba(51, 63, 123, 0.25);
+  --shadow-brand-lg: 0 8px 32px rgba(51, 63, 123, 0.3);
 }
 
 @theme inline {
@@ -481,4 +486,237 @@
   .wa-pulse-delayed {
     animation: none !important;
   }
+
+  .card-hover-lift {
+    transform: none !important;
+  }
+
+  .slide-in-left,
+  .slide-in-right,
+  .scale-in {
+    animation: none !important;
+  }
+
+  .stagger-1, .stagger-2, .stagger-3, .stagger-4, .stagger-5, .stagger-6 {
+    animation-delay: 0ms !important;
+  }
+}
+
+/* ============================================
+   REDESIGN: New animations and utilities
+   ============================================ */
+
+@keyframes slide-in-left {
+  from { opacity: 0; transform: translateX(-32px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(32px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes float-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes reveal-line {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+.animate-slide-left {
+  animation: slide-in-left 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-slide-right {
+  animation: slide-in-right 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-float-up {
+  animation: float-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.stagger-1 { animation-delay: 60ms; }
+.stagger-2 { animation-delay: 120ms; }
+.stagger-3 { animation-delay: 180ms; }
+.stagger-4 { animation-delay: 240ms; }
+.stagger-5 { animation-delay: 300ms; }
+.stagger-6 { animation-delay: 360ms; }
+
+/* Card hover lift */
+.card-hover-lift {
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-hover-lift:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-dramatic);
+}
+
+/* Diagonal clip for section dividers */
+.clip-diagonal-top {
+  clip-path: polygon(0 4%, 100% 0, 100% 100%, 0 100%);
+}
+
+.clip-diagonal-bottom {
+  clip-path: polygon(0 0, 100% 0, 100% 96%, 0 100%);
+}
+
+/* Noise texture overlay */
+.noise-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Gradient text */
+.text-gradient-brand {
+  background: linear-gradient(135deg, var(--color-brand) 0%, var(--color-brand-bright) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Reveal line animation */
+.reveal-line {
+  transform-origin: left center;
+  animation: reveal-line 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Glassmorphism card */
+.glass-card {
+  background: rgba(253, 252, 252, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(235, 232, 228, 0.6);
+}
+
+/* Asphalt card for dark sections */
+.asphalt-card {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.asphalt-card:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+/* Animated underline for links */
+.link-underline {
+  position: relative;
+}
+
+.link-underline::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 1.5px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.link-underline:hover::after {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+/* Section divider */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--color-stone), transparent);
+}
+
+/* Icon badge styles */
+.icon-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.icon-badge-brand {
+  background: linear-gradient(135deg, var(--color-brand) 0%, #4a5499 100%);
+  color: white;
+  box-shadow: var(--shadow-brand);
+}
+
+.icon-badge-soft {
+  background: var(--color-brand-soft);
+  color: var(--color-brand);
+}
+
+/* Step connector line */
+.step-connector {
+  position: relative;
+}
+
+.step-connector::after {
+  content: "";
+  position: absolute;
+  top: 24px;
+  right: -50%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(to right, var(--color-brand), transparent);
+  opacity: 0.3;
+}
+
+/* Scroll reveal base */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.scroll-reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Editorial display — used for oversized bike name on detail page */
+.font-editorial {
+  font-family: var(--font-display);
+  font-weight: 200;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+}
+
+/* Specs strip — horizontal metric bar with dividers */
+.specs-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  border-top: 1px solid var(--color-stone);
+  border-bottom: 1px solid var(--color-stone);
+}
+
+.specs-strip > * {
+  padding: 1.25rem 1.5rem;
+  border-right: 1px solid var(--color-stone);
+}
+
+.specs-strip > *:last-child {
+  border-right: none;
 }

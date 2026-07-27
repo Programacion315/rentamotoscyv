@@ -77,138 +77,161 @@ export default function CatalogClient({
       : "Vuelve pronto o escríbenos por WhatsApp."
 
   return (
-    <div className="mx-auto w-full max-w-container-max px-margin-mobile py-12 md:px-margin-desktop md:py-16">
-      <div className="mb-10 max-w-2xl animate-fade-rise">
-        <p className="mb-3 flex items-center gap-2.5 font-label-caps text-ash">
-          <span aria-hidden className="h-[2px] w-7 rounded-full bg-brand" />
-          Catálogo
-        </p>
-        <h1 className="font-display-lg text-[36px] text-ink md:text-[48px]">
-          Elige tu motocicleta
-        </h1>
-        <p className="mt-4 font-body text-smoke">
-          {locations.length > 0
-            ? "Flota activa en Bogotá y Neiva. Busca, filtra por ciudad y reserva por WhatsApp."
-            : "Busca por modelo o marca y reserva por WhatsApp."}
-        </p>
-      </div>
+    <div className="bg-eggshell">
+      {/* Hero band for catalog */}
+      <section className="relative overflow-hidden bg-asphalt py-16 md:py-20">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -top-24 right-[-5%] size-[500px] rounded-full bg-brand/15 blur-[100px]"
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -bottom-16 left-[-10%] size-[350px] rounded-full bg-brand-bright/10 blur-[80px]"
+        />
+        <div className="relative mx-auto w-full max-w-container-max px-margin-mobile md:px-margin-desktop">
+          <div className="animate-fade-rise max-w-2xl">
+            <p className="mb-4 flex items-center gap-3 font-label-caps text-white/50">
+              <span aria-hidden className="h-[2px] w-8 rounded-full bg-brand-bright" />
+              Catálogo
+            </p>
+            <h1 className="font-display text-[36px] leading-[1.05] tracking-[-0.02em] text-white md:text-[52px] lg:text-[58px]">
+              Elige tu motocicleta
+            </h1>
+            <p className="mt-4 font-body text-white/60">
+              {locations.length > 0
+                ? "Flota activa en Bogotá y Neiva. Busca, filtra por ciudad y reserva por WhatsApp."
+                : "Busca por modelo o marca y reserva por WhatsApp."}
+            </p>
+          </div>
+        </div>
+      </section>
 
-      <div
-        className={cn(
-          "mb-10 flex flex-col gap-4 animate-fade-rise animate-delay-1 sm:flex-row sm:items-center sm:justify-between sm:gap-6",
-          pending && "opacity-70"
-        )}
-      >
-        {locations.length > 0 ? (
-          <div className="flex min-w-0 flex-wrap gap-2">
-            <button
-              type="button"
-              onClick={() => setCity(null)}
+      {/* Filters & search bar */}
+      <section className="border-b border-stone bg-warm-taupe/50 py-6 md:py-8">
+        <div className="mx-auto w-full max-w-container-max px-margin-mobile md:px-margin-desktop">
+          <div
+            className={cn(
+              "flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6",
+              pending && "opacity-70"
+            )}
+          >
+            {locations.length > 0 ? (
+              <div className="flex min-w-0 flex-wrap gap-2">
+                <button
+                  type="button"
+                  onClick={() => setCity(null)}
+                  className={cn(
+                    "rounded-full px-4 py-2 font-button transition-all duration-300",
+                    !citySlug
+                      ? "bg-brand text-white shadow-[0_2px_8px_rgba(51,63,123,0.3)]"
+                      : "border border-stone bg-eggshell text-graphite hover:border-brand/40 hover:bg-brand/5"
+                  )}
+                >
+                  Todas
+                </button>
+                {locations.map((loc) => (
+                  <button
+                    key={loc.id}
+                    type="button"
+                    onClick={() => setCity(loc.slug)}
+                    className={cn(
+                      "rounded-full px-4 py-2 font-button transition-all duration-300",
+                      citySlug === loc.slug
+                        ? "bg-brand text-white shadow-[0_2px_8px_rgba(51,63,123,0.3)]"
+                        : "border border-stone bg-eggshell text-graphite hover:border-brand/40 hover:bg-brand/5"
+                    )}
+                  >
+                    {loc.name}
+                  </button>
+                ))}
+              </div>
+            ) : null}
+
+            <div
               className={cn(
-                "rounded-full border px-4 py-2 font-button transition-colors",
-                !citySlug
-                  ? "border-brand bg-brand text-white"
-                  : "border-stone bg-eggshell text-ink hover:border-brand/40 hover:bg-warm-taupe"
+                "relative w-full",
+                locations.length > 0 && "shrink-0 sm:max-w-xs md:max-w-sm"
               )}
             >
-              Todas
-            </button>
-            {locations.map((loc) => (
-              <button
-                key={loc.id}
-                type="button"
-                onClick={() => setCity(loc.slug)}
-                className={cn(
-                  "rounded-full border px-4 py-2 font-button transition-colors",
-                  citySlug === loc.slug
-                    ? "border-brand bg-brand text-white"
-                    : "border-stone bg-eggshell text-ink hover:border-brand/40 hover:bg-warm-taupe"
-                )}
+              <label htmlFor="catalog-search" className="sr-only">
+                Buscar motos
+              </label>
+              <span
+                aria-hidden
+                className="material-symbols-outlined pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-[18px] text-ash"
               >
-                {loc.name}
-              </button>
-            ))}
+                search
+              </span>
+              <Input
+                id="catalog-search"
+                type="search"
+                value={searchInput ?? ""}
+                onChange={(e) => setSearchInput(e.target.value)}
+                onBlur={commitNow}
+                placeholder="Buscar por modelo o marca…"
+                className="h-11 rounded-full border-stone bg-eggshell pr-4 pl-11 text-base transition-all duration-200 focus:border-brand/50 focus:ring-brand/20 md:text-sm"
+              />
+            </div>
           </div>
-        ) : null}
+        </div>
+      </section>
 
-        <div
-          className={cn(
-            "relative w-full",
-            locations.length > 0 && "shrink-0 sm:max-w-xs md:max-w-sm"
+      {/* Product grid */}
+      <section className="py-12 md:py-16">
+        <div className="mx-auto w-full max-w-container-max px-margin-mobile md:px-margin-desktop">
+          {total > 0 ? (
+            <p className="mb-6 flex items-center gap-2.5 font-label-caps text-ash">
+              <span aria-hidden className="h-[2px] w-6 rounded-full bg-brand/60" />
+              {total} moto{total === 1 ? "" : "s"}
+              {hasFilters
+                ? total === 1
+                  ? " encontrada"
+                  : " encontradas"
+                : " disponibles"}
+            </p>
+          ) : null}
+
+          {products.length > 0 ? (
+            <div
+              className={cn(
+                "grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3",
+                pending && "opacity-70"
+              )}
+            >
+              {products.map((product, index) => (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  priority={page === 1 && index < 3}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center rounded-[24px] border border-stone bg-warm-taupe py-20 text-center">
+              <span
+                aria-hidden
+                className="material-symbols-outlined mb-4 flex size-16 items-center justify-center rounded-full bg-brand/10 text-[32px] text-brand"
+              >
+                two_wheeler
+              </span>
+              <p className="font-heading-sm text-[22px] text-ink">{emptyTitle}</p>
+              <p className="mt-3 max-w-md font-body-sm text-smoke">{emptyBody}</p>
+            </div>
           )}
-        >
-          <label htmlFor="catalog-search" className="sr-only">
-            Buscar motos
-          </label>
-          <span
-            aria-hidden
-            className="material-symbols-outlined pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-[18px] text-ash"
-          >
-            search
-          </span>
-          <Input
-            id="catalog-search"
-            type="search"
-            value={searchInput ?? ""}
-            onChange={(e) => setSearchInput(e.target.value)}
-            onBlur={commitNow}
-            placeholder="Buscar por modelo o marca…"
-            className="h-11 rounded-full border-stone bg-eggshell pr-4 pl-11 text-base md:text-sm"
+
+          <Pagination
+            page={page}
+            totalPages={totalPages}
+            hrefForPage={(p) =>
+              buildCatalogHref({
+                q,
+                city: citySlug ?? undefined,
+                page: p,
+              })
+            }
           />
         </div>
-      </div>
-
-      {total > 0 ? (
-        <p className="mb-4 flex items-center gap-2 font-meta text-[12px] text-ash">
-          <span aria-hidden className="h-[2px] w-4 rounded-full bg-brand/70" />
-          {total} moto{total === 1 ? "" : "s"}
-          {hasFilters
-            ? total === 1
-              ? " encontrada"
-              : " encontradas"
-            : " disponibles"}
-        </p>
-      ) : null}
-
-      {products.length > 0 ? (
-        <div
-          className={cn(
-            "grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3",
-            pending && "opacity-70"
-          )}
-        >
-          {products.map((product, index) => (
-            <ProductCard
-              key={product.id}
-              product={product}
-              priority={page === 1 && index < 3}
-            />
-          ))}
-        </div>
-      ) : (
-        <div className="rounded-[24px] border border-stone bg-warm-taupe px-8 py-16 text-center">
-          <span
-            aria-hidden
-            className="material-symbols-outlined mx-auto mb-4 flex size-14 items-center justify-center rounded-full bg-brand/10 text-[28px] text-brand"
-          >
-            two_wheeler
-          </span>
-          <p className="font-heading-sm text-[24px] text-ink">{emptyTitle}</p>
-          <p className="mt-3 font-body-sm text-smoke">{emptyBody}</p>
-        </div>
-      )}
-
-      <Pagination
-        page={page}
-        totalPages={totalPages}
-        hrefForPage={(p) =>
-          buildCatalogHref({
-            q,
-            city: citySlug ?? undefined,
-            page: p,
-          })
-        }
-      />
+      </section>
     </div>
   )
 }
