@@ -35,7 +35,9 @@ export default function ContactFormClient({
       onSubmit={handleSubmit}
       className="animate-float-up stagger-3 rounded-[24px] border border-stone bg-eggshell p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_4px_12px_rgba(0,0,0,0.06)] md:p-8"
     >
-      <h2 className="font-heading-sm text-[22px] text-ink md:text-[24px]">Escríbenos</h2>
+      <h2 className="font-heading-sm text-[22px] text-ink md:text-[24px]">
+        Consulta la moto de tu preferencia a nuestro WhatsApp
+      </h2>
       <p className="mt-2 font-body-sm text-smoke">
         Completa el formulario y te abrimos WhatsApp con el mensaje listo.
       </p>

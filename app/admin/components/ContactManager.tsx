@@ -3,6 +3,7 @@
 import { useActionState, useEffect, useRef, useState } from "react"
 import type { ActionResult } from "@/app/admin/(dashboard)/actions"
 import type { SiteContact, SocialLink } from "@/lib/types"
+import { SITE_EMAIL } from "@/app/(site)/components/BrandLogo"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -57,7 +58,7 @@ export function ContactManager({
         <header className="mb-6 max-w-xl">
           <h1 className="font-heading text-[28px] text-ink md:text-[32px]">Contacto del sitio</h1>
           <p className="mt-2 font-body-sm leading-relaxed text-smoke">
-            Teléfono y WhatsApp que ven los clientes. El botón verde de WhatsApp usa estos datos.
+            Teléfono, correo y WhatsApp que ven los clientes. El botón verde de WhatsApp usa estos datos.
           </p>
         </header>
         <ContactEditor action={updateContactAction} contact={contact} />
@@ -211,6 +212,18 @@ function ContactEditor({
           <p className="font-meta text-[12px] text-ash">Se muestra en el pie y Contacto.</p>
         </div>
         <div className="flex flex-col gap-1.5">
+          <Label htmlFor="email">Correo</Label>
+          <Input
+            id="email"
+            name="email"
+            type="email"
+            defaultValue={contact?.email ?? SITE_EMAIL}
+            placeholder={SITE_EMAIL}
+            className="rounded-[4px] bg-eggshell text-base md:text-sm"
+          />
+          <p className="font-meta text-[12px] text-ash">Se muestra en el pie y Contacto.</p>
+        </div>
+        <div className="flex flex-col gap-1.5 md:col-span-2">
           <Label htmlFor="whatsapp">WhatsApp</Label>
           <Input
             id="whatsapp"

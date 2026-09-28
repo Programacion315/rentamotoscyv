@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import sharp from "sharp"
 import { requireAdmin } from "@/lib/admin/auth"
+import { SITE_EMAIL } from "@/app/(site)/components/BrandLogo"
 import { slugify } from "@/lib/types"
 
 export type ActionResult = { error?: string; success?: string }
@@ -142,10 +143,11 @@ export async function updateSiteContact(
   const { supabase } = await requireAdmin()
   const phone = String(formData.get("phone") ?? "").trim()
   const whatsapp = String(formData.get("whatsapp") ?? "").replace(/\D/g, "")
+  const email = String(formData.get("email") ?? "").trim() || SITE_EMAIL
 
   const { error } = await supabase
     .from("site_contact")
-    .upsert({ id: 1, phone, email: "", whatsapp })
+    .upsert({ id: 1, phone, email, whatsapp })
 
   if (error) return { error: error.message }
   revalidatePublic()

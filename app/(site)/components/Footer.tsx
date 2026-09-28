@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { BrandLogo, SITE_NAME } from "@/app/(site)/components/BrandLogo"
+import { BrandLogo, SITE_EMAIL, SITE_NAME } from "@/app/(site)/components/BrandLogo"
 import {
   FooterIconLink,
   footerIconFromLabel,
@@ -28,6 +28,7 @@ export default async function Footer() {
   ])
 
   const phone = contact?.phone?.trim() || null
+  const email = contact?.email?.trim() || SITE_EMAIL
   const whatsapp = contact?.whatsapp?.replace(/\D/g, "") || null
   const wa = whatsapp ? whatsappHref(whatsapp) : null
   const primarySede = sedes[0] ?? null
@@ -112,9 +113,15 @@ export default async function Footer() {
                   {phone}
                 </a>
               ) : null}
+              <a
+                href={`mailto:${email}`}
+                className="text-white/70 transition-colors hover:text-white"
+              >
+                {email}
+              </a>
               {primarySede ? <p className="text-white/45">{primarySede.address}</p> : null}
             </div>
-            {(wa || phone || socials.length > 0) && (
+            {(wa || phone || email || socials.length > 0) && (
               <div className="mt-3 flex flex-wrap gap-2.5">
                 {wa ? (
                   <FooterIconLink href={wa} title="WhatsApp" kind="whatsapp" external />
@@ -125,6 +132,9 @@ export default async function Footer() {
                     title="Llamar"
                     kind="phone"
                   />
+                ) : null}
+                {email ? (
+                  <FooterIconLink href={`mailto:${email}`} title="Correo" kind="email" />
                 ) : null}
                 {socials.map((s) => (
                   <FooterIconLink

@@ -34,7 +34,7 @@ export default function RentalDetailsClient({
   return (
     <div className="bg-eggshell text-ink">
       {/* Hero section — background reaches transparent nav, breadcrumbs pulled below */}
-      <section className="relative -mt-20 overflow-hidden">
+      <section className="relative -mt-[6.5rem] overflow-hidden">
         {/* Dark scrim for nav text contrast (white text on dark gradient over eggshell) */}
         <div
           aria-hidden

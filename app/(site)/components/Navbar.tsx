@@ -59,7 +59,7 @@ export default function Navbar() {
     <>
       <nav
         className={cn(
-          "fixed top-0 right-0 left-0 z-50 h-20",
+          "fixed top-0 right-0 left-0 z-50 h-[6.5rem]",
           "transition-[background-color,border-color,backdrop-filter,box-shadow] duration-300 ease-out",
           overHero
             ? "border-b border-transparent bg-transparent"
@@ -85,7 +85,7 @@ export default function Navbar() {
         <div className="mx-auto flex h-full max-w-container-max items-center justify-between px-margin-mobile md:px-margin-desktop">
           <Link href="/" className="flex shrink-0 items-center gap-3">
             <BrandLogo
-              size={72}
+              size={100}
               priority
               className={cn(
                 "shrink-0 transition-[filter] duration-300",
@@ -143,7 +143,7 @@ export default function Navbar() {
               )}
             >
               Reservar
-              <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+              <span className="material-symbols-outlined icon-liga text-[16px]">arrow_forward</span>
             </Link>
             <button
               type="button"
@@ -162,8 +162,8 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Spacer — hero pages pull under nav with -mt-20 */}
-      {!hasHero ? <div className="h-20" aria-hidden /> : null}
+      {/* Spacer — hero pages pull under nav with -mt-[6.5rem] */}
+      {!hasHero ? <div className="h-[6.5rem]" aria-hidden /> : null}
 
       {isOpen ? (
         <div
@@ -181,7 +181,7 @@ export default function Navbar() {
       >
         <div className="mb-10 flex items-center justify-between">
           <Link href="/" onClick={() => setIsOpen(false)} className="flex items-center gap-2.5">
-            <BrandLogo size={64} />
+            <BrandLogo size={86} />
             <span className="text-[15px] font-semibold tracking-tight text-ink">{SITE_NAME}</span>
           </Link>
           <button type="button" onClick={() => setIsOpen(false)} aria-label="Cerrar menú">
@@ -215,7 +215,7 @@ export default function Navbar() {
             className="flex w-full items-center justify-center gap-2 rounded-full bg-primary py-3.5 text-sm font-medium text-primary-foreground shadow-[0_2px_8px_rgba(51,63,123,0.25)]"
           >
             Reservar
-            <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+            <span className="material-symbols-outlined icon-liga text-[18px]">arrow_forward</span>
           </Link>
         </div>
       </div>

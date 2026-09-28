@@ -5,6 +5,7 @@ import ContactFormClient from "./ContactFormClient"
 export default async function ContactPage() {
   const [contact, sedes] = await Promise.all([getSiteContact(), getActiveSedes()])
   const phone = contact?.phone?.trim() || null
+  const email = contact?.email?.trim() || null
   const whatsapp = contact?.whatsapp?.replace(/\D/g, "") || null
   const wa = whatsapp ? whatsappHref(whatsapp) : null
   const mapUrl = sedes.find((s) => s.map_embed_url)?.map_embed_url ?? null
@@ -44,6 +45,27 @@ export default async function ContactPage() {
             <div className="flex flex-col gap-8 lg:col-span-6">
               {/* Contact info cards */}
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                {email ? (
+                  <div className="animate-float-up stagger-1 group rounded-[20px] border border-stone bg-eggshell p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_4px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:border-brand/30 hover:shadow-[0_4px_16px_rgba(51,63,123,0.1)] sm:col-span-2">
+                    <div className="flex items-center gap-4">
+                      <span
+                        aria-hidden
+                        className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-brand/10 text-brand transition-all duration-300 group-hover:bg-brand group-hover:text-white group-hover:shadow-[0_4px_16px_rgba(51,63,123,0.3)]"
+                      >
+                        <span className="material-symbols-outlined text-[22px]">mail</span>
+                      </span>
+                      <div>
+                        <p className="font-label-caps text-ash">Correo</p>
+                        <a
+                          href={`mailto:${email}`}
+                          className="mt-1 block break-all font-heading-sm text-[20px] text-ink transition-colors hover:text-brand"
+                        >
+                          {email}
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                ) : null}
                 {phone ? (
                   <div className="animate-float-up stagger-1 group rounded-[20px] border border-stone bg-eggshell p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_4px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:border-brand/30 hover:shadow-[0_4px_16px_rgba(51,63,123,0.1)] sm:col-span-2">
                     <div className="flex items-center gap-4">

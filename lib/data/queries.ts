@@ -1,3 +1,4 @@
+import { SITE_EMAIL } from "@/app/(site)/components/BrandLogo"
 import { createClient } from "@/lib/supabase/server"
 import type {
   Location,
@@ -96,7 +97,11 @@ export async function getSiteContact(): Promise<SiteContact | null> {
   const supabase = await createClient()
   const { data, error } = await supabase.from("site_contact").select("*").eq("id", 1).maybeSingle()
   if (error) throw error
-  return data
+  if (!data) return { id: 1, phone: "", email: SITE_EMAIL, whatsapp: "" }
+  return {
+    ...data,
+    email: data.email?.trim() || SITE_EMAIL,
+  }
 }
 
 export async function getActiveSocialLinks(): Promise<SocialLink[]> {
@@ -348,17 +353,44 @@ export async function getCatalogProductsPage({
   return { items, total, page: safePage, pageSize: safeSize, totalPages }
 }
 
+const HOME_FEATURED_SLUGS = [
+  "suzuki-gsx-125-125",
+  "mrx-arizona-200",
+  "akt-tt-ds-200",
+  "hero-thriller-150",
+]
+
+function homeFeaturedRank(product: Product): number {
+  const slugIndex = HOME_FEATURED_SLUGS.indexOf(product.slug)
+  if (slugIndex >= 0) return slugIndex
+
+  const hay = `${product.brand} ${product.name} ${product.slug}`.toLowerCase()
+  if ((hay.includes("suzuki") || hay.includes("susuki")) && hay.includes("azul")) return 0
+  if (hay.includes("arizona")) return 1
+  if (/tt[\s-]*ds/.test(hay) || /tt[\s-]*200/.test(hay)) return 2
+  if (hay.includes("thriller")) return 3
+  return -1
+}
+
 export async function getFeaturedProducts(): Promise<Product[]> {
   const supabase = await createClient()
   const { data, error } = await supabase
     .from("products")
     .select(productSelect)
     .eq("is_active", true)
-    .eq("is_featured", true)
     .order("name")
 
   if (error) throw error
-  return sortNested((data as Product[]) ?? [])
+  const products = sortNested((data as Product[]) ?? [])
+  const preferred = products
+    .map((product) => ({ product, rank: homeFeaturedRank(product) }))
+    .filter((entry) => entry.rank >= 0)
+    .sort((a, b) => a.rank - b.rank)
+    .map((entry) => ({ ...entry.product, is_featured: true }))
+
+  if (preferred.length > 0) return preferred
+
+  return products.filter((product) => product.is_featured)
 }
 
 export async function getProductBySlug(slug: string): Promise<Product | null> {

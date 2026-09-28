@@ -26,8 +26,8 @@ export default async function Home() {
 
   return (
     <div className="bg-eggshell">
-      {/* Hero — full-bleed storefront photo, pulls under the glass nav (-mt-20) */}
-      <section className="relative -mt-20 flex min-h-[88svh] flex-col justify-start overflow-hidden md:min-h-[94svh] md:justify-end">
+      {/* Hero — full-bleed storefront photo, pulls under the glass nav */}
+      <section className="relative -mt-[6.5rem] flex min-h-[88svh] flex-col justify-start overflow-hidden md:min-h-[94svh] md:justify-end">
         <div className="absolute inset-0">
           <Image
             src="/assets/12620a81-00b7-4396-8acd-3ae464c1e678.webp"
@@ -35,18 +35,19 @@ export default async function Home() {
             fill
             priority
             sizes="100vw"
-            className="object-cover object-bottom md:object-[center_15%]"
+            className="hero-storefront"
           />
           <div className="absolute inset-x-0 top-0 h-32 bg-linear-to-b from-black/35 to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 h-[92%] bg-linear-to-t from-black/95 via-black/65 to-transparent md:h-[80%] md:via-black/55" />
-          <div className="absolute inset-y-0 left-0 w-full bg-linear-to-r from-black/75 via-black/40 to-transparent md:w-[70%] md:from-black/50 md:via-black/20" />
+          <div className="absolute inset-x-0 bottom-0 h-[92%] bg-linear-to-t from-black/95 via-black/65 to-transparent md:h-[80%] md:via-black/50" />
+          <div className="absolute inset-y-0 left-0 w-[85%] bg-linear-to-r from-black/80 via-black/40 to-transparent md:w-[52%] md:from-black/58 md:via-black/20" />
         </div>
 
         <div className="relative z-10 mx-auto w-full max-w-container-max px-margin-mobile pt-48 pb-12 md:px-margin-desktop md:pb-16 md:pt-0">
+          <div className="max-w-xl md:max-w-[min(36rem,46vw)]">
           <p className="animate-fade-rise font-label-caps text-white/85 [text-shadow:0_1px_8px_rgba(0,0,0,0.6)]">
             Bogotá · Neiva
           </p>
-          <h1 className="animate-fade-rise animate-delay-1 mt-2 max-w-3xl font-display text-[32px] leading-[1.02] tracking-[-0.02em] text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.65)] md:mt-3 md:text-[68px] lg:text-[76px]">
+          <h1 className="animate-fade-rise animate-delay-1 mt-2 font-display text-[32px] leading-[1.05] tracking-[-0.02em] text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.65)] md:mt-3 md:text-[52px] lg:text-[60px]">
             {SITE_NAME}
           </h1>
           <p className="animate-fade-rise animate-delay-2 mt-2 font-heading text-lg leading-snug text-white/95 [text-shadow:0_1px_12px_rgba(0,0,0,0.6)] md:mt-3 md:text-[28px]">
@@ -62,7 +63,7 @@ export default async function Home() {
               className="inline-flex h-11 items-center justify-center gap-1.5 rounded-full bg-white px-7 text-sm font-medium text-black shadow-[0_4px_18px_rgba(0,0,0,0.35)] transition-[opacity,transform] hover:opacity-90 active:scale-[0.98] md:h-12"
             >
               Renta tu próxima moto
-              <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+              <span className="material-symbols-outlined icon-liga text-[18px]">arrow_forward</span>
             </Link>
             <Link
               href="/contact"
@@ -87,6 +88,7 @@ export default async function Home() {
               </li>
             ))}
           </ul>
+          </div>
         </div>
       </section>
 
@@ -114,7 +116,7 @@ export default async function Home() {
             <ul className="grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-6">
               {[
                 { label: "Mayor de 18 años", icon: "verified", desc: "Edad mínima" },
-                { label: "Licencia vigente", icon: "badge", desc: "Categoría A o B" },
+                { label: "Licencia A", icon: "badge", desc: "Vigente" },
                 { label: "Documento o pasaporte", icon: "description", desc: "Identificación válida" },
               ].map((item, i) => (
                 <li
@@ -154,17 +156,11 @@ export default async function Home() {
             </span>
           </Link>
         </div>
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3 md:gap-8">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 md:gap-8">
           {featuredMotos.map((moto, i) => (
             <div
               key={moto.id}
-              className={
-                i === 0
-                  ? "animate-float-up stagger-1"
-                  : i === 1
-                    ? "animate-float-up stagger-2"
-                    : "animate-float-up stagger-3"
-              }
+              className={`animate-float-up stagger-${Math.min(i + 1, 4)}`}
             >
               <ProductCard product={moto} priority={i === 0} />
             </div>
