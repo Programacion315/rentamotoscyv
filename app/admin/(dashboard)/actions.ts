@@ -229,7 +229,11 @@ async function uploadProductImage(
   })
 
   if (error) throw new Error(error.message)
-  return path
+  // Cache-bust: the storage path is reused on every re-upload (upsert), so the
+  // public URL would otherwise stay identical and browsers/Next's image cache
+  // would keep serving the old photo. Appending a changing query string forces
+  // a fresh fetch at every layer (browser, CDN, Next image optimizer).
+  return `${path}?t=${Date.now()}`
 }
 
 export async function upsertProduct(
@@ -369,9 +373,12 @@ export async function deleteProduct(formData: FormData) {
     .maybeSingle()
 
   if (product?.image_path && !product.image_path.startsWith("http")) {
+    // image_path may carry a "?t=..." cache-busting suffix (see uploadProductImage) —
+    // strip it to get the real storage key.
+    const storagePath = product.image_path.split("?")[0]
     const { error: storageError } = await supabase.storage
       .from("motorcycle-images")
-      .remove([product.image_path])
+      .remove([storagePath])
     // Don't block product delete if the file is already gone
     if (storageError) {
       console.error("storage delete failed:", storageError.message)
