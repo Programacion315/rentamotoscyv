@@ -1,24 +1,19 @@
 "use client"
 
-import { useCallback, useTransition } from "react"
+import { useCallback, useEffect, useRef, useState, useTransition } from "react"
 import { useRouter } from "next/navigation"
 import { ProductCard } from "@/components/site/ProductCard"
-import { Pagination } from "@/components/site/Pagination"
+import { SoftSpinner } from "@/components/site/SoftSpinner"
 import { Input } from "@/components/ui/input"
 import { useDebouncedUrlSearch } from "@/lib/use-debounced-url-search"
 import { cn } from "@/lib/utils"
 import type { Location, Product } from "@/lib/types"
 
-function buildCatalogHref(params: {
-  q?: string
-  city?: string
-  page?: number
-}) {
+function buildCatalogHref(params: { q?: string; city?: string }) {
   const sp = new URLSearchParams()
   const q = params.q?.trim()
   if (q) sp.set("q", q)
   if (params.city) sp.set("city", params.city)
-  if (params.page && params.page > 1) sp.set("page", String(params.page))
   const qs = sp.toString()
   return qs ? `/catalog?${qs}` : "/catalog"
 }
@@ -43,8 +38,7 @@ export default function CatalogClient({
   const router = useRouter()
   const [, startTransition] = useTransition()
   const buildSearchHref = useCallback(
-    (query: string) =>
-      buildCatalogHref({ q: query, city: citySlug ?? undefined, page: 1 }),
+    (query: string) => buildCatalogHref({ q: query, city: citySlug ?? undefined }),
     [citySlug]
   )
   const { searchInput, setSearchInput, pending, commitNow } = useDebouncedUrlSearch({
@@ -54,15 +48,65 @@ export default function CatalogClient({
 
   function setCity(nextSlug: string | null) {
     startTransition(() => {
-      router.push(
-        buildCatalogHref({
-          q: searchInput.trim(),
-          city: nextSlug ?? undefined,
-          page: 1,
-        })
-      )
+      router.push(buildCatalogHref({ q: searchInput.trim(), city: nextSlug ?? undefined }))
     })
   }
+
+  // Infinite scroll: accumulates pages client-side as the sentinel at the
+  // bottom of the grid comes into view. Resyncs whenever the server sends a
+  // fresh first page (the user changed the search or city filter).
+  const [items, setItems] = useState(products)
+  const [loadedPage, setLoadedPage] = useState(page)
+  const [hasMore, setHasMore] = useState(page < totalPages)
+  const [loadingMore, setLoadingMore] = useState(false)
+  const [loadError, setLoadError] = useState<string | null>(null)
+  const sentinelRef = useRef<HTMLDivElement>(null)
+  const loadingRef = useRef(false)
+
+  useEffect(() => {
+    setItems(products)
+    setLoadedPage(page)
+    setHasMore(page < totalPages)
+    setLoadError(null)
+  }, [q, citySlug, products, page, totalPages])
+
+  const loadMore = useCallback(async () => {
+    if (loadingRef.current || !hasMore) return
+    loadingRef.current = true
+    setLoadingMore(true)
+    setLoadError(null)
+    const nextPage = loadedPage + 1
+    try {
+      const sp = new URLSearchParams()
+      if (q) sp.set("q", q)
+      if (citySlug) sp.set("city", citySlug)
+      sp.set("page", String(nextPage))
+      const res = await fetch(`/catalog/feed?${sp.toString()}`)
+      if (!res.ok) throw new Error("No se pudieron cargar más motos.")
+      const data: { items: Product[]; totalPages: number } = await res.json()
+      setItems((prev) => [...prev, ...data.items])
+      setLoadedPage(nextPage)
+      setHasMore(nextPage < data.totalPages)
+    } catch {
+      setLoadError("No se pudieron cargar más motos. Intenta de nuevo.")
+    } finally {
+      loadingRef.current = false
+      setLoadingMore(false)
+    }
+  }, [hasMore, loadedPage, q, citySlug])
+
+  useEffect(() => {
+    const el = sentinelRef.current
+    if (!el || !hasMore) return
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) loadMore()
+      },
+      { rootMargin: "600px" }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [hasMore, loadMore])
 
   const hasFilters = Boolean(q || citySlug)
   const emptyTitle = q
@@ -191,19 +235,15 @@ export default function CatalogClient({
             </p>
           ) : null}
 
-          {products.length > 0 ? (
+          {items.length > 0 ? (
             <div
               className={cn(
                 "grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3",
                 pending && "opacity-70"
               )}
             >
-              {products.map((product, index) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  priority={page === 1 && index < 3}
-                />
+              {items.map((product, index) => (
+                <ProductCard key={product.id} product={product} priority={index < 3} />
               ))}
             </div>
           ) : (
@@ -219,17 +259,24 @@ export default function CatalogClient({
             </div>
           )}
 
-          <Pagination
-            page={page}
-            totalPages={totalPages}
-            hrefForPage={(p) =>
-              buildCatalogHref({
-                q,
-                city: citySlug ?? undefined,
-                page: p,
-              })
-            }
-          />
+          {hasMore ? (
+            <div ref={sentinelRef} className="mt-10 flex justify-center py-6">
+              {loadingMore ? <SoftSpinner size="md" label="Cargando más motos" /> : null}
+            </div>
+          ) : null}
+
+          {loadError ? (
+            <div className="mt-6 flex flex-col items-center gap-3">
+              <p className="font-body-sm text-destructive">{loadError}</p>
+              <button
+                type="button"
+                onClick={loadMore}
+                className="rounded-full border border-stone bg-eggshell px-5 py-2 font-button text-ink transition-all duration-300 hover:border-brand hover:bg-brand hover:text-white"
+              >
+                Reintentar
+              </button>
+            </div>
+          ) : null}
         </div>
       </section>
     </div>
