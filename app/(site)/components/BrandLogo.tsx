@@ -1,7 +1,7 @@
 import Image from "next/image"
 import { cn } from "@/lib/utils"
 
-export const SITE_NAME = "Renta Motos CYV"
+export const SITE_NAME = "Renta Motos CyV"
 export const SITE_EMAIL = "Rentamotoscyv@gmail.com"
 
 // logo.webp is a transparent 610×409 image — keep its wide aspect ratio

@@ -13,7 +13,7 @@ const suisse = localFont({
 })
 
 export const metadata: Metadata = {
-  title: "Renta Motos CYV — Renta de Motocicletas",
+  title: "Renta Motos CyV — Renta de Motocicletas",
   description:
     "Alquiler de motocicletas en Bogotá y Neiva. Mantenimiento certificado y atención personalizada.",
 }
