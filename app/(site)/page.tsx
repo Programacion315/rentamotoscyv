@@ -57,17 +57,17 @@ export default async function Home() {
             Motocicletas mantenidas a la perfección, entrega ágil y atención personalizada para
             recorrer la ciudad con confianza.
           </p>
-          <div className="animate-fade-rise animate-delay-4 mt-6 flex flex-col gap-3 sm:flex-row md:mt-8">
+          <div className="animate-fade-rise animate-delay-4 mt-6 flex w-full flex-col items-center justify-center gap-3 sm:flex-row md:mt-8">
             <Link
               href="/catalog"
-              className="inline-flex h-11 items-center justify-center gap-1.5 rounded-full bg-white px-7 text-sm font-medium text-black shadow-[0_4px_18px_rgba(0,0,0,0.35)] transition-[opacity,transform] hover:opacity-90 active:scale-[0.98] md:h-12"
+              className="inline-flex h-14 items-center justify-center gap-2 rounded-full bg-white px-9 text-base font-medium text-black shadow-[0_4px_18px_rgba(0,0,0,0.35)] transition-[opacity,transform] hover:opacity-90 active:scale-[0.98] md:h-16 md:px-10 md:text-lg"
             >
               Renta tu próxima moto
-              <span className="material-symbols-outlined icon-liga text-[18px]">arrow_forward</span>
+              <span className="material-symbols-outlined icon-liga text-[22px]">arrow_forward</span>
             </Link>
             <Link
               href="/contact"
-              className="inline-flex h-11 items-center justify-center rounded-full border border-white/40 bg-white/10 px-7 text-sm font-medium text-white backdrop-blur-sm transition-colors hover:bg-white/20 md:h-12"
+              className="inline-flex h-14 items-center justify-center rounded-full border border-white/40 bg-white/10 px-9 text-base font-medium text-white backdrop-blur-sm transition-colors hover:bg-white/20 md:h-16 md:px-10 md:text-lg"
             >
               Contáctanos
             </Link>

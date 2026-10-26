@@ -355,8 +355,8 @@
 
 @media (min-width: 768px) {
   .hero-storefront {
-    /* Keep the blue storefront sign on the right; title lives on the left */
-    object-position: 62% 18%;
+    /* Biased toward the bottom so the row of parked motorcycles stays in frame */
+    object-position: 62% 85%;
   }
 }
 
