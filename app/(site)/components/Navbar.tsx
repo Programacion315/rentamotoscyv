@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import NavbarAuth from "@/app/(site)/components/NavbarAuth"
@@ -18,37 +18,9 @@ const navLinks = [
 export default function Navbar() {
   const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
   // Pages with a full-bleed hero that pulls under the fixed nav
   const hasHero =
     pathname === "/" || pathname === "/about" || pathname.startsWith("/rentals/")
-
-  const isRental = pathname.startsWith("/rentals/")
-
-  // Over a hero: glass over the photo until scroll. Elsewhere: light frosted bar.
-  const overHero = hasHero && !scrolled
-
-  useEffect(() => {
-    let ticking = false
-
-    const onScroll = () => {
-      if (ticking) return
-      ticking = true
-      requestAnimationFrame(() => {
-        setScrolled(window.scrollY > 12)
-        ticking = false
-      })
-    }
-
-    onScroll()
-    window.addEventListener("scroll", onScroll, { passive: true })
-    return () => window.removeEventListener("scroll", onScroll)
-  }, [])
-
-  // Reset scroll state when route changes
-  useEffect(() => {
-    setScrolled(window.scrollY > 12)
-  }, [pathname])
 
   const isActive = (path: string) => {
     if (path === "/") return pathname === "/"
@@ -57,101 +29,60 @@ export default function Navbar() {
 
   return (
     <>
-      <nav
-        className={cn(
-          "fixed top-0 right-0 left-0 z-50 h-[10rem]",
-          "transition-[background-color,border-color,backdrop-filter,box-shadow] duration-300 ease-out",
-          overHero
-            ? "border-b border-transparent bg-transparent"
-            : scrolled
-              ? "border-b border-transparent bg-eggshell/85 backdrop-blur-md"
-              : "border-b border-transparent bg-transparent"
-        )}
-      >
-        {/* Over-hero backdrop: subtle blur + dark gradient that fades into the photo (no hard edge) */}
-        <div
-          aria-hidden
-          className={cn(
-            "pointer-events-none absolute inset-x-0 top-0 -z-10 h-32",
-            isRental
-              ? "bg-linear-to-b from-black/65 via-black/30 to-transparent"
-              : "bg-linear-to-b from-black/45 via-black/20 to-transparent",
-            !isRental && "backdrop-blur-[3px]",
-            "[mask-image:linear-gradient(to_bottom,black_35%,transparent)]",
-            "transition-opacity duration-300",
-            overHero ? "opacity-100" : "opacity-0"
-          )}
-        />
+      <nav className="fixed top-0 right-0 left-0 z-50 h-[10rem] bg-brand shadow-[0_2px_16px_rgba(0,0,0,0.2)]">
         <div className="mx-auto flex h-full max-w-container-max items-center justify-between px-margin-mobile md:px-margin-desktop">
-          <Link href="/" className="flex shrink-0 items-center gap-3">
-            <BrandLogo
-              size={150}
-              priority
-              className={cn(
-                "shrink-0 transition-[filter] duration-300",
-                // White logo while the glass nav sits over the dark hero photo
-                overHero && "brightness-0 invert drop-shadow-[0_1px_6px_rgba(0,0,0,0.35)]"
-              )}
-            />
-            <span
-              className={cn(
-                "text-[15px] font-semibold tracking-tight transition-colors duration-300",
-                overHero ? "text-white" : "text-ink"
-              )}
-            >
-              {SITE_NAME}
-            </span>
-          </Link>
+          <div className="flex items-center gap-10">
+            <Link href="/" className="flex shrink-0 items-center gap-3">
+              <BrandLogo
+                size={150}
+                priority
+                className="shrink-0 brightness-0 invert drop-shadow-[0_1px_6px_rgba(0,0,0,0.25)]"
+              />
+              <span className="text-[15px] font-semibold tracking-tight text-white">
+                {SITE_NAME}
+              </span>
+            </Link>
 
-          <div className="hidden items-center gap-7 md:flex">
-            {navLinks.map((link) => (
-              <Link
-                key={link.path}
-                href={link.path}
-                className={cn(
-                  "font-body-sm transition-[color,opacity] duration-300 hover:opacity-70",
-                  overHero
-                    ? isActive(link.path)
-                      ? "font-medium text-white"
-                      : "text-white/75"
-                    : isActive(link.path)
-                      ? "font-medium text-ink"
-                      : "text-smoke"
-                )}
-              >
-                {link.name}
-              </Link>
-            ))}
+            <div className="hidden items-center gap-7 md:flex">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.path}
+                  href={link.path}
+                  className={cn(
+                    "font-body-sm transition-opacity duration-300 hover:opacity-80",
+                    isActive(link.path) ? "font-medium text-white" : "text-white/75"
+                  )}
+                >
+                  {link.name}
+                </Link>
+              ))}
+            </div>
           </div>
 
           <div className="flex items-center gap-3">
             <div className="hidden md:block">
-              <NavbarAuth light={overHero} />
+              <NavbarAuth light />
             </div>
             <Link
               href={whatsappHref("573218449988", "Hola, me gustaría reservar una moto")}
               target="_blank"
               rel="noopener noreferrer"
               className={cn(
-                "hidden items-center justify-center gap-1.5 rounded-full px-5 py-2.5",
-                "text-[13px] font-medium tracking-wide",
-                "transition-[transform,opacity,box-shadow,background-color,color] duration-200",
-                "active:scale-[0.98] md:inline-flex",
-                  overHero
-                  ? "bg-white text-black shadow-[0_2px_12px_rgba(0,0,0,0.25)] hover:opacity-95"
-                  : "bg-primary text-primary-foreground shadow-[0_2px_8px_rgba(51,63,123,0.25)] hover:opacity-90 hover:shadow-[0_4px_14px_rgba(51,63,123,0.35)]"
+                "hidden items-center justify-center gap-2 rounded-full px-8 py-4",
+                "bg-brand-bright text-base font-medium tracking-wide text-white",
+                "shadow-[0_4px_16px_rgba(107,123,214,0.45)]",
+                "transition-[transform,opacity,box-shadow] duration-200",
+                "hover:opacity-90 hover:shadow-[0_6px_20px_rgba(107,123,214,0.55)]",
+                "active:scale-[0.98] md:inline-flex"
               )}
             >
               Reservar
-              <span className="material-symbols-outlined icon-liga text-[16px]">arrow_forward</span>
+              <span className="material-symbols-outlined icon-liga text-[20px]">arrow_forward</span>
             </Link>
             <button
               type="button"
               onClick={() => setIsOpen((v) => !v)}
-              className={cn(
-                "p-1.5 md:hidden transition-colors duration-300",
-                overHero ? "text-white" : "text-ink"
-              )}
+              className="p-1.5 text-white md:hidden"
               aria-label={isOpen ? "Cerrar menú" : "Abrir menú"}
             >
               <span className="material-symbols-outlined text-2xl">
