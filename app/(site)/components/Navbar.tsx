@@ -59,7 +59,7 @@ export default function Navbar() {
     <>
       <nav
         className={cn(
-          "fixed top-0 right-0 left-0 z-50 h-[6.5rem]",
+          "fixed top-0 right-0 left-0 z-50 h-[10rem]",
           "transition-[background-color,border-color,backdrop-filter,box-shadow] duration-300 ease-out",
           overHero
             ? "border-b border-transparent bg-transparent"
@@ -85,7 +85,7 @@ export default function Navbar() {
         <div className="mx-auto flex h-full max-w-container-max items-center justify-between px-margin-mobile md:px-margin-desktop">
           <Link href="/" className="flex shrink-0 items-center gap-3">
             <BrandLogo
-              size={100}
+              size={150}
               priority
               className={cn(
                 "shrink-0 transition-[filter] duration-300",
@@ -162,8 +162,8 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Spacer — hero pages pull under nav with -mt-[6.5rem] */}
-      {!hasHero ? <div className="h-[6.5rem]" aria-hidden /> : null}
+      {/* Spacer — hero pages pull under nav with -mt-[10rem] */}
+      {!hasHero ? <div className="h-[10rem]" aria-hidden /> : null}
 
       {isOpen ? (
         <div
