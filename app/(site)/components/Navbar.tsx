@@ -30,9 +30,9 @@ export default function Navbar() {
   return (
     <>
       <nav className="fixed top-0 right-0 left-0 z-50 h-[10rem] bg-brand shadow-[0_2px_16px_rgba(0,0,0,0.2)]">
-        <div className="mx-auto flex h-full max-w-container-max items-center justify-between px-3 md:px-4">
-          <div className="flex items-center gap-10">
-            <Link href="/" className="flex shrink-0 items-center gap-3">
+        <div className="mx-auto flex h-full max-w-container-max items-center justify-between pr-3 pl-1 md:pr-4 md:pl-2">
+          <div className="flex items-end gap-10 pb-3 md:pb-4">
+            <Link href="/" className="flex shrink-0 items-end gap-3">
               <BrandLogo
                 size={150}
                 priority
@@ -43,7 +43,7 @@ export default function Navbar() {
               </span>
             </Link>
 
-            <div className="hidden items-center gap-7 md:flex">
+            <div className="hidden items-end gap-7 md:flex">
               {navLinks.map((link) => (
                 <Link
                   key={link.path}
@@ -68,8 +68,8 @@ export default function Navbar() {
               target="_blank"
               rel="noopener noreferrer"
               className={cn(
-                "hidden items-center justify-center gap-2 rounded-full px-8 py-4",
-                "bg-brand-bright text-base font-medium tracking-wide text-white",
+                "hidden items-center justify-center gap-2.5 rounded-full px-11 py-6",
+                "bg-brand-bright text-xl font-medium tracking-wide text-white",
                 "shadow-[0_4px_16px_rgba(107,123,214,0.45)]",
                 "transition-[transform,opacity,box-shadow] duration-200",
                 "hover:opacity-90 hover:shadow-[0_6px_20px_rgba(107,123,214,0.55)]",
@@ -77,7 +77,7 @@ export default function Navbar() {
               )}
             >
               Reservar
-              <span className="material-symbols-outlined icon-liga text-[20px]">arrow_forward</span>
+              <span className="material-symbols-outlined icon-liga text-[26px]">arrow_forward</span>
             </Link>
             <button
               type="button"
