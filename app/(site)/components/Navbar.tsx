@@ -30,7 +30,7 @@ export default function Navbar() {
   return (
     <>
       <nav className="fixed top-0 right-0 left-0 z-50 h-[10rem] bg-brand shadow-[0_2px_16px_rgba(0,0,0,0.2)]">
-        <div className="grid h-full w-full grid-cols-[auto_1fr_auto] items-center pr-3 pl-0 md:pr-4 md:pl-0">
+        <div className="grid h-full w-full grid-cols-[auto_1fr_auto] items-center px-6 md:px-12">
           <Link href="/" className="flex shrink-0 items-center">
             <BrandLogo
               size={81}
