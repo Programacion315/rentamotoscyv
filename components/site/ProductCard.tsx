@@ -15,6 +15,7 @@ export function ProductCard({
   const imageUrl = getProductImageUrl(product.image_path)
   const locationName = product.locations?.name
   const specs = product.product_specs ?? []
+  const cilindraje = specs.find((s) => s.label.toLowerCase().includes("cilindraje")) ?? specs[0]
 
   return (
     <Link
@@ -65,9 +66,9 @@ export function ProductCard({
         </span>
 
         {/* Spec badge — bottom-right of image */}
-        {specs.length > 0 ? (
+        {cilindraje ? (
           <span className="absolute right-3.5 bottom-3.5 z-[2] rounded-full bg-black/55 px-3 py-1 font-body-sm font-medium text-white backdrop-blur-sm">
-            {specs[0].value}
+            {cilindraje.value}
           </span>
         ) : null}
 

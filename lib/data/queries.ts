@@ -4,6 +4,7 @@ import type {
   Location,
   LocationWithUsage,
   Product,
+  ProductSpec,
   ProductTableRow,
   Sede,
   SiteContact,
@@ -127,7 +128,7 @@ const productSelect =
   "*, locations(id, name, slug), product_specs(*), product_features(*)"
 
 const catalogListSelect =
-  "id, slug, name, brand, image_path, category, location_id, is_featured, is_active, locations(id, name, slug)"
+  "id, slug, name, brand, image_path, category, location_id, is_featured, is_active, locations(id, name, slug), product_specs(label, value, sort_order)"
 
 const adminTableSelect =
   "id, name, brand, slug, category, image_path, is_active, is_featured, location_id, updated_at, locations(name)"
@@ -334,6 +335,7 @@ export async function getCatalogProductsPage({
     is_featured: boolean
     is_active: boolean
     locations: Product["locations"] | Product["locations"][] | null
+    product_specs: Pick<ProductSpec, "label" | "value" | "sort_order">[] | null
   }>
 
   const items: Product[] = rows.map((p) => ({
@@ -348,6 +350,7 @@ export async function getCatalogProductsPage({
     is_featured: p.is_featured,
     is_active: p.is_active,
     locations: Array.isArray(p.locations) ? (p.locations[0] ?? null) : p.locations,
+    product_specs: [...(p.product_specs ?? [])].sort((a, b) => a.sort_order - b.sort_order) as ProductSpec[],
   }))
 
   return { items, total, page: safePage, pageSize: safeSize, totalPages }
