@@ -31,15 +31,12 @@ export default function Navbar() {
     <>
       <nav className="fixed top-0 right-0 left-0 z-50 h-[10rem] bg-brand shadow-[0_2px_16px_rgba(0,0,0,0.2)]">
         <div className="grid h-full w-full grid-cols-[auto_1fr_auto] items-center pr-3 pl-0 md:pr-4 md:pl-0">
-          <Link href="/" className="flex shrink-0 items-center gap-3">
+          <Link href="/" className="flex shrink-0 items-center">
             <BrandLogo
               size={81}
               priority
               className="shrink-0 brightness-0 invert drop-shadow-[0_1px_6px_rgba(0,0,0,0.25)]"
             />
-            <span className="text-[15px] font-semibold tracking-tight text-white">
-              {SITE_NAME}
-            </span>
           </Link>
 
           <div className="hidden items-center justify-center gap-10 md:flex">
