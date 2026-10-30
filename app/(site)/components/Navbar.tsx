@@ -30,7 +30,7 @@ export default function Navbar() {
   return (
     <>
       <nav className="fixed top-0 right-0 left-0 z-50 h-[10rem] bg-brand shadow-[0_2px_16px_rgba(0,0,0,0.2)]">
-        <div className="mx-auto flex h-full max-w-container-max items-center justify-between pr-3 pl-1 md:pr-4 md:pl-2">
+        <div className="mx-auto flex h-full max-w-container-max items-center justify-between pr-3 pl-0 md:pr-4 md:pl-0">
           <div className="flex items-end gap-10 pb-3 md:pb-4">
             <Link href="/" className="flex shrink-0 items-end gap-3">
               <BrandLogo
