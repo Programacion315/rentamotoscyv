@@ -7,7 +7,7 @@ export default function About() {
   return (
     <div className="bg-eggshell text-ink">
       {/* Hero — pulls under fixed nav */}
-      <header className="relative -mt-[10rem] flex min-h-[52vh] items-end overflow-hidden md:min-h-[62vh]">
+      <header className="relative -mt-[8rem] flex min-h-[52vh] items-end overflow-hidden md:min-h-[62vh]">
         <div className="absolute inset-0">
           <Image
             src="/motos/yamaha-fz25.webp"

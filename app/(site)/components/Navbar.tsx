@@ -29,7 +29,7 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="fixed top-0 right-0 left-0 z-50 h-[10rem] bg-brand shadow-[0_2px_16px_rgba(0,0,0,0.2)]">
+      <nav className="fixed top-0 right-0 left-0 z-50 h-[8rem] bg-brand shadow-[0_2px_16px_rgba(0,0,0,0.2)]">
         <div className="grid h-full w-full grid-cols-[auto_1fr_auto] items-center px-10 md:px-24">
           <Link href="/" className="flex shrink-0 items-center">
             <BrandLogo
@@ -88,8 +88,8 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Spacer — hero pages pull under nav with -mt-[10rem] */}
-      {!hasHero ? <div className="h-[10rem]" aria-hidden /> : null}
+      {/* Spacer — hero pages pull under nav with -mt-[8rem] */}
+      {!hasHero ? <div className="h-[8rem]" aria-hidden /> : null}
 
       {isOpen ? (
         <div
