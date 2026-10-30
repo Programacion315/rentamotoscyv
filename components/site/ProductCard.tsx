@@ -94,7 +94,7 @@ export function ProductCard({
 
         {/* Engine displacement — visible without clicking into the card */}
         {cilindraje ? (
-          <p className="font-body font-medium text-smoke">
+          <p className="font-body text-[18px] font-medium text-smoke">
             cc: {cilindraje.value.replace(/\s*cc$/i, "").trim()}
           </p>
         ) : null}
