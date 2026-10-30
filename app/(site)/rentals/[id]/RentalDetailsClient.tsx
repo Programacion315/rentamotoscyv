@@ -41,7 +41,7 @@ export default function RentalDetailsClient({
           className="pointer-events-none absolute inset-x-0 top-0 z-[1] h-[280px] bg-linear-to-b from-black to-black/25"
         />
 
-        <div className="relative z-[2] bg-eggshell pt-[12.5rem] md:pt-[13.5rem]">
+        <div className="relative z-[2] bg-eggshell pt-[18rem]">
           <div className="mx-auto w-full max-w-container-max px-margin-mobile md:px-margin-desktop">
             {/* Back link + breadcrumb — pulled below the nav, visible on eggshell */}
             <div className="mb-8 flex items-center justify-between">

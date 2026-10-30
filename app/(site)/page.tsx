@@ -42,7 +42,7 @@ export default async function Home() {
           <div className="absolute inset-y-0 left-0 w-[85%] bg-linear-to-r from-black/80 via-black/40 to-transparent md:w-[52%] md:from-black/58 md:via-black/20" />
         </div>
 
-        <div className="relative z-10 mx-auto w-full max-w-container-max px-margin-mobile pt-48 pb-12 md:px-margin-desktop md:pb-16 md:pt-0">
+        <div className="relative z-10 mx-auto w-full max-w-container-max px-margin-mobile pt-72 pb-12 md:px-margin-desktop md:pb-16 md:pt-0">
           <div className="max-w-xl md:max-w-[min(36rem,46vw)]">
           <p className="animate-fade-rise font-label-caps text-white/85 [text-shadow:0_1px_8px_rgba(0,0,0,0.6)]">
             Bogotá · Neiva

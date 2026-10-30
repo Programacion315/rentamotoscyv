@@ -7,7 +7,7 @@ export default function About() {
   return (
     <div className="bg-eggshell text-ink">
       {/* Hero — pulls under fixed nav */}
-      <header className="relative -mt-[8rem] flex min-h-[52vh] items-end overflow-hidden md:min-h-[62vh]">
+      <header className="relative -mt-[8rem] flex min-h-[52vh] items-start overflow-hidden md:min-h-[62vh] md:items-end">
         <div className="absolute inset-0">
           <Image
             src="/motos/yamaha-fz25.webp"
@@ -19,7 +19,7 @@ export default function About() {
           />
           <div className="absolute inset-0 bg-linear-to-t from-black/85 via-black/45 to-black/35" />
         </div>
-        <div className="relative z-10 mx-auto w-full max-w-container-max px-margin-mobile pt-28 pb-12 md:px-margin-desktop md:pt-32 md:pb-16">
+        <div className="relative z-10 mx-auto w-full max-w-container-max px-margin-mobile pt-72 pb-12 md:px-margin-desktop md:pt-32 md:pb-16">
           <p className="animate-fade-rise mb-3 flex items-center gap-3 font-label-caps text-white/60 [text-shadow:0_1px_8px_rgba(0,0,0,0.5)]">
             <span aria-hidden className="h-[2px] w-8 rounded-full bg-brand-bright" />
             Nuestra historia
