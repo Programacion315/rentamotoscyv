@@ -375,6 +375,8 @@ function homeFeaturedRank(product: Product): number {
   return -1
 }
 
+const HOME_FEATURED_COUNT = 4
+
 export async function getFeaturedProducts(): Promise<Product[]> {
   const supabase = await createClient()
   const { data, error } = await supabase
@@ -384,16 +386,25 @@ export async function getFeaturedProducts(): Promise<Product[]> {
     .order("name")
 
   if (error) throw error
-  const products = sortNested((data as Product[]) ?? [])
+  // Only motos with a real photo belong in the homepage showcase.
+  const products = sortNested((data as Product[]) ?? []).filter((product) =>
+    Boolean(product.image_path)
+  )
   const preferred = products
     .map((product) => ({ product, rank: homeFeaturedRank(product) }))
     .filter((entry) => entry.rank >= 0)
     .sort((a, b) => a.rank - b.rank)
     .map((entry) => ({ ...entry.product, is_featured: true }))
 
-  if (preferred.length > 0) return preferred
+  const chosen = preferred.length > 0 ? preferred : products.filter((product) => product.is_featured)
 
-  return products.filter((product) => product.is_featured)
+  if (chosen.length >= HOME_FEATURED_COUNT) return chosen
+
+  // Backfill with other photographed motos so the section doesn't look sparse.
+  const chosenIds = new Set(chosen.map((p) => p.id))
+  const rest = products.filter((p) => !chosenIds.has(p.id))
+  const fill = rest.slice(0, HOME_FEATURED_COUNT - chosen.length)
+  return [...chosen, ...fill]
 }
 
 export async function getProductBySlug(slug: string): Promise<Product | null> {
