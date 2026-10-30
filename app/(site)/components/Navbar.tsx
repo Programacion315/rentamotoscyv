@@ -34,7 +34,7 @@ export default function Navbar() {
           <div className="flex items-end gap-10 pb-3 md:pb-4">
             <Link href="/" className="flex shrink-0 items-end gap-3">
               <BrandLogo
-                size={150}
+                size={81}
                 priority
                 className="shrink-0 brightness-0 invert drop-shadow-[0_1px_6px_rgba(0,0,0,0.25)]"
               />
