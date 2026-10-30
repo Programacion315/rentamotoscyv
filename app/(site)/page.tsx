@@ -53,9 +53,9 @@ export default async function Home() {
           <p className="animate-fade-rise animate-delay-2 mt-2 font-heading text-lg leading-snug text-white/95 [text-shadow:0_1px_12px_rgba(0,0,0,0.6)] md:mt-3 md:text-[28px]">
             Libertad sobre dos ruedas
           </p>
-          <p className="animate-fade-rise animate-delay-3 mt-3 max-w-xl font-body text-sm text-white/85 [text-shadow:0_1px_8px_rgba(0,0,0,0.7)] md:mt-4 md:text-base">
-            Motocicletas mantenidas a la perfección, entrega ágil y atención personalizada para
-            recorrer la ciudad con confianza.
+          <p className="animate-fade-rise animate-delay-3 mt-3 max-w-xl font-body text-[16px] text-white/85 [text-shadow:0_1px_8px_rgba(0,0,0,0.7)] md:mt-4 md:text-[18px]">
+            Disfruta de todas las marcas y referencias de nuestras motos, entrega ágil y atención
+            personalizada para recorrer la ciudad con confianza.
           </p>
           <div className="animate-fade-rise animate-delay-4 mt-6 flex w-full flex-col items-center justify-center gap-3 sm:flex-row md:mt-8">
             <Link
