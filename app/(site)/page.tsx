@@ -27,7 +27,7 @@ export default async function Home() {
   return (
     <div className="bg-eggshell">
       {/* Hero — full-bleed storefront photo, pulls under the glass nav */}
-      <section className="relative -mt-[8rem] flex min-h-[100svh] flex-col justify-start overflow-hidden md:justify-end">
+      <section className="relative -mt-[8rem] flex min-h-[135svh] flex-col justify-start overflow-hidden md:justify-end">
         <div className="absolute inset-0">
           <Image
             src="/assets/12620a81-00b7-4396-8acd-3ae464c1e678.webp"
