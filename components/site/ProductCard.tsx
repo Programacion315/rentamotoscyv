@@ -92,6 +92,13 @@ export function ProductCard({
           {product.name}
         </h3>
 
+        {/* Engine displacement — visible without clicking into the card */}
+        {cilindraje ? (
+          <p className="font-body-sm font-medium text-smoke">
+            cc: {cilindraje.value.replace(/\s*cc$/i, "").trim()}
+          </p>
+        ) : null}
+
         {/* Description preview */}
         {product.description ? (
           <p className="line-clamp-2 font-body-sm leading-relaxed text-smoke">
