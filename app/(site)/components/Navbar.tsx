@@ -68,8 +68,8 @@ export default function Navbar() {
               target="_blank"
               rel="noopener noreferrer"
               className={cn(
-                "hidden items-center justify-center gap-3 rounded-full px-16 py-8",
-                "bg-brand-bright text-2xl font-semibold tracking-wide text-white",
+                "hidden items-center justify-center gap-2 rounded-full px-7 py-3.5",
+                "bg-brand-bright text-base font-medium tracking-wide text-white",
                 "shadow-[0_4px_16px_rgba(107,123,214,0.45)]",
                 "transition-[transform,opacity,box-shadow] duration-200",
                 "hover:opacity-90 hover:shadow-[0_6px_20px_rgba(107,123,214,0.55)]",
@@ -77,7 +77,7 @@ export default function Navbar() {
               )}
             >
               Reservar
-              <span className="material-symbols-outlined icon-liga text-[32px]">arrow_forward</span>
+              <span className="material-symbols-outlined icon-liga text-[18px]">arrow_forward</span>
             </Link>
             <button
               type="button"
