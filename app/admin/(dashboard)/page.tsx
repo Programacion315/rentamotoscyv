@@ -1,8 +1,16 @@
 import Link from "next/link"
-import { getTotalPageViews } from "@/lib/data/queries"
+import { getVisitStats } from "@/lib/analytics/db"
+
+function flagEmoji(countryCode: string | null): string {
+  if (!countryCode || countryCode.length !== 2) return "🏳️"
+  const codePoints = [...countryCode.toUpperCase()].map(
+    (c) => 127397 + c.charCodeAt(0)
+  )
+  return String.fromCodePoint(...codePoints)
+}
 
 export default async function AdminHomePage() {
-  const totalVisits = await getTotalPageViews()
+  const { total: totalVisits, byCountry } = getVisitStats()
 
   const cards = [
     { href: "/admin/products", title: "Productos", desc: "Motos, specs, features e imágenes" },
@@ -18,9 +26,31 @@ export default async function AdminHomePage() {
         Gestiona el catálogo y la información de contacto.
       </p>
 
-      <div className="mb-6 rounded-[20px] bg-primary px-6 py-5 text-primary-foreground">
-        <p className="font-body-sm opacity-80">Visitas totales al sitio</p>
-        <p className="mt-1 font-heading text-[32px]">{totalVisits.toLocaleString("es-CO")}</p>
+      <div className="mb-6 grid gap-4 sm:grid-cols-[auto_1fr]">
+        <div className="rounded-[20px] bg-primary px-6 py-5 text-primary-foreground">
+          <p className="font-body-sm opacity-80">Visitas totales al sitio</p>
+          <p className="mt-1 font-heading text-[32px]">{totalVisits.toLocaleString("es-CO")}</p>
+        </div>
+
+        {byCountry.length > 0 ? (
+          <div className="rounded-[20px] bg-warm-taupe p-5">
+            <p className="mb-3 font-body-sm text-smoke">De dónde vienen</p>
+            <div className="flex flex-col gap-2">
+              {byCountry.map((row) => (
+                <div
+                  key={`${row.country}-${row.countryCode}`}
+                  className="flex items-center justify-between gap-3 font-body-sm text-ink"
+                >
+                  <span className="flex items-center gap-2">
+                    <span aria-hidden>{flagEmoji(row.countryCode)}</span>
+                    {row.country}
+                  </span>
+                  <span className="font-button text-smoke">{row.count}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : null}
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">

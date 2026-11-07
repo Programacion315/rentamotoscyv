@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react"
 import { usePathname } from "next/navigation"
-import { createClient } from "@/lib/supabase/client"
 
 /**
  * Fire-and-forget page view logger for the public site. Mounted once in
@@ -17,16 +16,14 @@ export function VisitTracker() {
     if (lastTracked.current === pathname) return
     lastTracked.current = pathname
 
-    const supabase = createClient()
-    supabase
-      .from("page_views")
-      .insert({ path: pathname })
-      .then(({ error }) => {
-        // console.warn (not .error) — Next.js dev shows console.error as a
-        // full-screen overlay, which would make this look like a crash even
-        // though the failure is harmless and already handled.
-        if (error) console.warn("No se pudo registrar la visita:", error.message)
-      })
+    fetch("/api/visit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ path: pathname }),
+      keepalive: true,
+    }).catch(() => {
+      // best-effort — a failed visit log should never affect the page
+    })
   }, [pathname])
 
   return null

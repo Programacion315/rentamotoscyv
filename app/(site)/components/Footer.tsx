@@ -10,6 +10,7 @@ import {
   getActiveSocialLinks,
   getSiteContact,
 } from "@/lib/data/queries"
+import { getVisitStats } from "@/lib/analytics/db"
 import { whatsappHref } from "@/lib/types"
 
 function joinSpanish(names: string[]): string {
@@ -34,6 +35,7 @@ export default async function Footer() {
   const primarySede = sedes[0] ?? null
   const locationNames = locations.map((l) => l.name).filter(Boolean)
   const citiesLabel = joinSpanish(locationNames)
+  const { total: totalVisits } = getVisitStats()
 
   return (
     <footer className="relative mt-auto overflow-hidden bg-asphalt text-white">
@@ -151,9 +153,15 @@ export default async function Footer() {
         </div>
 
         <div className="mt-16 flex flex-col gap-3 border-t border-white/10 pt-6 md:flex-row md:items-center md:justify-between">
-          <p className="text-[13px] text-white/35">
-            © {new Date().getFullYear()} {SITE_NAME}. Todos los derechos reservados.
-          </p>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+            <p className="text-[13px] text-white/35">
+              © {new Date().getFullYear()} {SITE_NAME}. Todos los derechos reservados.
+            </p>
+            <p className="flex items-center gap-1.5 text-[13px] text-white/35">
+              <span aria-hidden className="material-symbols-outlined text-[14px]">visibility</span>
+              {totalVisits.toLocaleString("es-CO")} visitas
+            </p>
+          </div>
           {locationNames.length > 0 ? (
             <p className="font-meta text-[12px] text-white/35">{locationNames.join(" · ")}</p>
           ) : sedes.length > 0 ? (

@@ -541,24 +541,6 @@ export async function getProductByIdAdmin(id: string): Promise<Product | null> {
   return sortNested([data as Product])[0]
 }
 
-/**
- * Total recorded page views on the public site. Admin-only (RLS).
- * Swallows errors (e.g. the page_views table/migration not applied yet)
- * so a missing counter never breaks the admin dashboard.
- */
-export async function getTotalPageViews(): Promise<number> {
-  const supabase = await createClient()
-  const { count, error } = await supabase
-    .from("page_views")
-    .select("id", { count: "exact", head: true })
-
-  if (error) {
-    console.warn("getTotalPageViews:", error.message)
-    return 0
-  }
-  return count ?? 0
-}
-
 function sortNested(products: Product[]): Product[] {
   return products.map((p) => ({
     ...p,

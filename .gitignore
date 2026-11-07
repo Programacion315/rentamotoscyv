@@ -40,3 +40,6 @@ next-env.d.ts
 .claude
 .cursor
 supabase/.temp
+
+# local analytics db (self-hosted visit counter, one file per environment)
+/data/
