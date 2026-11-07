@@ -1,6 +1,9 @@
 import Link from "next/link"
+import { getTotalPageViews } from "@/lib/data/queries"
 
-export default function AdminHomePage() {
+export default async function AdminHomePage() {
+  const totalVisits = await getTotalPageViews()
+
   const cards = [
     { href: "/admin/products", title: "Productos", desc: "Motos, specs, features e imágenes" },
     { href: "/admin/locations", title: "Ubicaciones", desc: "Ciudades para filtrar el catálogo" },
@@ -14,6 +17,12 @@ export default function AdminHomePage() {
       <p className="mt-2 mb-8 font-body text-smoke">
         Gestiona el catálogo y la información de contacto.
       </p>
+
+      <div className="mb-6 rounded-[20px] bg-primary px-6 py-5 text-primary-foreground">
+        <p className="font-body-sm opacity-80">Visitas totales al sitio</p>
+        <p className="mt-1 font-heading text-[32px]">{totalVisits.toLocaleString("es-CO")}</p>
+      </div>
+
       <div className="grid gap-4 sm:grid-cols-2">
         {cards.map((card) => (
           <Link
