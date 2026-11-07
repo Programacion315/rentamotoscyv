@@ -22,7 +22,10 @@ export function VisitTracker() {
       .from("page_views")
       .insert({ path: pathname })
       .then(({ error }) => {
-        if (error) console.error("No se pudo registrar la visita:", error.message)
+        // console.warn (not .error) — Next.js dev shows console.error as a
+        // full-screen overlay, which would make this look like a crash even
+        // though the failure is harmless and already handled.
+        if (error) console.warn("No se pudo registrar la visita:", error.message)
       })
   }, [pathname])
 

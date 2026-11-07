@@ -553,7 +553,7 @@ export async function getTotalPageViews(): Promise<number> {
     .select("id", { count: "exact", head: true })
 
   if (error) {
-    console.error("getTotalPageViews:", error.message)
+    console.warn("getTotalPageViews:", error.message)
     return 0
   }
   return count ?? 0
