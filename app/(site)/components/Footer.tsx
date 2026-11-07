@@ -11,6 +11,7 @@ import {
   getSiteContact,
 } from "@/lib/data/queries"
 import { getVisitStats } from "@/lib/analytics/db"
+import { VisitWorldMap } from "@/components/site/VisitWorldMap"
 import { whatsappHref } from "@/lib/types"
 
 function joinSpanish(names: string[]): string {
@@ -35,7 +36,7 @@ export default async function Footer() {
   const primarySede = sedes[0] ?? null
   const locationNames = locations.map((l) => l.name).filter(Boolean)
   const citiesLabel = joinSpanish(locationNames)
-  const { total: totalVisits } = getVisitStats()
+  const { total: totalVisits, byCountry } = getVisitStats()
 
   return (
     <footer className="relative mt-auto overflow-hidden bg-asphalt text-white">
@@ -152,7 +153,17 @@ export default async function Footer() {
           </div>
         </div>
 
-        <div className="mt-16 flex flex-col gap-3 border-t border-white/10 pt-6 md:flex-row md:items-center md:justify-between">
+        {byCountry.length > 0 ? (
+          <div className="mt-12 border-t border-white/10 pt-10">
+            <p className="mb-4 flex items-center gap-2.5 font-label-caps text-white/40">
+              <span aria-hidden className="h-[2px] w-6 rounded-full bg-brand-bright" />
+              Desde dónde nos visitan
+            </p>
+            <VisitWorldMap byCountry={byCountry} variant="dark" />
+          </div>
+        ) : null}
+
+        <div className="mt-10 flex flex-col gap-3 border-t border-white/10 pt-6 md:flex-row md:items-center md:justify-between">
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
             <p className="text-[13px] text-white/35">
               © {new Date().getFullYear()} {SITE_NAME}. Todos los derechos reservados.

@@ -14,13 +14,27 @@ type MinimalTopology = {
 const WIDTH = 800
 const HEIGHT = 420
 
+const PALETTES = {
+  // admin dashboard — light (eggshell) background
+  light: { empty: "var(--color-stone)", stroke: "var(--color-eggshell)" },
+  // public site footer — dark (asphalt) background
+  dark: { empty: "rgba(255,255,255,0.08)", stroke: "rgba(0,0,0,0.35)" },
+} as const
+
 /**
  * Static choropleth world map, computed server-side on every render
  * (cheap: ~177 country paths, no client JS/bundle cost). Countries with at
  * least one recorded visit get a brand-blue fill; everything else is a flat
- * neutral gray.
+ * neutral tone appropriate for the given background.
  */
-export function VisitWorldMap({ byCountry }: { byCountry: CountryStat[] }) {
+export function VisitWorldMap({
+  byCountry,
+  variant = "light",
+}: {
+  byCountry: CountryStat[]
+  variant?: "light" | "dark"
+}) {
+  const palette = PALETTES[variant]
   const countByAlpha2 = new Map<string, number>()
   for (const row of byCountry) {
     if (row.countryCode) countByAlpha2.set(row.countryCode.toUpperCase(), row.count)
@@ -56,8 +70,12 @@ export function VisitWorldMap({ byCountry }: { byCountry: CountryStat[] }) {
           <path
             key={alpha2 ?? i}
             d={d}
-            fill={count ? `color-mix(in srgb, var(--color-brand-bright) ${Math.round(intensity * 100)}%, var(--color-stone))` : "var(--color-stone)"}
-            stroke="var(--color-eggshell)"
+            fill={
+              count
+                ? `color-mix(in srgb, var(--color-brand-bright) ${Math.round(intensity * 100)}%, ${palette.empty})`
+                : palette.empty
+            }
+            stroke={palette.stroke}
             strokeWidth={0.5}
           >
             {count ? <title>{`${alpha2}: ${count} visita${count === 1 ? "" : "s"}`}</title> : null}

@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { getVisitStats } from "@/lib/analytics/db"
-import { VisitWorldMap } from "@/app/admin/components/VisitWorldMap"
+import { VisitWorldMap } from "@/components/site/VisitWorldMap"
 
 function flagEmoji(countryCode: string | null): string {
   if (!countryCode || countryCode.length !== 2) return "🏳️"
