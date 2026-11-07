@@ -157,8 +157,8 @@ export default async function Footer() {
             <p className="text-[13px] text-white/35">
               © {new Date().getFullYear()} {SITE_NAME}. Todos los derechos reservados.
             </p>
-            <p className="flex items-center gap-1.5 text-[13px] text-white/35">
-              <span aria-hidden className="material-symbols-outlined text-[14px]">visibility</span>
+            <p className="flex items-center gap-2 rounded-full bg-brand-bright px-5 py-2 font-button text-[18px] font-bold text-white shadow-[0_4px_16px_rgba(107,123,214,0.5)]">
+              <span aria-hidden className="material-symbols-outlined text-[24px]">visibility</span>
               {totalVisits.toLocaleString("es-CO")} visitas
             </p>
           </div>
