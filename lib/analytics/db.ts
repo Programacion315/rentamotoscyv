@@ -49,13 +49,14 @@ export function getVisitStats(): { total: number; byCountry: CountryStat[] } {
   const totalRow = database.prepare(`SELECT COUNT(*) as c FROM visits`).get() as
     | { c: number }
     | undefined
+  // No LIMIT — the admin page slices this for the text list, but the map
+  // needs every country that has at least one visit to shade correctly.
   const byCountry = database
     .prepare(
       `SELECT COALESCE(country, 'Desconocido') as country, country_code as countryCode, COUNT(*) as count
        FROM visits
        GROUP BY country, countryCode
-       ORDER BY count DESC
-       LIMIT 10`
+       ORDER BY count DESC`
     )
     .all() as unknown as CountryStat[]
   return { total: totalRow?.c ?? 0, byCountry }

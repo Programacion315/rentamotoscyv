@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { getVisitStats } from "@/lib/analytics/db"
+import { VisitWorldMap } from "@/app/admin/components/VisitWorldMap"
 
 function flagEmoji(countryCode: string | null): string {
   if (!countryCode || countryCode.length !== 2) return "🏳️"
@@ -36,7 +37,7 @@ export default async function AdminHomePage() {
           <div className="rounded-[20px] bg-warm-taupe p-5">
             <p className="mb-3 font-body-sm text-smoke">De dónde vienen</p>
             <div className="flex flex-col gap-2">
-              {byCountry.map((row) => (
+              {byCountry.slice(0, 10).map((row) => (
                 <div
                   key={`${row.country}-${row.countryCode}`}
                   className="flex items-center justify-between gap-3 font-body-sm text-ink"
@@ -52,6 +53,13 @@ export default async function AdminHomePage() {
           </div>
         ) : null}
       </div>
+
+      {byCountry.length > 0 ? (
+        <div className="mb-6 rounded-[20px] bg-warm-taupe p-5">
+          <p className="mb-3 font-body-sm text-smoke">Mapa de visitas</p>
+          <VisitWorldMap byCountry={byCountry} />
+        </div>
+      ) : null}
 
       <div className="grid gap-4 sm:grid-cols-2">
         {cards.map((card) => (
